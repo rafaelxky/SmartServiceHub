@@ -1,8 +1,10 @@
 package org.example.controllers;
 
 import org.example.models.AppService;
+import org.example.models.AppUser;
 import org.example.services.persistance.AppServiceDbService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,21 +20,23 @@ public class AppServiceController {
         this.serviceDbService = serviceDbService;
     }
 
-    // Create or update a service
     @PostMapping
-    public ResponseEntity<AppService> createService(@RequestBody AppService service) {
+    public ResponseEntity<AppService> createService(
+            @RequestBody AppService service,
+            @AuthenticationPrincipal AppUser currentUser) {
+
+        service.setUser_id(currentUser.getId());
+
         AppService savedService = serviceDbService.saveService(service);
         return ResponseEntity.ok(savedService);
     }
 
-    // Get all services
     @GetMapping
     public ResponseEntity<List<AppService>> getAllServices() {
         List<AppService> services = serviceDbService.getAllServices();
         return ResponseEntity.ok(services);
     }
 
-    // Get a service by id
     @GetMapping("/{id}")
     public ResponseEntity<AppService> getServiceById(@PathVariable("id") Long id) {
         Optional<AppService> serviceOpt = serviceDbService.getServiceById(id);
@@ -46,9 +50,24 @@ public class AppServiceController {
         return ResponseEntity.ok(services);
     }
 
-    // Delete a service by id
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteServiceById(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteServiceById(
+            @PathVariable Long id,
+            @AuthenticationPrincipal AppUser currentUser
+    ) {
+        Optional<AppService> serviceOpt = serviceDbService.getServiceById(id);
+
+        if (serviceOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        AppService service = serviceOpt.get();
+
+        if (!currentUser.getId().equals(service.getUser_id())) {
+            return ResponseEntity.status(403).build(); // Forbidden
+        }
+
         serviceDbService.deleteServiceById(id);
         return ResponseEntity.noContent().build();
     }
