@@ -41,8 +41,8 @@ public class AppServiceController {
     }
 
     @GetMapping("/{limit}")
-    public ResponseEntity<List<AppService>> getServiceWithLimit(@PathVariable("limit") Long id) {
-        List<AppService> services = serviceDbService.getAllServices();
+    public ResponseEntity<List<AppService>> getServiceWithLimit(@PathVariable("limit") int limit) {
+        List<AppService> services = serviceDbService.getServiceWithLimit(limit);
         return ResponseEntity.ok(services);
     }
 
