@@ -1,6 +1,8 @@
 package org.example.services.persistance;
 
+import org.example.models.AppService;
 import org.example.models.Comment;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,5 +31,9 @@ public class CommentDbService {
 
     public void deleteCommentById(Long id) {
         commentRepository.deleteById(id);
+    }
+
+    public List<Comment> getServiceWithLimit(int limit){
+        return commentRepository.findAll(PageRequest.of(0, limit)).getContent();
     }
 }

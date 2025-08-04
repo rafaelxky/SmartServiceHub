@@ -1,6 +1,8 @@
 package org.example.services.persistance;
 
 import org.example.models.AppUser;
+import org.example.models.Comment;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,5 +31,9 @@ public class UserDbService {
 
     public void deleteUserById(Long id) {
         userRepository.deleteById(id);
+    }
+
+    public List<AppUser> getServiceWithLimit(int limit){
+        return userRepository.findAll(PageRequest.of(0, limit)).getContent();
     }
 }
