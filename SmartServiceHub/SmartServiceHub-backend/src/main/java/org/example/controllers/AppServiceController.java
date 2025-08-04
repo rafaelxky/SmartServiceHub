@@ -34,10 +34,16 @@ public class AppServiceController {
 
     // Get a service by id
     @GetMapping("/{id}")
-    public ResponseEntity<AppService> getServiceById(@PathVariable Long id) {
+    public ResponseEntity<AppService> getServiceById(@PathVariable("id") Long id) {
         Optional<AppService> serviceOpt = serviceDbService.getServiceById(id);
         return serviceOpt.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/{limit}")
+    public ResponseEntity<List<AppService>> getServiceWithLimit(@PathVariable("limit") Long id) {
+        List<AppService> services = serviceDbService.getAllServices();
+        return ResponseEntity.ok(services);
     }
 
     // Delete a service by id

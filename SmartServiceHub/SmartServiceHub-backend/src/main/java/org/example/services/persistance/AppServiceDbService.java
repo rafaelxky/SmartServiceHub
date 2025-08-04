@@ -2,6 +2,8 @@ package org.example.services.persistance;
 
 
 import org.example.models.AppService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,5 +32,9 @@ public class AppServiceDbService {
 
     public void deleteServiceById(Long id) {
         serviceRepository.deleteById(id);
+    }
+
+    public List<AppService> getServiceWithLimit(int limit){
+        return serviceRepository.findAll(PageRequest.of(0, limit)).getContent();
     }
 }
