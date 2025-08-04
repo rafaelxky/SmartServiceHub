@@ -1,8 +1,8 @@
 package org.example.services.persistance;
 
-import org.example.models.User;
+import org.example.models.AppUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<AppUser, Long> {
 
 }

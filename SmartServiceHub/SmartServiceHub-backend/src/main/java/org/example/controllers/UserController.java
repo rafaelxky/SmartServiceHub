@@ -1,6 +1,6 @@
 package org.example.controllers;
 
-import org.example.models.User;
+import org.example.models.AppUser;
 import org.example.services.persistance.UserDbService;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,22 +18,22 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
+    public AppUser createUser(@RequestBody AppUser user) {
         return userDbService.saveUser(user);
     }
 
     @GetMapping("/{id}")
-    public Optional<User> getUser(@PathVariable Long id) {
+    public Optional<AppUser> getUser(@PathVariable Long id) {
         return userDbService.getUserById(id);
     }
 
     @GetMapping
-    public List<User> getAllUsers() {
+    public List<AppUser> getAllUsers() {
         return userDbService.getAllUsers();
     }
 
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody User user) {
+    public AppUser updateUser(@PathVariable Long id, @RequestBody AppUser user) {
         user.setId(id);
         return userDbService.saveUser(user);
     }

@@ -1,6 +1,6 @@
 package org.example.services.persistance;
 
-import org.example.models.User;
+import org.example.models.AppUser;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,15 +15,15 @@ public class UserDbService {
         this.userRepository = userRepository;
     }
 
-    public User saveUser(User user) {
+    public AppUser saveUser(AppUser user) {
         return userRepository.save(user);
     }
 
-    public Optional<User> getUserById(Long id) {
+    public Optional<AppUser> getUserById(Long id) {
         return userRepository.findById(id);
     }
 
-    public List<User> getAllUsers() {
+    public List<AppUser> getAllUsers() {
         return userRepository.findAll();
     }
 
