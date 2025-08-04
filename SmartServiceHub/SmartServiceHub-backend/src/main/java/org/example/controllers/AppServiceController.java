@@ -40,8 +40,8 @@ public class AppServiceController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/{limit}")
-    public ResponseEntity<List<AppService>> getServiceWithLimit(@PathVariable("limit") int limit) {
+    @GetMapping("/limit/{limit}")
+    public ResponseEntity<List<AppService>> getServiceWithLimit(@PathVariable("limit") Integer limit) {
         List<AppService> services = serviceDbService.getServiceWithLimit(limit);
         return ResponseEntity.ok(services);
     }
