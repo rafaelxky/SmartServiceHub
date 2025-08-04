@@ -1,6 +1,6 @@
 package org.example.controllers;
 
-import org.example.models.AppComment;
+
 import org.example.models.Comment;
 import org.example.services.persistance.CommentDbService;
 import org.springframework.web.bind.annotation.*;
