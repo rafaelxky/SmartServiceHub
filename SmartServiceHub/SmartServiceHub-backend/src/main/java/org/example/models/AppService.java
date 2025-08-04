@@ -1,4 +1,4 @@
 package org.example.models;
 
-public class Service {
+public class AppService {
 }
