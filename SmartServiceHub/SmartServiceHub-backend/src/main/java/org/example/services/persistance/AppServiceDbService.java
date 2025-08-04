@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ServiceDbService {
+public class AppServiceDbService {
 
-    private final ServiceRepository serviceRepository;
+    private final AppServiceRepository serviceRepository;
 
-    public ServiceDbService(ServiceRepository serviceRepository) {
+    public AppServiceDbService(AppServiceRepository serviceRepository) {
         this.serviceRepository = serviceRepository;
     }
 
