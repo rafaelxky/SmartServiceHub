@@ -1,2 +1,14 @@
+
+// start db in docker
+
+docker ps -a
 docker start postgres-db
+docker ps
 docker exec -it postgres-db psql -U postgres
+
+\l
+\dt
+\c dbName
+
+// start docker new pc
+docker-compose up -d
