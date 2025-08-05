@@ -1,0 +1,3 @@
+ALTER TABLE app_user
+ADD CONSTRAINT username_unique UNIQUE (username),
+ADD CONSTRAINT email_unique UNIQUE (email);

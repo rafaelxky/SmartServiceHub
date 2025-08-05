@@ -2,45 +2,88 @@ package org.example.controllers;
 
 import org.example.models.AppUser;
 import org.example.services.persistance.UserDbService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
     private final UserDbService userDbService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserDbService userDbService) {
+    public UserController(UserDbService userDbService, PasswordEncoder passwordEncoder) {
         this.userDbService = userDbService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping
-    public AppUser createUser(@RequestBody AppUser user) {
-        return userDbService.saveUser(user);
+    public ResponseEntity<AppUser> createUser(@RequestBody AppUser user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        AppUser savedUser = userDbService.createUser(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
 
     @GetMapping("/{id}")
-    public Optional<AppUser> getUser(@PathVariable Long id) {
-        return userDbService.getUserById(id);
+    public ResponseEntity<AppUser> getUser(@PathVariable Long id) {
+        return userDbService.getUserById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping
-    public List<AppUser> getAllUsers() {
-        return userDbService.getAllUsers();
+    public ResponseEntity<List<AppUser>> getAllUsers() {
+        return ResponseEntity.ok(userDbService.getAllUsers());
     }
 
+
     @PutMapping("/{id}")
-    public AppUser updateUser(@PathVariable Long id, @RequestBody AppUser user) {
-        user.setId(id);
-        return userDbService.saveUser(user);
+    public ResponseEntity<AppUser> updateUser(
+            @PathVariable Long id,
+            @RequestBody AppUser userUpdate,
+            @AuthenticationPrincipal AppUser currentUser
+    ) {
+        if (currentUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        if (!currentUser.getId().equals(id)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        AppUser existing = userDbService.getUserById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        existing.setUsername(userUpdate.getUsername());
+        existing.setEmail(userUpdate.getEmail());
+
+        if (userUpdate.getPassword() != null && !userUpdate.getPassword().isBlank()) {
+            existing.setPassword(passwordEncoder.encode(userUpdate.getPassword()));
+        }
+
+        return ResponseEntity.ok(userDbService.saveUser(existing));
     }
 
     @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(
+            @PathVariable Long id,
+            @AuthenticationPrincipal AppUser currentUser
+    ) {
+        if (currentUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
 
-    public void deleteUser(@PathVariable Long id) {
+        if (!currentUser.getId().equals(id)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
         userDbService.deleteUserById(id);
+        return ResponseEntity.noContent().build();
     }
 }

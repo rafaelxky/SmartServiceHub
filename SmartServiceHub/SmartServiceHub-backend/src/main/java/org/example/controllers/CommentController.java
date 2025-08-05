@@ -1,9 +1,13 @@
 package org.example.controllers;
 
-
+import org.example.models.AppUser;
 import org.example.models.Comment;
 import org.example.services.persistance.CommentDbService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,8 +23,18 @@ public class CommentController {
     }
 
     @PostMapping
-    public Comment createComment(@RequestBody Comment comment) {
-        return commentDbService.saveComment(comment);
+    public ResponseEntity<Comment> createComment(
+            @RequestBody Comment comment,
+            @AuthenticationPrincipal AppUser currentUser
+    ) {
+        if (currentUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        comment.setUser_id(currentUser.getId());
+        Comment savedComment = commentDbService.saveComment(comment);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedComment);
     }
 
     @GetMapping("/{id}")
@@ -34,13 +48,44 @@ public class CommentController {
     }
 
     @PutMapping("/{id}")
-    public Comment updateComment(@PathVariable Long id, @RequestBody Comment comment) {
-        comment.setId(id);
-        return commentDbService.saveComment(comment);
+    public ResponseEntity<Comment> updateComment(
+            @PathVariable Long id,
+            @RequestBody Comment commentUpdate,
+            @AuthenticationPrincipal AppUser currentUser
+    ) {
+        if (currentUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        Comment existing = commentDbService.getCommentById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        if (!currentUser.getId().equals(existing.getUser_id())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        existing.setText(commentUpdate.getText());
+
+        return ResponseEntity.ok(commentDbService.saveComment(existing));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteComment(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteComment(
+            @PathVariable Long id,
+            @AuthenticationPrincipal AppUser currentUser
+    ) {
+        if (currentUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        Comment existing = commentDbService.getCommentById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        if (!currentUser.getId().equals(existing.getUser_id())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
         commentDbService.deleteCommentById(id);
+        return ResponseEntity.noContent().build();
     }
 }

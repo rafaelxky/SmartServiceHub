@@ -2,6 +2,7 @@ package org.example.services.persistance;
 
 import org.example.models.AppUser;
 import org.example.models.Comment;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import java.util.Optional;
 @Service
 public class UserDbService {
 
+    @Autowired
     private final UserRepository userRepository;
 
     public UserDbService(UserRepository userRepository) {
@@ -18,6 +20,16 @@ public class UserDbService {
     }
 
     public AppUser saveUser(AppUser user) {
+        return userRepository.save(user);
+    }
+
+    public AppUser createUser(AppUser user) {
+        if (userRepository.existsByUsername(user.getUsername())) {
+            throw new IllegalArgumentException("Username already taken");
+        }
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new IllegalArgumentException("Email already taken");
+        }
         return userRepository.save(user);
     }
 

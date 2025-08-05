@@ -3,12 +3,13 @@ package org.example.controllers;
 import org.example.models.AppService;
 import org.example.models.AppUser;
 import org.example.services.persistance.AppServiceDbService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/services")
@@ -25,47 +26,70 @@ public class AppServiceController {
             @RequestBody AppService service,
             @AuthenticationPrincipal AppUser currentUser) {
 
-        service.setUser_id(currentUser.getId());
+        if (currentUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
 
+        service.setUser_id(currentUser.getId());
         AppService savedService = serviceDbService.saveService(service);
-        return ResponseEntity.ok(savedService);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedService);
     }
 
     @GetMapping
     public ResponseEntity<List<AppService>> getAllServices() {
-        List<AppService> services = serviceDbService.getAllServices();
-        return ResponseEntity.ok(services);
+        return ResponseEntity.ok(serviceDbService.getAllServices());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<AppService> getServiceById(@PathVariable("id") Long id) {
-        Optional<AppService> serviceOpt = serviceDbService.getServiceById(id);
-        return serviceOpt.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return serviceDbService.getServiceById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/limit/{limit}")
     public ResponseEntity<List<AppService>> getServiceWithLimit(@PathVariable("limit") Integer limit) {
-        List<AppService> services = serviceDbService.getServiceWithLimit(limit);
-        return ResponseEntity.ok(services);
+        return ResponseEntity.ok(serviceDbService.getServiceWithLimit(limit));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<AppService> updateService(
+            @PathVariable Long id,
+            @RequestBody AppService serviceUpdate,
+            @AuthenticationPrincipal AppUser currentUser
+    ) {
+        if (currentUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        AppService existing = serviceDbService.getServiceById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        if (!currentUser.getId().equals(existing.getUser_id())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        existing.setTitle(serviceUpdate.getTitle());
+        existing.setContent(serviceUpdate.getContent());
+
+        return ResponseEntity.ok(serviceDbService.saveService(existing));
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteServiceById(
             @PathVariable Long id,
             @AuthenticationPrincipal AppUser currentUser
     ) {
-        Optional<AppService> serviceOpt = serviceDbService.getServiceById(id);
-
-        if (serviceOpt.isEmpty()) {
-            return ResponseEntity.notFound().build();
+        if (currentUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        AppService service = serviceOpt.get();
+        AppService service = serviceDbService.getServiceById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         if (!currentUser.getId().equals(service.getUser_id())) {
-            return ResponseEntity.status(403).build(); // Forbidden
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         serviceDbService.deleteServiceById(id);
