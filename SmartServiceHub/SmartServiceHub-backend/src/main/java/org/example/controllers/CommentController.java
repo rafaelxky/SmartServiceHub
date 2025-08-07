@@ -99,8 +99,10 @@ public class CommentController {
 
     @GetMapping("/post")
     public ResponseEntity<List<Comment>> getPostUniqueComments(
-
+        @RequestParam int limit,
+        @RequestParam int offset,
+        @RequestParam long post_id
     ){
-        return null;
+        return ResponseEntity.ok(commentDbService.getCommentUnique(limit, offset, post_id));
     }
 }
