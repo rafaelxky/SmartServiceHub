@@ -96,4 +96,11 @@ public class CommentController {
         commentDbService.getCommentsFromPost(post_id);
         return null;
     }
+
+    @GetMapping("/post")
+    public ResponseEntity<List<Comment>> getPostUniqueComments(
+
+    ){
+        return null;
+    }
 }
