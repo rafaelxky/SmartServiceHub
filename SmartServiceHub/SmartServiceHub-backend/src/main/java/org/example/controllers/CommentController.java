@@ -88,4 +88,12 @@ public class CommentController {
         commentDbService.deleteCommentById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/post/{post_id}")
+    public ResponseEntity<Comment> getPostComments (
+            @PathVariable Long post_id
+    ){
+        commentDbService.getCommentsFromPost(post_id);
+        return null;
+    }
 }

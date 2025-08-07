@@ -35,4 +35,12 @@ public class CommentDbService {
     public List<Comment> getServiceWithLimit(int limit){
         return commentRepository.findAll(PageRequest.of(0, limit)).getContent();
     }
+
+    public List<Comment> getCommentUnique(int limit, int offset, long postId){
+        return commentRepository.findUniqueCommentsByPostId(postId, limit, offset);
+    }
+
+    public List<Comment> getCommentsFromPost(Long postId){
+        return commentRepository.findCommentsByPostId(postId);
+    }
 }
