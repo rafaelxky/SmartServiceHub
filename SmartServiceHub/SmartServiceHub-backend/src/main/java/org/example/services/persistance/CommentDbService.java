@@ -1,6 +1,5 @@
 package org.example.services.persistance;
 
-import org.example.models.AppService;
 import org.example.models.Comment;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;

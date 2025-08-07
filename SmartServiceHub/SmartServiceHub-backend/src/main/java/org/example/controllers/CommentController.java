@@ -31,7 +31,7 @@ public class CommentController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        comment.setUser_id(currentUser.getId());
+        comment.setUserId(currentUser.getId());
         Comment savedComment = commentDbService.saveComment(comment);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(savedComment);
@@ -60,7 +60,7 @@ public class CommentController {
         Comment existing = commentDbService.getCommentById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        if (!currentUser.getId().equals(existing.getUser_id())) {
+        if (!currentUser.getId().equals(existing.getUserId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
@@ -81,7 +81,7 @@ public class CommentController {
         Comment existing = commentDbService.getCommentById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        if (!currentUser.getId().equals(existing.getUser_id())) {
+        if (!currentUser.getId().equals(existing.getUserId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 

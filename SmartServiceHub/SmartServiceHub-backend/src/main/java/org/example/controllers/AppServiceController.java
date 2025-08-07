@@ -30,7 +30,7 @@ public class AppServiceController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        service.setUser_id(currentUser.getId());
+        service.setUserId(currentUser.getId());
         AppService savedService = serviceDbService.saveService(service);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(savedService);
@@ -66,7 +66,7 @@ public class AppServiceController {
         AppService existing = serviceDbService.getServiceById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        if (!currentUser.getId().equals(existing.getUser_id())) {
+        if (!currentUser.getId().equals(existing.getUserId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
@@ -88,7 +88,7 @@ public class AppServiceController {
         AppService service = serviceDbService.getServiceById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        if (!currentUser.getId().equals(service.getUser_id())) {
+        if (!currentUser.getId().equals(service.getUserId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
