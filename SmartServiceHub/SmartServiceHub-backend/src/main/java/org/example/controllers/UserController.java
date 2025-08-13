@@ -30,6 +30,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
 
+    @GetMapping("/name/{id}")
+    public ResponseEntity<String> getUSer(@PathVariable Long id){
+        return userDbService.getUserById(id)
+                .map(user -> ResponseEntity.ok(user.getUsername()))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<AppUser> getUser(@PathVariable Long id) {
         return userDbService.getUserById(id)

@@ -31,6 +31,15 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/services/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/services/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/services/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/comments/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/comments/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/comments/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/users/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/users/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/users/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/users/name/**").permitAll()
                         .anyRequest().permitAll()
                 )
                 .httpBasic(Customizer.withDefaults());
