@@ -25,6 +25,7 @@ public class MyUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return User.withUsername(user.getUsername())
                 .password(user.getPassword())
+                .roles(user.getRole())
                 .build();
     }
 }

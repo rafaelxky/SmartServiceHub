@@ -38,8 +38,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/comments/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/users/**").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/users/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/users/name/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/users/**").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/users/name/**").permitAll()
                         .anyRequest().permitAll()
                 )
                 .httpBasic(Customizer.withDefaults());

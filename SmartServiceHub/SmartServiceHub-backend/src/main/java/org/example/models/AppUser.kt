@@ -21,5 +21,8 @@ class AppUser(
     var email: String = "",
 
     @Column(nullable = false)
-    var password: String = ""
+    var password: String = "",
+
+    @Column(nullable = false)
+    var role: String = "USER"
 )
