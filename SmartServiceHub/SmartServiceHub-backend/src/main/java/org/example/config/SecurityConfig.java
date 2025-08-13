@@ -21,6 +21,7 @@ public class SecurityConfig {
     private final MyUserDetailsService myUserDetailsService;
 
     public SecurityConfig(MyUserDetailsService myUserDetailsService) {
+        System.out.println("Creating Security Config Object");
         this.myUserDetailsService = myUserDetailsService;
     }
 
@@ -30,18 +31,10 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/services/**").authenticated()
-                        .requestMatchers(HttpMethod.PUT, "/services/**").authenticated()
-                        .requestMatchers(HttpMethod.DELETE, "/services/**").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/users/**").permitAll()
                         .anyRequest().permitAll()
                 )
                 .httpBasic(Customizer.withDefaults());
         return http.build();
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return myUserDetailsService;
     }
 
     @Bean

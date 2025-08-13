@@ -23,12 +23,18 @@ public class AppServiceController {
 
     @PostMapping
     public ResponseEntity<AppService> createService(
-            @RequestBody AppService service,
-            @AuthenticationPrincipal AppUser currentUser) {
+            @RequestBody AppService service
+            ,@AuthenticationPrincipal AppUser currentUser
+    ){
+        System.out.println("creating a new service");
 
         if (currentUser == null) {
+
+            System.out.println("Failed auth");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+
+        System.out.println("auth success");
 
         service.setUserId(currentUser.getId());
         AppService savedService = serviceDbService.saveService(service);
