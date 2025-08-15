@@ -13,7 +13,7 @@ class Comment(
     var id: Long? = null,
 
     @Column(nullable = false)
-    var text: String = "",
+    var content: String = "",
 
     @Column(nullable = false)
     var postId: Long? = null,

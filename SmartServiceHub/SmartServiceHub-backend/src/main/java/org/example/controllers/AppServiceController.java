@@ -5,6 +5,7 @@ import org.example.models.AppUser;
 import org.example.services.persistance.AppServiceDbService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -22,23 +23,13 @@ public class AppServiceController {
     }
 
     @PostMapping
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<AppService> createService(
-            @RequestBody AppService service
-            ,@AuthenticationPrincipal AppUser currentUser
+            @RequestBody AppService service,
+            @AuthenticationPrincipal AppUser currentUser
     ){
-        System.out.println("creating a new service");
-
-        if (currentUser == null) {
-
-            System.out.println("Failed auth");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
-        System.out.println("auth success");
-
         service.setUserId(currentUser.getId());
         AppService savedService = serviceDbService.saveService(service);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(savedService);
     }
 

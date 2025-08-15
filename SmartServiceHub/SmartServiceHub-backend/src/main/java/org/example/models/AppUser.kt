@@ -1,11 +1,9 @@
 package org.example.models
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
+import com.fasterxml.jackson.annotation.JsonIgnore
+import jakarta.persistence.*
 import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
 @Entity
@@ -15,14 +13,45 @@ class AppUser(
     var id: Long? = null,
 
     @Column(nullable = false, unique = true)
-    var username: String = "",
+    private var username: String = "",
 
     @Column(nullable = false, unique = true)
     var email: String = "",
 
+    @JsonIgnore // Don't expose password in JSON responses
     @Column(nullable = false)
-    var password: String = "",
+    private var password: String = "",
 
     @Column(nullable = false)
     var role: String = "USER"
-)
+) : UserDetails {
+
+    fun setPassword(password: String){
+        this.password = password
+    }
+
+    fun setUsername(username: String){
+        this.username = username
+    }
+
+    @JsonIgnore
+    override fun getAuthorities(): Collection<GrantedAuthority> =
+        listOf(SimpleGrantedAuthority("ROLE_$role"))
+
+    override fun getUsername(): String = username
+
+    @JsonIgnore
+    override fun getPassword(): String = password
+
+    @JsonIgnore
+    override fun isAccountNonExpired(): Boolean = true
+
+    @JsonIgnore
+    override fun isAccountNonLocked(): Boolean = true
+
+    @JsonIgnore
+    override fun isCredentialsNonExpired(): Boolean = true
+
+    @JsonIgnore
+    override fun isEnabled(): Boolean = true
+}

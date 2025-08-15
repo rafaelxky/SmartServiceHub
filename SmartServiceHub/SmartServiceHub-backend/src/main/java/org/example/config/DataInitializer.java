@@ -16,7 +16,7 @@ public class DataInitializer {
             if (userRepository.count() == 0) {
                 AppUser admin = new AppUser();
                 admin.setUsername("admin");
-                admin.setPassword(passwordEncoder.encode("admin123")); // choose a secure password
+                admin.setPassword(passwordEncoder.encode("admin123"));
                 admin.setEmail("admin@mail.com");
                 admin.setRole("ADMIN");
 

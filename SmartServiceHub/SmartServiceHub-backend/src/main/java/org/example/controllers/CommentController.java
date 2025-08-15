@@ -64,7 +64,7 @@ public class CommentController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        existing.setText(commentUpdate.getText());
+        existing.setContent(commentUpdate.getContent());
 
         return ResponseEntity.ok(commentDbService.saveComment(existing));
     }
