@@ -24,7 +24,7 @@ class AppUser(
     private var password: String = "",
 
     @Column(nullable = false)
-    var role: String = "USER"
+    var role: String = Roles.USER.roleName
 ) : UserDetails {
 
     fun setPassword(password: String){

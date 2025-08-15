@@ -1,6 +1,7 @@
 package org.example.controllers;
 
 import org.example.models.AppUser;
+import org.example.models.Roles;
 import org.example.services.persistance.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class AdminController {
     @PostMapping("/create")
     public ResponseEntity<AppUser> createAdmin(@RequestBody AppUser user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole("ADMIN");
+        user.setRole(Roles.ADMIN.getRoleName());
         userRepository.save(user);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
