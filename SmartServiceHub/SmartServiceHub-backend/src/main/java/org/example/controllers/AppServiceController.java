@@ -92,4 +92,12 @@ public class AppServiceController {
         serviceDbService.deleteServiceById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/unique")
+    public ResponseEntity<List<AppService>> getUniqueServicePost(
+            @RequestParam int limit,
+            @RequestParam int offset
+    ){
+        return ResponseEntity.ok(serviceDbService.getServicePostUnique(limit, (offset * limit)));
+    }
 }

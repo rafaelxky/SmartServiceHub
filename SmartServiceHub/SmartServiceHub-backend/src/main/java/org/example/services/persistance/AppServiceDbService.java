@@ -2,6 +2,7 @@ package org.example.services.persistance;
 
 
 import org.example.models.AppService;
+import org.example.models.Comment;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -35,5 +36,9 @@ public class AppServiceDbService {
 
     public List<AppService> getServiceWithLimit(int limit){
         return serviceRepository.findAll(PageRequest.of(0, limit)).getContent();
+    }
+
+    public List<AppService> getServicePostUnique(int limit, int offset){
+        return serviceRepository.findUniqueServicePost(limit, offset);
     }
 }
