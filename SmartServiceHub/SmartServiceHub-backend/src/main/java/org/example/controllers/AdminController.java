@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin")
-@PreAuthorize("hasRole(T(org.example.models.Roles).ADMIN)")
+@PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
 
     private final UserRepository userRepository;
@@ -26,7 +26,6 @@ public class AdminController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @PreAuthorize("hasRole(T(org.example.models.Roles).ADMIN)")
     @PostMapping("/create")
     public ResponseEntity<ApiResponse> createAdmin(@RequestBody UserCreateDto user) {
         if (!user.isValid()){
