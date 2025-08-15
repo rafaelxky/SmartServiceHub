@@ -1,6 +1,8 @@
 package org.example.controllers;
 
 import org.example.models.AppUser;
+import org.example.models.Roles;
+import org.example.models.dto.ApiResponse;
 import org.example.services.persistance.UserDbService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +27,17 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<AppUser> createUser(@RequestBody AppUser user) {
+    public ResponseEntity<ApiResponse> createUser(@RequestBody AppUser user) {
+
+        if (user.getPassword().isEmpty() || user.getUsername().isEmpty() || user.getEmail().isEmpty()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(false, """ 
+                    Error, bad request. A user must be created like {"username": "exampleName", "email": "example@example.com", "password": "example123" }
+                    """, null));
+        }
+        user.setRole(Roles.USER.getRoleName());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         AppUser savedUser = userDbService.createUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse(true, "User created successfully", savedUser));
     }
 
     @GetMapping("/name/{id}")

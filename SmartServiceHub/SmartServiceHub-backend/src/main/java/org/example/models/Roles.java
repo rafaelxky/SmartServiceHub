@@ -8,7 +8,7 @@ public enum Roles {
     USER("ROLE_USER"),
     MODERATOR("ROLE_MODERATOR");
 
-    private final String roleName;
+    public final String roleName;
 
     Roles(String roleName){
         this.roleName = roleName;
