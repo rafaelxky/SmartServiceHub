@@ -2,6 +2,7 @@ package org.example.models
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
+import org.example.models.dto.UserCreateDto
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
@@ -55,4 +56,11 @@ class AppUser(
 
     @JsonIgnore
     override fun isEnabled(): Boolean = true
+
+    companion object {
+        @JvmStatic
+        fun fromDto(userDto: UserCreateDto): AppUser{
+            return AppUser(null,userDto.username, userDto.email,userDto.password, Roles.USER.roleName)
+        }
+    }
 }
