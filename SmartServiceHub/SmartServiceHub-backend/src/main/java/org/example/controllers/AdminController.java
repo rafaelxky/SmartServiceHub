@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin")
+@PreAuthorize("hasRole(T(org.example.models.Roles).ADMIN)")
 public class AdminController {
 
     private final UserRepository userRepository;
@@ -22,7 +23,6 @@ public class AdminController {
     }
 
     @PostMapping("/create")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<AppUser> createAdmin(@RequestBody AppUser user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole("ADMIN");
@@ -31,7 +31,6 @@ public class AdminController {
     }
 
     @PostMapping("/users/deleteAll")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deleteAllUsers(
             @RequestParam(required = false) String confirm
     ){
@@ -45,7 +44,6 @@ public class AdminController {
 
 
     @PostMapping("/comments/deleteAll")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deleteAllComments(
             @RequestParam(required = false) String confirm
     ){
@@ -57,7 +55,6 @@ public class AdminController {
     }
 
     @PostMapping("/posts/deleteAll")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deleteAllPosts(
             @RequestParam(required = false) String confirm
     ){

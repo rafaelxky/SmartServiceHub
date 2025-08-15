@@ -1,6 +1,7 @@
 package org.example.config;
 
 import org.example.models.AppUser;
+import org.example.models.Roles;
 import org.example.services.persistance.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +19,7 @@ public class DataInitializer {
                 admin.setUsername("admin");
                 admin.setPassword(passwordEncoder.encode("admin123"));
                 admin.setEmail("admin@mail.com");
-                admin.setRole("ADMIN");
+                admin.setRole(Roles.ADMIN.getRoleName());
 
                 userRepository.save(admin);
                 System.out.println("Initial admin user created: admin/admin123");

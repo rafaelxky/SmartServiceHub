@@ -46,7 +46,7 @@ public class UserController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole(T(com.example.models.Roles).ADMIN)")
     public ResponseEntity<List<AppUser>> getAllUsers() {
         return ResponseEntity.ok(userDbService.getAllUsers());
     }
