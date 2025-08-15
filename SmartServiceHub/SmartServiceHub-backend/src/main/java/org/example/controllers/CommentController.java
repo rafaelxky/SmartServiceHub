@@ -103,6 +103,6 @@ public class CommentController {
         @RequestParam int offset,
         @RequestParam long post_id
     ){
-        return ResponseEntity.ok(commentDbService.getCommentUnique(limit, offset, post_id));
+        return ResponseEntity.ok(commentDbService.getCommentUnique(limit, (offset * limit), post_id));
     }
 }

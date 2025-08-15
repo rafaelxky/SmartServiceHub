@@ -17,7 +17,7 @@ CREATE TABLE Posts (
 
 CREATE TABLE Comments (
     id SERIAL PRIMARY KEY,
-    text TEXT NOT NULL,
+    contents TEXT NOT NULL,
     post_id INTEGER REFERENCES Posts(id) ON DELETE CASCADE,
     user_id INTEGER REFERENCES Users(id) ON DELETE SET NULL
 );

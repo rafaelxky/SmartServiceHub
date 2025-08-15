@@ -18,8 +18,8 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
         SELECT *
         FROM comment c
         WHERE c.post_id = :postId
-        AND c.text IN (
-            SELECT DISTINCT text FROM comment WHERE post_id = :postId
+        AND c.content IN (
+            SELECT DISTINCT content FROM comment WHERE post_id = :postId
         )
         LIMIT :limit OFFSET :offset
     """, nativeQuery = true)
