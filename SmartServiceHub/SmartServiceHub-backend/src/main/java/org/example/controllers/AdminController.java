@@ -1,8 +1,10 @@
 package org.example.controllers;
 
+import org.example.App;
 import org.example.models.AppUser;
 import org.example.models.Roles;
 import org.example.models.dto.ApiResponse;
+import org.example.models.dto.UserCreateDto;
 import org.example.services.persistance.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,11 +27,16 @@ public class AdminController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<AppUser> createAdmin(@RequestBody AppUser user) {
+    public ResponseEntity<ApiResponse> createAdmin(@RequestBody UserCreateDto user) {
+        if (!user.isValid()){
+            return user.badRequestResponse();
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(Roles.ADMIN.getRoleName());
-        userRepository.save(user);
-        return ResponseEntity.status(HttpStatus.OK).body(user);
+        AppUser newUser = AppUser.fromDto(user);
+        newUser.setRole(Roles.ADMIN.getRoleName());
+        AppUser savedUser = userRepository.save(newUser);
+        return user.successResponse(savedUser);
+
     }
 
     @PostMapping("/users/deleteAll")

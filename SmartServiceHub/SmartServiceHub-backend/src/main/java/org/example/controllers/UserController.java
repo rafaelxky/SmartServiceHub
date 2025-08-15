@@ -29,16 +29,13 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<ApiResponse> createUser(@RequestBody UserCreateDto user) {
-
-        if (user.getPassword().isEmpty() || user.getUsername().isEmpty() || user.getEmail().isEmpty()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(false, """ 
-                    Error, bad request. A user must be created like {"username": "exampleName", "email": "example@example.com", "password": "example123" }
-                    """, null));
+        if (!user.isValid()){
+           return user.badRequestResponse();
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         AppUser newUser = AppUser.fromDto(user);
         AppUser savedUser = userDbService.createUser(newUser);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse(true, "User created successfully", savedUser));
+        return user.successResponse(savedUser);
     }
 
     @GetMapping("/name/{id}")
