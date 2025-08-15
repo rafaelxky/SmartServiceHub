@@ -11,9 +11,9 @@ import org.springframework.http.ResponseEntity;
 @Getter
 @Setter
 public class UserCreateDto {
-    private String username;
-    private String email;
-    private String password;
+    public String username;
+    public String email;
+    public String password;
 
     public boolean isValid(){
         return !(username.isEmpty() || email.isEmpty() || password.isEmpty());

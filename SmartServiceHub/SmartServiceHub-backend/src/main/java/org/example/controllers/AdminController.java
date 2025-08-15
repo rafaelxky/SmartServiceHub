@@ -26,6 +26,7 @@ public class AdminController {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @PreAuthorize("hasRole(T(org.example.models.Roles).ADMIN)")
     @PostMapping("/create")
     public ResponseEntity<ApiResponse> createAdmin(@RequestBody UserCreateDto user) {
         if (!user.isValid()){
