@@ -2,14 +2,11 @@ package org.example.controllers;
 
 import org.example.models.AppUser;
 import org.example.services.persistance.UserRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -26,10 +23,48 @@ public class AdminController {
 
     @PostMapping("/create")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<String> createAdmin(@RequestBody AppUser user) {
+    public ResponseEntity<AppUser> createAdmin(@RequestBody AppUser user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole("ADMIN");
         userRepository.save(user);
-        return ResponseEntity.ok("Admin user created!");
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
+
+    @PostMapping("/users/deleteAll")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> deleteAllUsers(
+            @RequestParam(required = false) String confirm
+    ){
+        if (!confirm.equals("DELETE_ALL_USERS")){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Confirmation phrase required: DELETE_ALL_USERS. (...?confirm=DELETE_ALL_USERS)");
+        }
+        userRepository.deleteAll();
+        return ResponseEntity.status(HttpStatus.OK).body("All users have been deleted");
+    }
+
+
+
+    @PostMapping("/comments/deleteAll")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> deleteAllComments(
+            @RequestParam(required = false) String confirm
+    ){
+        if (!confirm.equals("DELETE_ALL_COMMENTS")){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Confirmation phrase required: DELETE_ALL_COMMENTS. (...?confirm=DELETE_ALL_COMMENTS)");
+        }
+        userRepository.deleteAll();
+        return ResponseEntity.status(HttpStatus.OK).body("All comments have been deleted");
+    }
+
+    @PostMapping("/posts/deleteAll")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> deleteAllPosts(
+            @RequestParam(required = false) String confirm
+    ){
+        if (!confirm.equals("DELETE_ALL_POSTS")){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Confirmation phrase required: DELETE_ALL_POSTS. (...?confirm=DELETE_ALL_POSTS)");
+        }
+        userRepository.deleteAll();
+        return ResponseEntity.status(HttpStatus.OK).body("All posts have been deleted");
     }
 }
