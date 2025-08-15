@@ -4,9 +4,9 @@ import lombok.Getter;
 
 @Getter
 public enum Roles {
-    ADMIN("ROLE_ADMIN"),
-    USER("ROLE_USER"),
-    MODERATOR("ROLE_MODERATOR");
+    ADMIN("ADMIN"),
+    USER("USER"),
+    MODERATOR("MODERATOR");
 
     public final String roleName;
 

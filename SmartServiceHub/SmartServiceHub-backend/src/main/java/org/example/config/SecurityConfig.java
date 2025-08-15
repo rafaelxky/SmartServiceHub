@@ -1,5 +1,6 @@
 package org.example.config;
 
+import org.example.models.Roles;
 import org.example.services.security.MyUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,8 +41,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/comments/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/users/**").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/users/**").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/users/name/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/users/name/**").hasRole(Roles.ADMIN.getRoleName())
                         .requestMatchers(HttpMethod.GET, "/users/**").authenticated()
+                        .requestMatchers("/admin").hasRole(Roles.ADMIN.getRoleName())
                         .anyRequest().permitAll()
                 )
                 .httpBasic(Customizer.withDefaults());
