@@ -49,6 +49,6 @@ public class UserDbService {
     }
 
     public List<AppUser> getUserUnique(int limit, int offset) {
-        return userRepository.findUniqueUser(limit, (offset * limit));
+        return userRepository.findUniqueUser(limit, offset);
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -38,17 +39,17 @@ public class UserController {
         return user.successResponse(savedUser);
     }
 
-    @GetMapping("/name/{id}")
-    public ResponseEntity<String> getUSer(@PathVariable Long id){
+    @GetMapping("/name/{name}")
+    public ResponseEntity<String> getUserByName(@PathVariable String name){
         return userDbService.getUserById(id)
                 .map(user -> ResponseEntity.ok(user.getUsername()))
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AppUser> getUser(@PathVariable Long id) {
+    public ResponseEntity<PublicUserDto> getUser(@PathVariable Long id) {
         return userDbService.getUserById(id)
-                .map(ResponseEntity::ok)
+                .map(user -> ResponseEntity.ok(PublicUserDto.fromAppUser(user)))
                 .orElse(ResponseEntity.notFound().build());
     }
 

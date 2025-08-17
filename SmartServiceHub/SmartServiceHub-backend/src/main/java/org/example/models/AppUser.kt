@@ -3,12 +3,16 @@ package org.example.models
 import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 import org.example.models.dto.UserCreateDto
+import org.springframework.data.annotation.CreatedDate
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
+import java.time.LocalDateTime
+import org.springframework.data.jpa.domain.support.AuditingEntityListener
 
 @Entity
 @Table(name = "users")
+@EntityListeners(AuditingEntityListener::class)
 class AppUser(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +29,11 @@ class AppUser(
     private var password: String = "",
 
     @Column(nullable = false)
-    var role: String = Roles.USER.roleName
+    var role: String = Roles.USER.roleName,
+
+    @Column(nullable = false, updatable = false)
+    @CreatedDate
+    var timestamp: LocalDateTime? = null
 ) : UserDetails {
 
     fun setPassword(password: String){

@@ -37,7 +37,7 @@ public class CommentDbService {
     }
 
     public List<Comment> getCommentUnique(int limit, int offset, long postId){
-        return commentRepository.findUniqueCommentsByPostId(postId, limit, (offset * limit));
+        return commentRepository.findUniqueCommentsByPostId(postId, limit, offset);
     }
 
     public List<Comment> getCommentsFromPost(Long postId){
