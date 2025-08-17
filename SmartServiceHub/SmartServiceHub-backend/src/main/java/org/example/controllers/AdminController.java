@@ -1,6 +1,5 @@
 package org.example.controllers;
 
-import org.example.App;
 import org.example.models.AppUser;
 import org.example.models.Roles;
 import org.example.models.dto.ApiResponse;
@@ -28,7 +27,7 @@ public class AdminController {
 
     @PostMapping("/create")
     public ResponseEntity<ApiResponse> createAdmin(@RequestBody UserCreateDto user) {
-        if (!user.isValid()){
+        if (user.isValid()){
             return user.badRequestResponse();
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));

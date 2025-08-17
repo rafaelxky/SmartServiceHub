@@ -16,7 +16,10 @@ public class UserCreateDto {
     public String password;
 
     public boolean isValid(){
-        return !(username.isEmpty() || email.isEmpty() || password.isEmpty());
+        return !(
+                username == null || email == null || password == null ||
+                username.isBlank() || email.isEmpty() || password.isEmpty()
+        );
     }
 
     public ResponseEntity<ApiResponse> badRequestResponse(){

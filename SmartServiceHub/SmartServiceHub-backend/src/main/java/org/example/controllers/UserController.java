@@ -1,7 +1,6 @@
 package org.example.controllers;
 
 import org.example.models.AppUser;
-import org.example.models.Roles;
 import org.example.models.dto.ApiResponse;
 import org.example.models.dto.UserCreateDto;
 import org.example.services.persistance.UserDbService;
@@ -29,7 +28,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<ApiResponse> createUser(@RequestBody UserCreateDto user) {
-        if (!user.isValid()){
+        if (user.isValid()){
            return user.badRequestResponse();
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
