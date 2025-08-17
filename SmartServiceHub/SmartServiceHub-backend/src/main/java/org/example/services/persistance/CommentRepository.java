@@ -17,6 +17,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Query(value = """
         SELECT *
         FROM comments c
+        ORDER BY timestamp DESC
         WHERE c.post_id = :postId
         AND c.content IN (
             SELECT DISTINCT content FROM comments WHERE post_id = :postId

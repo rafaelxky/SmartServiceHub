@@ -16,6 +16,6 @@ import java.util.List;
 public interface AppServiceRepository extends JpaRepository<AppService, Long> {
     Page<AppService> findAll(Pageable pageable);
 
-    @Query(value = "SELECT DISTINCT * FROM services LIMIT :limit OFFSET :offset", nativeQuery = true)
+    @Query(value = "SELECT DISTINCT * FROM services ORDER BY timestamp DESC LIMIT :limit OFFSET :offset", nativeQuery = true)
     List<AppService> findUniqueServicePost(@Param("limit") int limit, @Param("offset") int offset);
 }

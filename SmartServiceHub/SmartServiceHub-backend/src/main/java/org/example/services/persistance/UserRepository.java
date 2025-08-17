@@ -18,6 +18,6 @@ public interface UserRepository extends JpaRepository<AppUser, Long> {
     boolean existsByUsername(String username);
     boolean existsByEmail(String email);
 
-    @Query(value = "SELECT DISTINCT * FROM users LIMIT :limit OFFSET :offset", nativeQuery = true)
+    @Query(value = "SELECT DISTINCT * FROM users ORDER BY timestamp DESC LIMIT :limit OFFSET :offset", nativeQuery = true)
     List<AppUser> findUniqueUser(@Param("limit") int limit, @Param("offset") int offset);
 }
