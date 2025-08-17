@@ -27,7 +27,7 @@ class Comment(
     companion object {
         @JvmStatic
         fun formCreateDto(commentCreateDto: CommentCreateDto, user: AppUser): Comment{
-            return Comment(null, commentCreateDto.getContent(), commentCreateDto.getPostId(), user.id)
+            return Comment(null, commentCreateDto.content, commentCreateDto.postId, user.id)
         }
     }
 }

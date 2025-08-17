@@ -60,7 +60,7 @@ class AppUser(
     companion object {
         @JvmStatic
         fun fromDto(userDto: UserCreateDto): AppUser{
-            return AppUser(null,userDto.getUsername(), userDto.getEmail(),userDto.getPassword(), Roles.USER.roleName)
+            return AppUser(null,userDto.username, userDto.email,userDto.password, Roles.USER.roleName)
         }
     }
 }

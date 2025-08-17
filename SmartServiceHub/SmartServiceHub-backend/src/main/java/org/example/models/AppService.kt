@@ -31,7 +31,7 @@ class AppService(
     companion object {
         @JvmStatic
         fun fromCreateDto(appServiceCreateDto: AppServiceCreateDto, user: AppUser): AppService{
-            return AppService(null, appServiceCreateDto.getTitle(), appServiceCreateDto.getContent(), user.id)
+            return AppService(null, appServiceCreateDto.title, appServiceCreateDto.content, user.id)
         }
     }
 }
