@@ -39,6 +39,6 @@ public class AppServiceDbService {
     }
 
     public List<AppService> getServicePostUnique(int limit, int offset){
-        return serviceRepository.findUniqueServicePost(limit, offset);
+        return serviceRepository.findUniqueServicePost(limit, (offset * limit));
     }
 }

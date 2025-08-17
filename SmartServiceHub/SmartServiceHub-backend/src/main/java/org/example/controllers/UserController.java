@@ -2,6 +2,7 @@ package org.example.controllers;
 
 import org.example.models.AppUser;
 import org.example.models.dto.ApiResponse;
+import org.example.models.dto.PublicUserDto;
 import org.example.models.dto.UserCreateDto;
 import org.example.services.persistance.UserDbService;
 import org.springframework.http.HttpStatus;
@@ -100,5 +101,13 @@ public class UserController {
 
         userDbService.deleteUserById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/unique")
+    public ResponseEntity<List<PublicUserDto>> getUnique(
+        @RequestParam int limit,
+        @RequestParam int offset
+    ){
+        return ResponseEntity.ok(PublicUserDto.fromAppUserList(userDbService.getUserUnique(limit, (offset * limit))));
     }
 }

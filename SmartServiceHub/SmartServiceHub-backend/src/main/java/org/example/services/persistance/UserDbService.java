@@ -1,6 +1,7 @@
 package org.example.services.persistance;
 
 import org.example.models.AppUser;
+import org.example.models.dto.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -45,5 +46,9 @@ public class UserDbService {
 
     public List<AppUser> getServiceWithLimit(int limit){
         return userRepository.findAll(PageRequest.of(0, limit)).getContent();
+    }
+
+    public List<AppUser> getUserUnique(int limit, int offset) {
+        return userRepository.findUniqueUser(limit, (offset * limit));
     }
 }

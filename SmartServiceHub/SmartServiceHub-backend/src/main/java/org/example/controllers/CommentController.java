@@ -97,7 +97,7 @@ public class CommentController {
         return null;
     }
 
-    @GetMapping("/post")
+    @GetMapping("/unique")
     public ResponseEntity<List<Comment>> getPostUniqueComments(
         @RequestParam int limit,
         @RequestParam int offset,
