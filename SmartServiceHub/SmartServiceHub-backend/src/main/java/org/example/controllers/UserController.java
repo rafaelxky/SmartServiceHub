@@ -28,7 +28,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<ApiResponse> createUser(@RequestBody UserCreateDto user) {
-        if (user.isValid()){
+        if (!user.isValid()){
            return user.badRequestResponse();
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
