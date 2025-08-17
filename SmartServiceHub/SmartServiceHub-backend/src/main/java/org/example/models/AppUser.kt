@@ -33,7 +33,7 @@ class AppUser(
 
     @Column(nullable = false, updatable = false)
     @CreatedDate
-    var timestamp: LocalDateTime? = null
+    var timestamp: LocalDateTime? = null,
 ) : UserDetails {
 
     fun setPassword(password: String){

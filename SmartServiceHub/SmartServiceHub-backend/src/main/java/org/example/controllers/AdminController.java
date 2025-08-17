@@ -2,7 +2,7 @@ package org.example.controllers;
 
 import org.example.models.AppUser;
 import org.example.models.Roles;
-import org.example.models.dto.ApiResponse;
+import org.example.models.ApiResponse;
 import org.example.models.dto.UserCreateDto;
 import org.example.services.persistance.UserRepository;
 import org.springframework.http.HttpStatus;

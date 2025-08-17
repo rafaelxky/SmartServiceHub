@@ -1,8 +1,8 @@
 package org.example.controllers;
 
 import org.example.models.AppUser;
-import org.example.models.dto.ApiResponse;
-import org.example.models.dto.PublicUserDto;
+import org.example.models.ApiResponse;
+import org.example.models.dto.UserPublicDto;
 import org.example.models.dto.UserCreateDto;
 import org.example.services.persistance.UserDbService;
 import org.springframework.http.HttpStatus;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -39,17 +38,19 @@ public class UserController {
         return user.successResponse(savedUser);
     }
 
+    /*
     @GetMapping("/name/{name}")
     public ResponseEntity<String> getUserByName(@PathVariable String name){
         return userDbService.getUserById(id)
                 .map(user -> ResponseEntity.ok(user.getUsername()))
                 .orElse(ResponseEntity.notFound().build());
     }
+    */
 
     @GetMapping("/{id}")
-    public ResponseEntity<PublicUserDto> getUser(@PathVariable Long id) {
+    public ResponseEntity<UserPublicDto> getUser(@PathVariable Long id) {
         return userDbService.getUserById(id)
-                .map(user -> ResponseEntity.ok(PublicUserDto.fromAppUser(user)))
+                .map(user -> ResponseEntity.ok(UserPublicDto.fromAppUser(user)))
                 .orElse(ResponseEntity.notFound().build());
     }
 
@@ -105,10 +106,10 @@ public class UserController {
     }
 
     @GetMapping("/unique")
-    public ResponseEntity<List<PublicUserDto>> getUnique(
+    public ResponseEntity<List<UserPublicDto>> getUnique(
         @RequestParam int limit,
         @RequestParam int offset
     ){
-        return ResponseEntity.ok(PublicUserDto.fromAppUserList(userDbService.getUserUnique(limit, (offset * limit))));
+        return ResponseEntity.ok(UserPublicDto.fromAppUserList(userDbService.getUserUnique(limit, (offset * limit))));
     }
 }

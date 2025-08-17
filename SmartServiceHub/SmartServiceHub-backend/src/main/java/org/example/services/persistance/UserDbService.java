@@ -1,8 +1,6 @@
 package org.example.services.persistance;
 
 import org.example.models.AppUser;
-import org.example.models.dto.ApiResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 

@@ -1,8 +1,6 @@
 package org.example.services.persistance;
 
-import org.example.models.AppService;
 import org.example.models.AppUser;
-import org.example.models.dto.ApiResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,7 +1,7 @@
 package org.example.handlers;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.example.models.dto.ApiResponse;
+import org.example.models.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
