@@ -3,6 +3,7 @@ package org.example.controllers;
 import org.example.models.AppService;
 import org.example.models.AppUser;
 import org.example.models.dto.AppServiceCreateDto;
+import org.example.models.dto.AppServicePublicDto;
 import org.example.services.persistance.AppServiceDbService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -94,10 +95,10 @@ public class AppServiceController {
     }
 
     @GetMapping("/unique")
-    public ResponseEntity<List<AppService>> getUniqueServicePost(
+    public ResponseEntity<List<AppServicePublicDto>> getUniqueServicePost(
             @RequestParam int limit,
             @RequestParam int offset
     ){
-        return ResponseEntity.ok(serviceDbService.getServicePostUnique(limit, (offset * limit)));
+        return ResponseEntity.ok(AppServicePublicDto.fromAppServiceList(serviceDbService.getServicePostUnique(limit, (offset * limit))));
     }
 }

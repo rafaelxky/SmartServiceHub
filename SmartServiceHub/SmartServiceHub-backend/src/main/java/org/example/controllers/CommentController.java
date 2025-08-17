@@ -3,6 +3,7 @@ package org.example.controllers;
 import org.example.models.AppUser;
 import org.example.models.Comment;
 import org.example.models.dto.CommentCreateDto;
+import org.example.models.dto.CommentPublicDto;
 import org.example.services.persistance.CommentDbService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,8 +38,10 @@ public class CommentController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Comment> getComment(@PathVariable Long id) {
-        return commentDbService.getCommentById(id);
+    public ResponseEntity<CommentPublicDto> getComment(@PathVariable Long id) {
+        return ResponseEntity.ok(CommentPublicDto.fromComment(commentDbService.getCommentById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND))
+        ));
     }
 
     @GetMapping
