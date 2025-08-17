@@ -2,6 +2,7 @@ package org.example.controllers;
 
 import org.example.models.AppUser;
 import org.example.models.Comment;
+import org.example.models.dto.CommentCreateDto;
 import org.example.services.persistance.CommentDbService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,16 +25,14 @@ public class CommentController {
 
     @PostMapping
     public ResponseEntity<Comment> createComment(
-            @RequestBody Comment comment,
+            @RequestBody CommentCreateDto comment,
             @AuthenticationPrincipal AppUser currentUser
     ) {
         if (currentUser == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        comment.setUserId(currentUser.getId());
-        Comment savedComment = commentDbService.saveComment(comment);
-
+        Comment savedComment = commentDbService.saveComment(Comment.formCreateDto(comment, currentUser));
         return ResponseEntity.status(HttpStatus.CREATED).body(savedComment);
     }
 

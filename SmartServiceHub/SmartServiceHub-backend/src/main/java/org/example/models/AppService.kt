@@ -6,6 +6,8 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import org.example.models.dto.AppServiceCreateDto
+import org.example.models.dto.UserCreateDto
 import java.io.Serializable
 
 @Entity
@@ -23,4 +25,13 @@ class AppService(
 
     @Column(nullable = false)
     var userId: Long? = null
-) : Serializable
+) : Serializable {
+
+
+    companion object {
+        @JvmStatic
+        fun fromCreateDto(appServiceCreateDto: AppServiceCreateDto, user: AppUser): AppService{
+            return AppService(null, appServiceCreateDto.getTitle(), appServiceCreateDto.getContent(), user.id)
+        }
+    }
+}

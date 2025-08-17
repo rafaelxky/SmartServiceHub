@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import org.example.models.dto.CommentCreateDto
 
 @Entity
 @Table(name = "comments")
@@ -22,4 +23,11 @@ class Comment(
 
     @Column(nullable = false)
     var userId: Long? = null,
-)
+) {
+    companion object {
+        @JvmStatic
+        fun formCreateDto(commentCreateDto: CommentCreateDto, user: AppUser): Comment{
+            return Comment(null, commentCreateDto.getContent(), commentCreateDto.getPostId(), user.id)
+        }
+    }
+}

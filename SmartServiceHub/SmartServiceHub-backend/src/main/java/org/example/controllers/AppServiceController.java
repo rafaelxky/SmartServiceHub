@@ -2,6 +2,7 @@ package org.example.controllers;
 
 import org.example.models.AppService;
 import org.example.models.AppUser;
+import org.example.models.dto.AppServiceCreateDto;
 import org.example.services.persistance.AppServiceDbService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,11 +26,10 @@ public class AppServiceController {
     @PostMapping
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<AppService> createService(
-            @RequestBody AppService service,
+            @RequestBody AppServiceCreateDto service,
             @AuthenticationPrincipal AppUser currentUser
     ){
-        service.setUserId(currentUser.getId());
-        AppService savedService = serviceDbService.saveService(service);
+        AppService savedService = serviceDbService.saveService(AppService.fromCreateDto(service, currentUser));
         return ResponseEntity.status(HttpStatus.CREATED).body(savedService);
     }
 

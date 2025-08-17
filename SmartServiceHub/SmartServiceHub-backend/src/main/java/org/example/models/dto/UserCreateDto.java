@@ -6,13 +6,18 @@ import lombok.Setter;
 import org.example.models.AppUser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @Getter
 @Setter
 public class UserCreateDto {
+    @NotBlank(message = "username is required ('username' = 'examplename')")
     public String username;
+    @NotBlank(message = "email is required ('email' = 'email@example.com')")
     public String email;
+    @NotBlank(message = "password is required ('password' = 'example123')")
     public String password;
 
     public boolean isValid(){
@@ -23,12 +28,12 @@ public class UserCreateDto {
     }
 
     public ResponseEntity<ApiResponse> badRequestResponse(){
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(false, """ 
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(HttpStatus.BAD_REQUEST, """ 
                     Error, bad request. A user must be created like {"username": "exampleName", "email": "example@example.com", "password": "example123" }
                     """, null));
     }
 
     public ResponseEntity<ApiResponse> successResponse(AppUser savedUser){
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse(true, "User created successfully", savedUser));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse(HttpStatus.OK, "User created successfully", savedUser));
     }
 }
