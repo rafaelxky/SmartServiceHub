@@ -1,9 +1,21 @@
 #app {
   max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  width: 100vw;
+  height: 5vh;
+  margin: 0 auto;    
+  display: flex;     
+  justify-content: center; 
+  align-items: center;
 }
+
+.btn-gap {
+  display: flex;         
+  gap: 1rem;             
+  margin: 2rem auto;     
+  align-items: center;   
+  height: 100%;          
+}
+
 
 .logo {
   height: 6em;
@@ -22,4 +34,8 @@
 
 .read-the-docs {
   color: #888;
+}
+
+.debug{
+  background-color: purple;
 }

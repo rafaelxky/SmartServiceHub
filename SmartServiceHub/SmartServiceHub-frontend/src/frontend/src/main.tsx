@@ -1,13 +1,7 @@
-import { render } from 'preact'
-import './index.css'
-import { App } from './app.tsx'
-import { Header } from './modules/header.tsx';
 
-//render(<App />, document.getElementById('app')!)
+import { render } from 'preact';
+import App from './app';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './index.css';
 
-class customHeaderElement extends HTMLElement {
-    connectedCallback() {
-    render(<Header />, this);
-  }
-}
-customElements.define('custom-header', customHeaderElement);
+render(<App />, document.getElementById('app')!);

@@ -1,43 +1,28 @@
-import { useState } from 'preact/hooks'
-import preactLogo from './assets/preact.svg'
-import viteLogo from '/vite.svg'
-import './app.css'
+import { h } from 'preact';
+import Header from './components/Header';
+import Posts from './components/Posts';
+import type { Post } from './tsx/types';
+import './styles/debug.css'
+import './styles/styles.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+const posts: Post[] = [
+  { id: 1, title: 'First Post', content: 'This is the first post.', author: 'Alice', date: '2025-08-19' },
+  { id: 2, title: 'Second Post', content: 'This is another post.', author: 'Bob', date: '2025-08-18' },
+];
 
 export function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} class="logo" alt="Vite logo" />
-        </a>
-        <a href="https://preactjs.com" target="_blank">
-          <img src={preactLogo} class="logo preact" alt="Preact logo" />
-        </a>
+    <div className="container-fluid d-flex flex-column align-items-center min-vh-100 bg-light py-4 w-100 pt-5">
+      {/* Header */}
+      <Header />
+
+      {/* Posts container */}
+      <div className="container d-flex flex-column gap-3">
+        <Posts posts={posts} />
       </div>
-      <h1>Vite + Preact</h1>
-      <div class="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/app.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p>
-        Check out{' '}
-        <a
-          href="https://preactjs.com/guide/v10/getting-started#create-a-vite-powered-preact-app"
-          target="_blank"
-        >
-          create-preact
-        </a>
-        , the official Preact + Vite starter
-      </p>
-      <p class="read-the-docs">
-        Click on the Vite and Preact logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
+
+export default App;
