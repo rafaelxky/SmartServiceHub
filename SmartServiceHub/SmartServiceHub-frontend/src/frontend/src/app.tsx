@@ -1,10 +1,14 @@
 import { h } from 'preact';
 import Header from './components/Header';
 import Posts from './components/Posts';
-import type { Post } from './tsx/types';
+import type { Post } from './tsx/models';
 import './styles/debug.css'
 import './styles/styles.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { UserService } from './tsx/api/services/UserService';
+
+let userService: UserService = new UserService("http://localhost:8080/users");
+userService.getUserById(1);
 
 const posts: Post[] = [
   { id: 1, title: 'First Post', content: 'This is the first post.', author: 'Alice', date: '2025-08-19' },

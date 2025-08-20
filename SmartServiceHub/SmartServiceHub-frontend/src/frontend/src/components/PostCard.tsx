@@ -1,6 +1,6 @@
 import { h } from 'preact';
 import { Card } from 'react-bootstrap';
-import type { Post } from '../tsx/types';
+import type { Post } from '../tsx/models';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 interface Props {
