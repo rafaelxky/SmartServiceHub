@@ -1,16 +1,26 @@
+import type { AuthProvider } from "./auth/AuthInterface";
+
 export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
-export async function request<T>(url: string, method: HttpMethod = "GET", body?: any): Promise<T> {
-  const options: RequestInit = {
-    method,
-    headers: {
-      "Content-Type": "application/json",
-    },
+export async function request<T>(
+  url: string,
+  method: HttpMethod = "GET",
+  body?: any,
+  authProvider?: AuthProvider
+): Promise<T> {
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
   };
 
-  if (body) {
-    options.body = JSON.stringify(body);
+  if (authProvider) {
+    headers["Authorization"] = await authProvider.getAuthHeader();
   }
+
+  const options: RequestInit = {
+    method,
+    headers,
+    body: body ? JSON.stringify(body) : undefined,
+  };
 
   const response = await fetch(url, options);
 
@@ -20,6 +30,7 @@ export async function request<T>(url: string, method: HttpMethod = "GET", body?:
 
   return response.json() as Promise<T>;
 }
+
 
 export async function get<T>(url: string): Promise<T> {
   return request<T>(url, "GET");

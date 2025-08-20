@@ -6,8 +6,10 @@ import './styles/debug.css'
 import './styles/styles.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { UserService } from './tsx/api/services/UserService';
+import { BasicAuthService } from './tsx/api/services/auth/BasicAuthService';
 
-let userService: UserService = new UserService("http://localhost:8080/users");
+let authService = new BasicAuthService("admin", "admin123");
+let userService: UserService = new UserService("http://localhost:8080/users", authService);
 userService.getUserById(1);
 
 const posts: Post[] = [

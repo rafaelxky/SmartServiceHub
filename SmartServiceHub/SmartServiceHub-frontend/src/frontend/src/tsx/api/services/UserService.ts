@@ -1,13 +1,16 @@
 import "./ApiService"
 import { get } from "./ApiService";
 import type { User } from "../ApiDto";
+import type { AuthProvider } from "./auth/AuthInterface";
 
 export class UserService{
     baseUrl: string;
+    authService: AuthProvider;
 
-    constructor(baseUrl: string){
+    constructor(baseUrl: string, authService: AuthProvider){
         //localhost/users
         this.baseUrl = baseUrl;
+        this.authService = authService; 
     }
 
     async createUser() {
