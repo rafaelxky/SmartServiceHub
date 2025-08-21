@@ -61,7 +61,7 @@ Can be found under the folder "controllers" or listed at "http://localhost:8080/
 - /users GET <- requires admin loggin, gets a list of all users
 - /users/{id} PUT <- updates a user by id, requires you to be logged in as the user you are trying to update, syntax is similar to POST
 - /users DELETE <- deletes a user by id, requires you to be logged in as the user you are trying to delete
-- /users/unique?limit=int&offset=int GET <- gets unique public users based on a limit and offset 
+- /users/unique?limit=int&offset=int GET <- gets unique [public users](#User endpoints) based on a limit and offset 
 
 ## App services endpoints
 - /services POST <- creates a post, must be logged in. Post are created like 
