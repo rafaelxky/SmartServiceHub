@@ -2,17 +2,17 @@
 A full-stack Java + Preact service marketplace with AI-powered recommendations and real-time chat.
 You can create a service post to request a service and other users can comment and accept you proposal. 
 
-# Dependencies 
+## Dependencies 
 Java 21
 NodeJS
 npm
 Postgres
 Git (duh)
 
-# Recomended
+## Recomended
 Postman
 
-# How to run
+## How to run
 1 - install dependencies
 2 - clone the repo with "git clone https://github.com/rafaelxky/SmartServiceHub"
 3 - create a db in postgres with the name "servicehub_dev" 
@@ -31,19 +31,23 @@ Accounts may be USER or ADMIN.
 When the program is ran, it will automatically create an ADMIN user with the name "admin" and password "admin123", this can be changed in "/config/DataInitialization.java".
 
 # Models
+## User
 AppUser <- user model to interact with db 
 UserPublicDto <- user model for showing (hides password)
 UserCreateDto <- user model for creation
+## AppService
 AppService <- Service post model to interact with db
 AppServicePublicDto <- Service post model for showing 
 AppServiceCreateDto <- Service post model from creation
+## Comments
 Comment <- comment model for interaction with db
 CommentCreateDto <- comment model for creation
 CommentPublicDto <- comment model for showing
+## Others
 ApiResponse <- model for responding to requests, however this must be changed in the future as it is a source of inconsistencies
 Roles <- Enum for roles "ADMIN, USER, MODERATOR"1
 
-# CORS policy
+## CORS policy
 Currently this app allows CORS from all sources tough this can be changed at "/config/WebConfig.java"
 
 # Endpoints
