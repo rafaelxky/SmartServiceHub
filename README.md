@@ -61,7 +61,10 @@ Can be found under the folder "controllers" or listed at "http://localhost:8080/
 - /users/unique?limit=int&offset=int GET <- gets unique public users based on a limit and offset 
 
 # App services endpoints
-- /services POST <- creates a post, must be logged in. Post are created like "{"title": "title", "content": "Stuffs"}" 
+- /services POST <- creates a post, must be logged in. Post are created like 
+```JSON
+{"title": "title", "content": "Stuffs"}
+```
 - /services GET <- gets a list of all services 
 - /services/{id} GET <- gets a service by id
 - /services/limit/{limit} GET <- gets a list of services of size {limit}
