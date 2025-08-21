@@ -18,12 +18,11 @@ export class UserService{
     }
 
     async getUserById(id: number){
-        let result = await get<User>(this.baseUrl + "/" + id);
-        console.log("getUserById: " + result); 
+        return await get<User>(this.baseUrl + "/" + id, this.authService);
     }
 
     async getUsers(){
-        get<User>(this.baseUrl) 
+        return await get<User>(this.baseUrl, this.authService) 
     }
 
 

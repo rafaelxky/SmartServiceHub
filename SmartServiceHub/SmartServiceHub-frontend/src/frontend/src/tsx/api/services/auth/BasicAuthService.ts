@@ -11,6 +11,6 @@ export class BasicAuthService implements AuthProvider{
     }
     async getAuthHeader(): Promise<string> {
         const encoded = btoa(this.username + ":" + this.password);
-        return "Basic" + encoded;
+        return "Basic " + encoded;
     }
 }

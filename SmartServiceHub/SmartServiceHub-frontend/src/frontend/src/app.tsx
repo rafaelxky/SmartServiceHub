@@ -10,7 +10,8 @@ import { BasicAuthService } from './tsx/api/services/auth/BasicAuthService';
 
 let authService = new BasicAuthService("admin", "admin123");
 let userService: UserService = new UserService("http://localhost:8080/users", authService);
-userService.getUserById(1);
+let user = await userService.getUserById(1);
+console.log("User: ", JSON.stringify(user, null, 2))
 
 const posts: Post[] = [
   { id: 1, title: 'First Post', content: 'This is the first post.', author: 'Alice', date: '2025-08-19' },

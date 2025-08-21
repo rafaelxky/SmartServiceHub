@@ -6,7 +6,7 @@ export async function request<T>(
   url: string,
   method: HttpMethod = "GET",
   body?: any,
-  authProvider?: AuthProvider
+  authProvider?: AuthProvider,
 ): Promise<T> {
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
@@ -32,8 +32,8 @@ export async function request<T>(
 }
 
 
-export async function get<T>(url: string): Promise<T> {
-  return request<T>(url, "GET");
+export async function get<T>(url: string, authHeader: AuthProvider): Promise<T> {
+  return request<T>(url, "GET", undefined ,authHeader);
 }
 
 export async function post<T>(url: string, body: any): Promise<T> {
