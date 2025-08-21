@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 @Controller
 public class HomeController {
 
+    @Autowired
     private RequestMappingHandlerMapping handlerMapping;
 
     @GetMapping("/home")
