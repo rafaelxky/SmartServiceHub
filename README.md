@@ -50,7 +50,7 @@ Currently this app allows CORS from all sources tough this can be changed at "/c
 Can be found under the folder "controllers" or listed at "http://localhost:8080/home"
 
 # User endpoints
-- /users POST <- creates a user, users are created like "{"username": "name", "email": "mail@mail.com", "password": "password123"}"
+- /users POST <- creates a user, users are created like '''JSON {"username": "name", "email": "mail@mail.com", "password": "password123"} '''
 - /users/{id} GET <- gets a public user by id 
 - /users GET <- requires admin loggin, gets a list of all users
 - /users/{id} PUT <- updates a user by id, requires you to be logged in as the user you are trying to update, syntax is similar to POST
