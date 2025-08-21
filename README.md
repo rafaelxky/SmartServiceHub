@@ -31,25 +31,23 @@ When the program is ran, it will automatically create an ADMIN user with the nam
 
 # Models
 ## User
-AppUser <- user model to interact with db 
-UserPublicDto <- user model for showing (hides password)
-UserCreateDto <- user model for creation
+- AppUser <- user model to interact with db 
+- UserPublicDto <- user model for showing (hides password)
+- UserCreateDto <- user model for creation
 ## AppService
-AppService <- Service post model to interact with db
-AppServicePublicDto <- Service post model for showing 
-AppServiceCreateDto <- Service post model from creation
+- AppService <- Service post model to interact with db
+- AppServicePublicDto <- Service post model for showing 
+- AppServiceCreateDto <- Service post model from creation
 ## Comments
-Comment <- comment model for interaction with db
-CommentCreateDto <- comment model for creation
-CommentPublicDto <- comment model for showing
+- Comment <- comment model for interaction with db
+- CommentCreateDto <- comment model for creation
+- CommentPublicDto <- comment model for showing
 ## Others
-ApiResponse <- model for responding to requests, however this must be changed in the future as it is a source of inconsistencies
-Roles <- Enum for roles "ADMIN, USER, MODERATOR"1
+- ApiResponse <- model for responding to requests, however this must be changed in the future as it is a source of inconsistencies
+- Roles <- Enum for roles "ADMIN, USER, MODERATOR"1
 
 ## CORS policy
 Currently this app allows CORS from all sources tough this can be changed at "/config/WebConfig.java"
-
-<abbr title="test hint">test</abbr>
 
 # Endpoints
 Can be found under the folder "controllers" or listed at "http://localhost:8080/home"
