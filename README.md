@@ -3,14 +3,14 @@ A full-stack Java + Preact service marketplace with AI-powered recommendations a
 You can create a service post to request a service and other users can comment and accept you proposal. 
 
 ## Dependencies 
-Java 21
-NodeJS
-npm
-Postgres
-Git (duh)
+- Java 21
+- NodeJS
+- npm
+- Postgres
+- Git (duh)
 
 ## Recomended
-Postman
+- Postman
 
 ## How to run
 1. install dependencies
@@ -48,6 +48,8 @@ Roles <- Enum for roles "ADMIN, USER, MODERATOR"1
 
 ## CORS policy
 Currently this app allows CORS from all sources tough this can be changed at "/config/WebConfig.java"
+
+<abbr title="test hint">test</abbr>
 
 # Endpoints
 Can be found under the folder "controllers" or listed at "http://localhost:8080/home"
