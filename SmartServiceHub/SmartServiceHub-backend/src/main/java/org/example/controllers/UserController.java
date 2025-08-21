@@ -38,15 +38,6 @@ public class UserController {
         return user.successResponse(savedUser);
     }
 
-    /*
-    @GetMapping("/name/{name}")
-    public ResponseEntity<String> getUserByName(@PathVariable String name){
-        return userDbService.getUserById(id)
-                .map(user -> ResponseEntity.ok(user.getUsername()))
-                .orElse(ResponseEntity.notFound().build());
-    }
-    */
-
     @GetMapping("/{id}")
     public ResponseEntity<UserPublicDto> getUser(@PathVariable Long id) {
         return userDbService.getUserById(id)
