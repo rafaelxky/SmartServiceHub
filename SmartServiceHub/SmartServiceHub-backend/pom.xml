@@ -97,7 +97,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>org.example.App</mainClass>
+                    <mainClass>org.example.SmartServiceHub</mainClass>
                 </configuration>
             </plugin>
             <plugin>
