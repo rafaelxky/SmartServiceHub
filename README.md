@@ -77,6 +77,30 @@ Can be found under the folder "controllers" or listed at "http://localhost:8080/
 
 ## Comments endpoints
 
+# Addons
+- this app provides extensability via Lua scripts
+- you can write you own scripts at /main/resources/lua altough this path will be changed in the future
+# Hooks / Events
+- your scripts can react to program events trough provided hooks
+- you can subscribe a function to an event like 
+```Lua
+register_event {
+    event = "eventName",
+    func = function()
+        ...
+    end
+}
+```
+## List of events
+### Startup
+- onAppStartup(null) 
+### Users
+- onUserCreate(AppUser)
+- onGetUserId(UserPublicDto)
+- onUpdateUserById(AppUser)
+- onDeleteUserById(null)
+- onGetUniqueUsers(List<UserPublicDto>)
+
 ### Implemented
 - User creation
 - Post creation
