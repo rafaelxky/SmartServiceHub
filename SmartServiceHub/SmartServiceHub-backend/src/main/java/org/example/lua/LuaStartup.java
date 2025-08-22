@@ -12,8 +12,7 @@ public class LuaStartup {
     public void init() {
         LuaModManager luaManager = LuaModManager.getInstance();
 
-        System.out.println("Lua init executed");
-        System.out.println("Lua load script started");
+        System.out.println("Lua init started");
 
         luaManager.runLuaScriptFromClasspath("lua/Main.lua");
         luaManager.triggerEvent("onAppStartup", new LuaTable());

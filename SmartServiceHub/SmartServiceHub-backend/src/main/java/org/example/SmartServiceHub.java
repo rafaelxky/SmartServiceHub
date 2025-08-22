@@ -12,9 +12,6 @@ public class SmartServiceHub {
     public static void main(String[] args) {
         System.out.println("Started");
 
-        LuaModManager luaManager = LuaModManager.getInstance();
-        luaManager.triggerEvent("onAppStartup", new LuaTable());
-
         SpringApplication.run(SmartServiceHub.class, args);
     }
 }
