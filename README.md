@@ -93,7 +93,9 @@ register_event {
 ```
 ## List of events
 ### Startup
-- onAppStartup(null) 
+- onAppStartup(null)
+### Home
+- onHomeAccessed(String)
 ### Users
 - onUserCreate(AppUser)
 - onGetUserId(UserPublicDto)
