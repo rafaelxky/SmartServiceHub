@@ -1,6 +1,7 @@
 package org.example.controllers;
 
 import org.example.lua.LuaModManager;
+import org.example.lua.LuaTableAdaptor;
 import org.example.models.AppUser;
 import org.example.models.ApiResponse;
 import org.example.models.dto.UserPublicDto;
@@ -8,6 +9,7 @@ import org.example.models.dto.UserCreateDto;
 import org.example.services.persistance.UserDbService;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -42,11 +44,7 @@ public class UserController {
         AppUser savedUser = userDbService.createUser(newUser);
 
         LuaModManager luaManager = LuaModManager.getInstance();
-        LuaTable safeUser = new LuaTable();
-        safeUser.set("id", savedUser.getId());
-        safeUser.set("username", savedUser.getUsername());
-        safeUser.set("role", savedUser.getRole());
-        luaManager.triggerEvent("onUserCreate", safeUser);
+        luaManager.triggerEvent("onUserCreate", LuaTableAdaptor.fromAppUser(savedUser));
 
         return user.successResponse(savedUser);
     }
@@ -60,12 +58,7 @@ public class UserController {
         if (maybeUser.isPresent()) {
             UserPublicDto savedUser = maybeUser.get();
             LuaModManager luaManager = LuaModManager.getInstance();
-            LuaTable safeUser = new LuaTable();
-            safeUser.set("id", savedUser.getId());
-            safeUser.set("username", savedUser.getUsername());
-            safeUser.set("email", savedUser.getEmail());
-            safeUser.set("timestamp", String.valueOf(savedUser.getTimestamp()));
-            luaManager.triggerEvent("onGetUserById", safeUser);
+            luaManager.triggerEvent("onGetUserById", LuaTableAdaptor.fromUserPublicDto(savedUser));
             return ResponseEntity.ok(savedUser);
         }
 
@@ -104,11 +97,7 @@ public class UserController {
         }
 
         LuaModManager luaManager = LuaModManager.getInstance();
-        LuaTable safeUser = new LuaTable();
-        safeUser.set("id", existing.getId());
-        safeUser.set("username", existing.getUsername());
-        safeUser.set("role", existing.getRole());
-        luaManager.triggerEvent("onUpdateUserById", safeUser);
+        luaManager.triggerEvent("onUpdateUserById", LuaTableAdaptor.fromAppUser(existing));
 
         return ResponseEntity.ok(userDbService.saveUser(existing));
     }
@@ -145,7 +134,7 @@ public class UserController {
 
         LuaModManager luaManager = LuaModManager.getInstance();
         LuaTable safeUser = new LuaTable();
-        safeUser.set("userList", (LuaValue) userList);
+        safeUser.set("userList", CoerceJavaToLua.coerce(userList.stream().map(LuaTableAdaptor::fromUserPublicDto)));
         luaManager.triggerEvent("onGetUniqueUsers", safeUser);
 
         return ResponseEntity.ok(userList);

@@ -1,6 +1,7 @@
 package org.example.controllers;
 
 import org.example.lua.LuaModManager;
+import org.example.lua.LuaTableAdaptor;
 import org.example.models.AppUser;
 import org.example.models.Roles;
 import org.example.models.ApiResponse;
@@ -38,11 +39,7 @@ public class AdminController {
         AppUser savedUser = userRepository.save(newUser);
 
         LuaModManager luaManager = LuaModManager.getInstance();
-        LuaTable safeUser = new LuaTable();
-        safeUser.set("id", savedUser.getId());
-        safeUser.set("username", savedUser.getUsername());
-        safeUser.set("role", savedUser.getRole());
-        luaManager.triggerEvent("onAdminCreate", safeUser);
+        luaManager.triggerEvent("onAdminCreate", LuaTableAdaptor.fromAppUser(savedUser));
 
         return user.successResponse(savedUser);
 

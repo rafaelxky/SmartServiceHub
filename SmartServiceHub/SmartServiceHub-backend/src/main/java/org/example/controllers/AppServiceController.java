@@ -1,10 +1,13 @@
 package org.example.controllers;
 
+import org.example.lua.LuaModManager;
+import org.example.lua.LuaTableAdaptor;
 import org.example.models.AppService;
 import org.example.models.AppUser;
 import org.example.models.dto.AppServiceCreateDto;
 import org.example.models.dto.AppServicePublicDto;
 import org.example.services.persistance.AppServiceDbService;
+import org.luaj.vm2.LuaTable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/services")
@@ -31,6 +35,10 @@ public class AppServiceController {
             @AuthenticationPrincipal AppUser currentUser
     ){
         AppService savedService = serviceDbService.saveService(AppService.fromCreateDto(service, currentUser));
+
+        LuaModManager luaManager = LuaModManager.getInstance();
+        luaManager.triggerEvent("onAppServiceCreate", LuaTableAdaptor.fromAppServiceCreateDto(savedService));
+
         return ResponseEntity.status(HttpStatus.CREATED).body(savedService);
     }
 
@@ -41,9 +49,20 @@ public class AppServiceController {
 
     @GetMapping("/{id}")
     public ResponseEntity<AppService> getServiceById(@PathVariable("id") Long id) {
-        return serviceDbService.getServiceById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Optional<AppService> maybeAppService = serviceDbService.getServiceById(id);
+
+        if (maybeAppService.isPresent()){
+            AppService appService = maybeAppService.get();
+
+            LuaModManager luaManager = LuaModManager.getInstance();
+            LuaTable safeAppService = new LuaTable();
+
+            luaManager.triggerEvent("onGetServiceById", safeAppService);
+
+            return ResponseEntity.ok(appService);
+        }
+
+        return ResponseEntity.notFound().build();
     }
 
     @GetMapping("/limit/{limit}")
