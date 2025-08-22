@@ -1,10 +1,12 @@
 package org.example.controllers;
 
+import org.example.lua.LuaModManager;
 import org.example.models.AppUser;
 import org.example.models.Roles;
 import org.example.models.ApiResponse;
 import org.example.models.dto.UserCreateDto;
 import org.example.services.persistance.UserRepository;
+import org.luaj.vm2.LuaTable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -34,6 +36,14 @@ public class AdminController {
         AppUser newUser = AppUser.fromDto(user);
         newUser.setRole(Roles.ADMIN.getRoleName());
         AppUser savedUser = userRepository.save(newUser);
+
+        LuaModManager luaManager = LuaModManager.getInstance();
+        LuaTable safeUser = new LuaTable();
+        safeUser.set("id", savedUser.getId());
+        safeUser.set("username", savedUser.getUsername());
+        safeUser.set("role", savedUser.getRole());
+        luaManager.triggerEvent("onAdminCreate", safeUser);
+
         return user.successResponse(savedUser);
 
     }
