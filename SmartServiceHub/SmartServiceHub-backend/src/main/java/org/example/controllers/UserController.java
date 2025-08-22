@@ -65,7 +65,7 @@ public class UserController {
             safeUser.set("username", savedUser.getUsername());
             safeUser.set("email", savedUser.getEmail());
             safeUser.set("timestamp", String.valueOf(savedUser.getTimestamp()));
-            luaManager.triggerEvent("onGetUserByID", safeUser);
+            luaManager.triggerEvent("onGetUserById", safeUser);
             return ResponseEntity.ok(savedUser);
         }
 
