@@ -101,6 +101,7 @@ register_event {
 - onDeleteUserById(null)
 - onGetUniqueUsers(List<UserPublicDto>)
 
+# Features
 ### Implemented
 - User creation
 - Post creation
