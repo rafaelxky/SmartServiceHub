@@ -15,9 +15,8 @@ public class LuaStartup {
         System.out.println("Lua init executed");
         System.out.println("Lua load script started");
 
-        // Load main Lua script (must be at src/main/resources/lua/Main.lua)
         luaManager.runLuaScriptFromClasspath("lua/Main.lua");
-        luaManager.triggerEvent("onHomeAccessed", new LuaTable());
+        luaManager.triggerEvent("onAppStartup", new LuaTable());
 
         System.out.println("Lua initialization complete");
     }
