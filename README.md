@@ -79,7 +79,7 @@ Can be found under the folder "controllers" or listed at "http://localhost:8080/
 
 # Addons
 - this app provides extensability via Lua scripts
-- you can write you own scripts at /main/resources/lua altough this path will be changed in the future
+- you can write you own scripts at SmartServiceHub/scripts
 ## Hooks / Events
 - your scripts can react to program events trough provided hooks
 - you can subscribe a function to an event like 
