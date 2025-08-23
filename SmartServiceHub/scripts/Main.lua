@@ -10,8 +10,8 @@ counter = 0
 register_event {
     event = "onHomeAccessed",
     func = function()
-        print("Home accessed - " .. counter)
         counter = counter + 1
+        print("Home accessed - " .. counter)
     end
 }
 
