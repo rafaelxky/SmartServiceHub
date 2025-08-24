@@ -1,6 +1,6 @@
 import "./ApiService"
-import { get } from "./ApiService";
-import type { User } from "../ApiDto";
+import { get, post } from "./ApiService";
+import type { User } from "../models/ApiDto";
 import type { AuthProvider } from "./auth/AuthInterface";
 
 export class UserService{
@@ -13,8 +13,8 @@ export class UserService{
         this.authService = authService; 
     }
 
-    async createUser() {
-
+    async createUser(user: User) {
+        return await post<User>(this.baseUrl, user); 
     }
 
     async getUserById(id: number){
@@ -24,6 +24,7 @@ export class UserService{
     async getUsers(){
         return await get<User>(this.baseUrl, this.authService) 
     }
+
 
 
     

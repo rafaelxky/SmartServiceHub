@@ -32,22 +32,22 @@ export async function request<T>(
 }
 
 
-export async function get<T>(url: string, authHeader: AuthProvider): Promise<T> {
+export async function get<T>(url: string, authHeader?: AuthProvider): Promise<T> {
   return request<T>(url, "GET", undefined ,authHeader);
 }
 
-export async function post<T>(url: string, body: any): Promise<T> {
-  return request<T>(url, "POST", body);
+export async function post<T>(url: string, body: any, authHeader?: AuthProvider): Promise<T> {
+  return request<T>(url, "POST", body, authHeader);
 }
 
-export async function put<T>(url: string, body: any): Promise<T> {
-  return request<T>(url, "PUT", body);
+export async function put<T>(url: string, body: any, authHeader?: AuthProvider): Promise<T> {
+  return request<T>(url, "PUT", body, authHeader);
 }
 
-export async function del<T>(url: string): Promise<T> {
-  return request<T>(url, "DELETE");
+export async function del<T>(url: string, authHeader?: AuthProvider): Promise<T> {
+  return request<T>(url, "DELETE", authHeader);
 }
 
-export async function patch<T>(url: string, body: any): Promise<T> {
-  return request<T>(url, "PATCH", body);
+export async function patch<T>(url: string, body: any, authHeader?: AuthProvider): Promise<T> {
+  return request<T>(url, "PATCH", body, authHeader);
 }

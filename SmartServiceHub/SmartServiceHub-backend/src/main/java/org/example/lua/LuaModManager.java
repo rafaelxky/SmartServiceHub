@@ -1,25 +1,52 @@
 package org.example.lua;
 
-import org.bytedeco.jnlua.LuaState;
-import org.bytedeco.jnlua.LuaStateFactory;
+import org.luaj.vm2.*;
+import org.luaj.vm2.lib.OneArgFunction;
+import org.luaj.vm2.lib.jse.JsePlatform;
 
-import java.io.File;
+import java.io.*;
 import java.nio.file.*;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class LuaModManager {
 
     private static LuaModManager instance;
 
-    private final LuaState lua;
-    private final Map<String, Map<String, List<Integer>>> scriptEventHooks = new ConcurrentHashMap<>();
+    private final Globals globals;
+    private final Map<String, Map<String, List<LuaFunction>>> scriptEventHooks = new HashMap<>();
+
+    private final String SCRIPTS_PATH = LuaStartup.SCRIPTS_PATH;
 
     private LuaModManager() {
-        lua = LuaStateFactory.newLuaState();
-        lua.openLibs(); // load standard Lua libraries including C modules
+        globals = JsePlatform.standardGlobals();
 
-        instance = this;
+        globals.set("register_event", new OneArgFunction() {
+            @Override
+            public LuaValue call(LuaValue arg) {
+                LuaTable table = arg.checktable();
+                String eventName = table.get("event").checkjstring();
+                LuaFunction func = table.get("func").checkfunction();
+
+                String currentScript = globals.get("CURRENT_SCRIPT").isstring() ?
+                        globals.get("CURRENT_SCRIPT").tojstring() : "unknown";
+
+                scriptEventHooks
+                        .computeIfAbsent(currentScript, k -> new HashMap<>())
+                        .computeIfAbsent(eventName, k -> new ArrayList<>())
+                        .add(func);
+                return LuaValue.NIL;
+            }
+        });
+
+
+        globals.set("reload", new OneArgFunction() {
+            @Override
+            public LuaValue call(LuaValue arg) {
+                String file = arg.checkjstring();
+                runLuaScriptFromFile(SCRIPTS_PATH + "/" + file);
+                return LuaValue.NIL;
+            }
+        });
     }
 
     public static LuaModManager getInstance() {
@@ -27,18 +54,13 @@ public class LuaModManager {
         return instance;
     }
 
-    public LuaState getLuaState() {
-        return lua;
-    }
-
     public void runLuaScriptFromFile(String filePath) {
-        try {
-            // clear previous hooks for this script
+        try (FileReader reader = new FileReader(filePath)) {
             scriptEventHooks.remove(filePath);
 
-            // load and execute Lua file
-            lua.LdoFile(filePath);
+            globals.set("CURRENT_SCRIPT", LuaValue.valueOf(filePath));
 
+            globals.load(reader, filePath).call();
             System.out.println("Lua script loaded: " + filePath);
         } catch (Exception e) {
             System.err.println("Failed to load Lua script: " + filePath + " : " + e.getMessage());
@@ -57,34 +79,26 @@ public class LuaModManager {
         }
     }
 
-    public void triggerEvent(String eventName, Map<String, Object> data) {
-        for (Map.Entry<String, Map<String, List<Integer>>> scriptEntry : scriptEventHooks.entrySet()) {
-            Map<String, List<Integer>> hooks = scriptEntry.getValue();
-            List<Integer> funcRefs = hooks.get(eventName);
-            if (funcRefs != null) {
-                for (Integer ref : funcRefs) {
-                    lua.rawGet(LuaState.REGISTRYINDEX, ref); // push Lua function
-                    if (data != null) {
-                        pushMapAsLuaTable(lua, data); // push argument table
-                        lua.call(1, 0);
-                    } else {
-                        lua.call(0, 0);
+    public void triggerEvent(String eventName, LuaTable data) {
+        for (Map.Entry<String, Map<String, List<LuaFunction>>> scriptEntry : scriptEventHooks.entrySet()) {
+            Map<String, List<LuaFunction>> hooks = scriptEntry.getValue();
+            List<LuaFunction> funcs = hooks.get(eventName);
+            if (funcs != null) {
+                for (LuaFunction func : funcs) {
+                    try {
+                        func.call(data != null ? data : LuaValue.NIL);
+                    } catch (LuaError e) {
+                        System.err.println("Lua script error in event '" + eventName + "' (" + scriptEntry.getKey() + "): " + e.getMessage());
                     }
                 }
             }
         }
     }
 
-    private void pushMapAsLuaTable(LuaState lua, Map<String, Object> map) {
-        lua.newTable();
-        map.forEach((key, value) -> {
-            lua.pushString(key);
-            if (value instanceof Number) lua.pushNumber(((Number) value).doubleValue());
-            else if (value instanceof Boolean) lua.pushBoolean((Boolean) value);
-            else lua.pushString(value.toString());
-            lua.setTable(-3);
-        });
+    public Globals getGlobals() {
+        return globals;
     }
+
 
     public void watchLuaFolder(String folderPath) {
         new Thread(() -> {

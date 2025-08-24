@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import Header from './components/Header';
 import Posts from './components/Posts';
-import type { Post } from './tsx/models';
+import type { Post } from './tsx/api/models/models';
 import './styles/debug.css'
 import './styles/styles.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
