@@ -56,4 +56,11 @@ public class HomeController {
 
         return endpoints;
     }
+
+    @GetMapping("/status")
+    @ResponseBody
+    public String getServerStatus(){
+        return "up";
+    }
+
 }
