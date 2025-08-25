@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import Header from './components/Header';
 import Posts from './components/Posts';
-import type { Post } from './tsx/api/models/ApiDto';
+import type { ServicePost } from './tsx/api/models/ApiDto';
 import './styles/debug.css'
 import './styles/styles.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -13,7 +13,7 @@ let userService: UserService = new UserService("http://localhost:8080/users", au
 let user = await userService.getUserById(1);
 console.log("User: ", JSON.stringify(user, null, 2))
 
-const posts: Post[] = [
+const posts: ServicePost[] = [
   { id: 1, title: 'First Post', content: 'This is the first post.', creatorId: 1, creationTime: '2025-08-19' },
   { id: 2, title: 'Second Post', content: 'This is another post.', creatorId: 1, creationTime: '2025-08-18' },
 ];

@@ -1,18 +1,18 @@
 package org.example.lua;
 
-import org.example.models.AppService;
+import org.example.models.ServicePost;
 import org.example.models.AppUser;
 import org.example.models.dto.UserPublicDto;
 import org.luaj.vm2.LuaTable;
 
 public class LuaTableAdaptor {
-    public static LuaTable fromAppServiceCreateDto(AppService appService){
+    public static LuaTable fromAppServiceCreateDto(ServicePost servicePost){
         LuaTable safeAppService = new LuaTable();
-        safeAppService.set("id", appService.getId());
-        safeAppService.set("title", appService.getTitle());
-        safeAppService.set("content", appService.getContent());
-        safeAppService.set("userId", appService.getCreatorId());
-        safeAppService.set("timestamp", String.valueOf(appService.getTimestamp()));
+        safeAppService.set("id", servicePost.getId());
+        safeAppService.set("title", servicePost.getTitle());
+        safeAppService.set("content", servicePost.getContent());
+        safeAppService.set("userId", servicePost.getCreatorId());
+        safeAppService.set("timestamp", String.valueOf(servicePost.getTimestamp()));
         return safeAppService;
     }
 

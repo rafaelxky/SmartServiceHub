@@ -3,7 +3,7 @@ package org.example.models.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import org.example.models.AppService;
+import org.example.models.ServicePost;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -19,13 +19,13 @@ public class AppServicePublicDto {
     public Long creatorId;
     public LocalDateTime timestamp;
 
-    public static AppServicePublicDto fromAppService(AppService appService){
-        return new AppServicePublicDto(appService.getId(), appService.getTitle(), appService.getContent(), appService.getCreatorId(), appService.getTimestamp());
+    public static AppServicePublicDto fromAppService(ServicePost servicePost){
+        return new AppServicePublicDto(servicePost.getId(), servicePost.getTitle(), servicePost.getContent(), servicePost.getCreatorId(), servicePost.getTimestamp());
     }
 
-    public static List<AppServicePublicDto> fromAppServiceList(List<AppService> appService) {
+    public static List<AppServicePublicDto> fromAppServiceList(List<ServicePost> servicePost) {
         List<AppServicePublicDto> appServiceList = new ArrayList<>();
-        for (AppService service : appService){
+        for (ServicePost service : servicePost){
             appServiceList.add(AppServicePublicDto.fromAppService(service));
         }
         return appServiceList;

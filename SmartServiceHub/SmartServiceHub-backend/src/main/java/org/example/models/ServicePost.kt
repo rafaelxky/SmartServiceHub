@@ -8,7 +8,6 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.example.models.dto.AppServiceCreateDto
-import org.example.models.dto.UserCreateDto
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import java.io.Serializable
@@ -17,7 +16,7 @@ import java.time.LocalDateTime
 @Entity
 @Table(name = "services")
 @EntityListeners(AuditingEntityListener::class)
-class AppService(
+class ServicePost(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
@@ -39,8 +38,8 @@ class AppService(
 
     companion object {
         @JvmStatic
-        fun fromCreateDto(appServiceCreateDto: AppServiceCreateDto, user: AppUser): AppService{
-            return AppService(null, appServiceCreateDto.title, appServiceCreateDto.content, user.id)
+        fun fromCreateDto(appServiceCreateDto: AppServiceCreateDto, user: AppUser): ServicePost{
+            return ServicePost(null, appServiceCreateDto.title, appServiceCreateDto.content, user.id)
         }
     }
 }

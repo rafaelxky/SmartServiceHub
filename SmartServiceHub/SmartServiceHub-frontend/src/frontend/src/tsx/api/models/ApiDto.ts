@@ -1,5 +1,5 @@
 // AppService
-export interface Post{
+export interface ServicePost{
     id: number;
     title: string;
     content: string;

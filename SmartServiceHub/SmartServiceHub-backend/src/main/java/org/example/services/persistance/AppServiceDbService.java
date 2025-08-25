@@ -1,8 +1,7 @@
 package org.example.services.persistance;
 
 
-import org.example.models.AppService;
-import org.example.models.Comment;
+import org.example.models.ServicePost;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -18,15 +17,15 @@ public class AppServiceDbService {
         this.serviceRepository = serviceRepository;
     }
 
-    public AppService saveService(AppService service) {
+    public ServicePost saveService(ServicePost service) {
         return serviceRepository.save(service);
     }
 
-    public Optional<AppService> getServiceById(Long id) {
+    public Optional<ServicePost> getServiceById(Long id) {
         return serviceRepository.findById(id);
     }
 
-    public List<AppService> getAllServices() {
+    public List<ServicePost> getAllServices() {
         return serviceRepository.findAll();
     }
 
@@ -34,11 +33,11 @@ public class AppServiceDbService {
         serviceRepository.deleteById(id);
     }
 
-    public List<AppService> getServiceWithLimit(int limit){
+    public List<ServicePost> getServiceWithLimit(int limit){
         return serviceRepository.findAll(PageRequest.of(0, limit)).getContent();
     }
 
-    public List<AppService> getServicePostUnique(int limit, int offset){
+    public List<ServicePost> getServicePostUnique(int limit, int offset){
         return serviceRepository.findUniqueServicePost(limit, offset);
     }
 }

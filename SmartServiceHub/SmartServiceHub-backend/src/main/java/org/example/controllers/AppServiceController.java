@@ -2,7 +2,7 @@ package org.example.controllers;
 
 import org.example.lua.LuaModManager;
 import org.example.lua.LuaTableAdaptor;
-import org.example.models.AppService;
+import org.example.models.ServicePost;
 import org.example.models.AppUser;
 import org.example.models.dto.AppServiceCreateDto;
 import org.example.models.dto.AppServicePublicDto;
@@ -30,11 +30,11 @@ public class AppServiceController {
 
     @PostMapping
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<AppService> createService(
+    public ResponseEntity<ServicePost> createService(
             @RequestBody AppServiceCreateDto service,
             @AuthenticationPrincipal AppUser currentUser
     ){
-        AppService savedService = serviceDbService.saveService(AppService.fromCreateDto(service, currentUser));
+        ServicePost savedService = serviceDbService.saveService(ServicePost.fromCreateDto(service, currentUser));
 
         LuaModManager luaManager = LuaModManager.getInstance();
         luaManager.triggerEvent("onAppServiceCreate", LuaTableAdaptor.fromAppServiceCreateDto(savedService));
@@ -43,44 +43,44 @@ public class AppServiceController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AppService>> getAllServices() {
+    public ResponseEntity<List<ServicePost>> getAllServices() {
         return ResponseEntity.ok(serviceDbService.getAllServices());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AppService> getServiceById(@PathVariable("id") Long id) {
-        Optional<AppService> maybeAppService = serviceDbService.getServiceById(id);
+    public ResponseEntity<ServicePost> getServiceById(@PathVariable("id") Long id) {
+        Optional<ServicePost> maybeAppService = serviceDbService.getServiceById(id);
 
         if (maybeAppService.isPresent()){
-            AppService appService = maybeAppService.get();
+            ServicePost servicePost = maybeAppService.get();
 
             LuaModManager luaManager = LuaModManager.getInstance();
             LuaTable safeAppService = new LuaTable();
 
             luaManager.triggerEvent("onGetServiceById", safeAppService);
 
-            return ResponseEntity.ok(appService);
+            return ResponseEntity.ok(servicePost);
         }
 
         return ResponseEntity.notFound().build();
     }
 
     @GetMapping("/limit/{limit}")
-    public ResponseEntity<List<AppService>> getServiceWithLimit(@PathVariable("limit") Integer limit) {
+    public ResponseEntity<List<ServicePost>> getServiceWithLimit(@PathVariable("limit") Integer limit) {
         return ResponseEntity.ok(serviceDbService.getServiceWithLimit(limit));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AppService> updateService(
+    public ResponseEntity<ServicePost> updateService(
             @PathVariable Long id,
-            @RequestBody AppService serviceUpdate,
+            @RequestBody ServicePost serviceUpdate,
             @AuthenticationPrincipal AppUser currentUser
     ) {
         if (currentUser == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        AppService existing = serviceDbService.getServiceById(id)
+        ServicePost existing = serviceDbService.getServiceById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         if (!currentUser.getId().equals(existing.getCreatorId())) {
@@ -102,7 +102,7 @@ public class AppServiceController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        AppService service = serviceDbService.getServiceById(id)
+        ServicePost service = serviceDbService.getServiceById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         if (!currentUser.getId().equals(service.getCreatorId())) {
