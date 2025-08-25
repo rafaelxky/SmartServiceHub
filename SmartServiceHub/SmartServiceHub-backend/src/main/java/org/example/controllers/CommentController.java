@@ -62,7 +62,7 @@ public class CommentController {
         Comment existing = commentDbService.getCommentById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        if (!currentUser.getId().equals(existing.getUserId())) {
+        if (!currentUser.getId().equals(existing.getCreatorId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
@@ -83,7 +83,7 @@ public class CommentController {
         Comment existing = commentDbService.getCommentById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        if (!currentUser.getId().equals(existing.getUserId())) {
+        if (!currentUser.getId().equals(existing.getCreatorId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 

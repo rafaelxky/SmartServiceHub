@@ -13,13 +13,13 @@ import java.util.Optional;
 @Getter
 @AllArgsConstructor
 public class CommentPublicDto {
-    public Long Id;
+    public Long id;
     public String content;
     public Long postId;
     public Long userId;
     public LocalDateTime timestamp;
 
     public static CommentPublicDto fromComment(Comment comment) {
-        return new CommentPublicDto(comment.getId(), comment.getContent(), comment.getPostId(), comment.getUserId(), comment.getTimestamp());
+        return new CommentPublicDto(comment.getId(), comment.getContent(), comment.getPostId(), comment.getCreatorId(), comment.getTimestamp());
     }
 }

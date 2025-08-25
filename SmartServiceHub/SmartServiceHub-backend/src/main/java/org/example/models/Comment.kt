@@ -27,7 +27,7 @@ class Comment(
     var postId: Long? = null,
 
     @Column(nullable = false)
-    var userId: Long? = null,
+    var creatorId: Long? = null,
 
     @Column(nullable = false, updatable = false)
     @CreatedDate
