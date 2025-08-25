@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @AllArgsConstructor
-public class AppServiceCreateDto {
+public class ServicePostCreateDto {
     public String title;
     public String content;
 }

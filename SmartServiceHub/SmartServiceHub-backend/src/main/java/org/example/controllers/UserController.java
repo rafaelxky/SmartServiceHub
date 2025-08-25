@@ -50,7 +50,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserPublicDto> getUser(@PathVariable Long id) {
+    public ResponseEntity<UserPublicDto> getUserByID(@PathVariable Long id) {
 
         Optional<UserPublicDto> maybeUser = userDbService.getUserById(id)
                 .map(UserPublicDto::fromAppUser);

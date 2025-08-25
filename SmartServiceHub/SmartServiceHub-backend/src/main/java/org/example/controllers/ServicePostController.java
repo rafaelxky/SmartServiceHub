@@ -4,8 +4,8 @@ import org.example.lua.LuaModManager;
 import org.example.lua.LuaTableAdaptor;
 import org.example.models.ServicePost;
 import org.example.models.AppUser;
-import org.example.models.dto.AppServiceCreateDto;
-import org.example.models.dto.AppServicePublicDto;
+import org.example.models.dto.ServicePostCreateDto;
+import org.example.models.dto.ServicePostPublicDto;
 import org.example.services.persistance.AppServiceDbService;
 import org.luaj.vm2.LuaTable;
 import org.springframework.http.HttpStatus;
@@ -20,18 +20,18 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/services")
-public class AppServiceController {
+public class ServicePostController {
 
     private final AppServiceDbService serviceDbService;
 
-    public AppServiceController(AppServiceDbService serviceDbService) {
+    public ServicePostController(AppServiceDbService serviceDbService) {
         this.serviceDbService = serviceDbService;
     }
 
     @PostMapping
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ServicePost> createService(
-            @RequestBody AppServiceCreateDto service,
+            @RequestBody ServicePostCreateDto service,
             @AuthenticationPrincipal AppUser currentUser
     ){
         ServicePost savedService = serviceDbService.saveService(ServicePost.fromCreateDto(service, currentUser));
@@ -114,10 +114,10 @@ public class AppServiceController {
     }
 
     @GetMapping("/unique")
-    public ResponseEntity<List<AppServicePublicDto>> getUniqueServicePost(
+    public ResponseEntity<List<ServicePostPublicDto>> getUniqueServicePost(
             @RequestParam int limit,
             @RequestParam int offset
     ){
-        return ResponseEntity.ok(AppServicePublicDto.fromAppServiceList(serviceDbService.getServicePostUnique(limit, (offset * limit))));
+        return ResponseEntity.ok(ServicePostPublicDto.fromAppServiceList(serviceDbService.getServicePostUnique(limit, (offset * limit))));
     }
 }
