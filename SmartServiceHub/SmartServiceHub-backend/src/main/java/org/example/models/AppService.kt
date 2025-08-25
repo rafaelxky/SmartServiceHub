@@ -29,7 +29,7 @@ class AppService(
     var content: String = "",
 
     @Column(nullable = false)
-    var userId: Long? = null,
+    var creatorId: Long? = null,
 
     @Column(nullable = false, updatable = false)
     @CreatedDate

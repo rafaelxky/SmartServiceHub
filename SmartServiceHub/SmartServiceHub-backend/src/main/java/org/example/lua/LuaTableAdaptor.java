@@ -11,7 +11,7 @@ public class LuaTableAdaptor {
         safeAppService.set("id", appService.getId());
         safeAppService.set("title", appService.getTitle());
         safeAppService.set("content", appService.getContent());
-        safeAppService.set("userId", appService.getUserId());
+        safeAppService.set("userId", appService.getCreatorId());
         safeAppService.set("timestamp", String.valueOf(appService.getTimestamp()));
         return safeAppService;
     }

@@ -83,7 +83,7 @@ public class AppServiceController {
         AppService existing = serviceDbService.getServiceById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        if (!currentUser.getId().equals(existing.getUserId())) {
+        if (!currentUser.getId().equals(existing.getCreatorId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
@@ -105,7 +105,7 @@ public class AppServiceController {
         AppService service = serviceDbService.getServiceById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        if (!currentUser.getId().equals(service.getUserId())) {
+        if (!currentUser.getId().equals(service.getCreatorId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 

@@ -1,3 +1,4 @@
+// AppService
 export interface Post{
     id: number;
     title: string;
@@ -6,6 +7,7 @@ export interface Post{
     creationTime: string;
 }
 
+// AppUser
 export interface User{
   id: number;
   name: string;
@@ -13,6 +15,7 @@ export interface User{
   creationDate: string;
 }
 
+// Comment
 export interface Comment{
   id: number;
   content: string;

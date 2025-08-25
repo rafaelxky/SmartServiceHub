@@ -16,11 +16,11 @@ public class AppServicePublicDto {
     public Long id;
     public String title;
     public String content;
-    public Long userId;
+    public Long creatorId;
     public LocalDateTime timestamp;
 
     public static AppServicePublicDto fromAppService(AppService appService){
-        return new AppServicePublicDto(appService.getId(), appService.getTitle(), appService.getContent(), appService.getUserId(), appService.getTimestamp());
+        return new AppServicePublicDto(appService.getId(), appService.getTitle(), appService.getContent(), appService.getCreatorId(), appService.getTimestamp());
     }
 
     public static List<AppServicePublicDto> fromAppServiceList(List<AppService> appService) {
