@@ -1,18 +1,25 @@
 package org.example.controllers;
 
+import java.util.List;
+
+import org.example.lua.LuaModManager;
 import org.example.models.AppUser;
-import org.example.models.Comment;
 import org.example.models.dto.CommentCreateDto;
 import org.example.models.dto.CommentPublicDto;
 import org.example.services.persistance.CommentDbService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/comments")
@@ -35,16 +42,26 @@ public class CommentController {
         }
 
         Comment savedComment = commentDbService.saveComment(Comment.formCreateDto(comment, currentUser));
+
+        LuaModManager luaManager = LuaModManager.getInstance();
+        luaManager.triggerEvent("onCreateComment", null);
+        
         return ResponseEntity.status(HttpStatus.CREATED).body(savedComment);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CommentPublicDto> getComment(@PathVariable Long id) {
-        return ResponseEntity.ok(CommentPublicDto.fromComment(commentDbService.getCommentById(id).orElseThrow(() ->
+        CommentPublicDto comment = CommentPublicDto.fromComment(commentDbService.getCommentById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND))
-        ));
+        )
+
+        LuaModManager luaManager = LuaModManager.getInstance();
+        luaManager.triggerEvent("onGetCommentById", null);
+
+        return ResponseEntity.ok(comment);
     }
 
+    // remove probab
     @GetMapping
     public List<Comment> getAllComments() {
         return commentDbService.getAllComments();
@@ -69,6 +86,11 @@ public class CommentController {
 
         existing.setContent(commentUpdate.getContent());
 
+        LuaModManager luaManager = LuaModManager.getInstance();
+        luaManager.triggerEvent("onUpdateComment", null);
+
+
+
         return ResponseEntity.ok(commentDbService.saveComment(existing));
     }
 
@@ -89,6 +111,10 @@ public class CommentController {
         }
 
         commentDbService.deleteCommentById(id);
+
+        LuaModManager luaManager = LuaModManager.getInstance();
+        luaManager.triggerEvent("onDeleteCommentById", null);
+
         return ResponseEntity.noContent().build();
     }
 
@@ -97,6 +123,10 @@ public class CommentController {
             @PathVariable Long post_id
     ){
         commentDbService.getCommentsFromPost(post_id);
+
+        LuaModManager luaManager = LuaModManager.getInstance();
+        luaManager.triggerEvent("onGetCommentsFromPost", null);
+
         return null;
     }
 
@@ -106,6 +136,10 @@ public class CommentController {
         @RequestParam int offset,
         @RequestParam long post_id
     ){
+
+        LuaModManager luaManager = LuaModManager.getInstance();
+        luaManager.triggerEvent("onGetUniqueComments", null);
+
         return ResponseEntity.ok(commentDbService.getCommentUnique(limit, (offset * limit), post_id));
     }
 }
