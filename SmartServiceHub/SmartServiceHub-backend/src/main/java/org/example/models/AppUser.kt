@@ -50,7 +50,6 @@ class AppUser(
 
     override fun getUsername(): String = username
 
-    @JsonIgnore
     override fun getPassword(): String = password
 
     @JsonIgnore

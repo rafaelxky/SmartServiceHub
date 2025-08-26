@@ -19,7 +19,7 @@ public class UserPublicDto {
     public LocalDateTime timestamp;
 
     public static UserPublicDto fromAppUser(AppUser appUser){
-        return new UserPublicDto(appUser.getId(), appUser.getEmail(),appUser.getUsername(), appUser.getTimestamp());
+        return new UserPublicDto(appUser.getId(), appUser.getUsername() ,appUser.getEmail(), appUser.getTimestamp());
     }
 
     public static List<UserPublicDto> fromAppUserList(List<AppUser> userList){
