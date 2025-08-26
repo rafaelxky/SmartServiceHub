@@ -22,6 +22,8 @@ register_event {
     end
 }
 
+print(Network:httpGet("http://localhost:8080/home"))
+
 
 
 

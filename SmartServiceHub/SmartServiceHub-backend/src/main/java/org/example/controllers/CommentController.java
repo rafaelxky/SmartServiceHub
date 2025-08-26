@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.example.lua.LuaModManager;
 import org.example.models.AppUser;
+import org.example.models.Comment;
 import org.example.models.dto.CommentCreateDto;
 import org.example.models.dto.CommentPublicDto;
 import org.example.services.persistance.CommentDbService;
@@ -53,7 +54,7 @@ public class CommentController {
     public ResponseEntity<CommentPublicDto> getComment(@PathVariable Long id) {
         CommentPublicDto comment = CommentPublicDto.fromComment(commentDbService.getCommentById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND))
-        )
+        );
 
         LuaModManager luaManager = LuaModManager.getInstance();
         luaManager.triggerEvent("onGetCommentById", null);
