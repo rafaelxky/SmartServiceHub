@@ -12,6 +12,7 @@ register_event {
     func = function()
         counter = counter + 1
         print("Home accessed - " .. counter)
+        print(Network:httpGet("https://zenquotes.io/api/random"))
     end
 }
 
@@ -21,9 +22,5 @@ register_event {
         print("app startup ---------------------------------------------------------------------------------------------------")
     end
 }
-
-print(Network:httpGet("http://localhost:8080/home"))
-
-
 
 

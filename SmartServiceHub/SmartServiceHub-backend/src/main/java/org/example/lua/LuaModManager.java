@@ -1,10 +1,14 @@
 package org.example.lua;
 
+import org.example.services.persistance.AppServiceDbService;
+import org.example.services.persistance.CommentDbService;
+import org.example.services.persistance.UserDbService;
 import org.example.utils.Network;
 import org.luaj.vm2.*;
 import org.luaj.vm2.lib.OneArgFunction;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.*;
 import java.nio.file.*;
@@ -12,6 +16,13 @@ import java.util.*;
 
 // Manages Lua event hooks using an observer pattern; supports hot reloading Lua scripts.
 public class LuaModManager {
+
+    @Autowired
+    private AppServiceDbService appServiceDbService;
+    @Autowired
+    private CommentDbService commentDbService;
+    @Autowired
+    private UserDbService userDbService;
 
     private static LuaModManager instance;
 
@@ -60,6 +71,9 @@ public class LuaModManager {
         var modManager = LuaModManager.getInstance();
         var globals = modManager.getGlobals();
         globals.set("Network", CoerceJavaToLua.coerce(Network.class));
+        globals.set("ServicePostDbService", CoerceJavaToLua.coerce(appServiceDbService));
+        globals.set("CommentDbService", CoerceJavaToLua.coerce(commentDbService));
+        globals.set("UserDbService", CoerceJavaToLua.coerce(userDbService));
     }
 
     public static LuaModManager getInstance() {
