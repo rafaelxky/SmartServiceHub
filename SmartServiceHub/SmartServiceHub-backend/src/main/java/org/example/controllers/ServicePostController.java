@@ -21,6 +21,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/services")
 public class ServicePostController {
+    // todo: pass the proper tables to lua
 
     private final AppServiceDbService serviceDbService;
 

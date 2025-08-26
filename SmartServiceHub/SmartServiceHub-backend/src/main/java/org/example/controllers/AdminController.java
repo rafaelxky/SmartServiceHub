@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/admin")
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
+    // todo: pass the proper tables to lua
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;

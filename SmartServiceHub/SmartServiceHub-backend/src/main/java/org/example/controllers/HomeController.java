@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 @Controller
 public class HomeController {
+// todo: pass the correct data to lua tables
 
     @Autowired
     private RequestMappingHandlerMapping handlerMapping;

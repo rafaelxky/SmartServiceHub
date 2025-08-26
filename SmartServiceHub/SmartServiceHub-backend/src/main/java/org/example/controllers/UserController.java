@@ -25,6 +25,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/users")
 public class UserController {
+    // todo: pass the proper tables to lua
 
     private final UserDbService userDbService;
     private final PasswordEncoder passwordEncoder;
