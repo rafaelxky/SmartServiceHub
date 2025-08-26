@@ -53,6 +53,10 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Confirmation phrase required: DELETE_ALL_USERS. (...?confirm=DELETE_ALL_USERS)");
         }
         userRepository.deleteAll();
+
+        LuaModManager luaManager = LuaModManager.getInstance();
+        luaManager.triggerEvent("onDeleteAllUsers", null);
+
         return ResponseEntity.status(HttpStatus.OK).body("All users have been deleted");
     }
 
@@ -64,6 +68,10 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Confirmation phrase required: DELETE_ALL_COMMENTS. (...?confirm=DELETE_ALL_COMMENTS)");
         }
         userRepository.deleteAll();
+
+        LuaModManager luaManager = LuaModManager.getInstance();
+        luaManager.triggerEvent("onDeleteAllComments", null);
+
         return ResponseEntity.status(HttpStatus.OK).body("All comments have been deleted");
     }
 
@@ -75,6 +83,10 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Confirmation phrase required: DELETE_ALL_POSTS. (...?confirm=DELETE_ALL_POSTS)");
         }
         userRepository.deleteAll();
+
+        LuaModManager luaManager = LuaModManager.getInstance();
+        luaManager.triggerEvent("onDeleteAllPosts", null);
+
         return ResponseEntity.status(HttpStatus.OK).body("All posts have been deleted");
     }
 }
