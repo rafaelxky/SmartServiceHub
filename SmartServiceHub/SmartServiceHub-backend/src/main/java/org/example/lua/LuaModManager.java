@@ -8,7 +8,7 @@ import java.io.*;
 import java.nio.file.*;
 import java.util.*;
 
-// Uses an observer pattern to register and trigger events that are loaded from lua files
+// Manages Lua event hooks using an observer pattern; supports hot reloading Lua scripts.
 public class LuaModManager {
 
     private static LuaModManager instance;
@@ -29,6 +29,8 @@ public class LuaModManager {
                 String eventName = table.get("event").checkjstring();
                 LuaFunction func = table.get("func").checkfunction();
 
+
+                // Determine which Lua script is currently registering the event
                 String currentScript = globals.get("CURRENT_SCRIPT").isstring() ?
                         globals.get("CURRENT_SCRIPT").tojstring() : "unknown";
 
@@ -101,7 +103,7 @@ public class LuaModManager {
         return globals;
     }
 
-    // watches for updates to lua files, reloads events on update
+    // Watches Lua folder and hot-reloads scripts on changes
     public void watchLuaFolder(String folderPath) {
         new Thread(() -> {
             try {
