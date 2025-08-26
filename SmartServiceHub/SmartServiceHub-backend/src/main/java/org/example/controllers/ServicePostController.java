@@ -42,6 +42,8 @@ public class ServicePostController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedService);
     }
 
+    // this one should probably be deleted too
+    // nah later
     @GetMapping
     public ResponseEntity<List<ServicePost>> getAllServices() {
         return ResponseEntity.ok(serviceDbService.getAllServices());
@@ -56,7 +58,6 @@ public class ServicePostController {
 
             LuaModManager luaManager = LuaModManager.getInstance();
             LuaTable safeAppService = new LuaTable();
-
             luaManager.triggerEvent("onGetServiceById", safeAppService);
 
             return ResponseEntity.ok(servicePost);
@@ -85,7 +86,12 @@ public class ServicePostController {
         existing.setTitle(serviceUpdate.getTitle());
         existing.setContent(serviceUpdate.getContent());
 
-        return ResponseEntity.ok(serviceDbService.saveService(existing));
+        ServicePost updatedPost = serviceDbService.saveService(existing);
+
+        LuaModManager luaManager = LuaModManager.getInstance();
+        luaManager.triggerEvent("onUpdateService", LuaTableAdaptor.fromServicePost(updatedPost));
+
+        return ResponseEntity.ok(updatedPost);
     }
 
     @DeleteMapping("/{id}")
@@ -105,6 +111,10 @@ public class ServicePostController {
         }
 
         serviceDbService.deleteServiceById(id);
+
+        LuaModManager luaManager = LuaModManager.getInstance();
+        luaManager.triggerEvent("onDeleteServicePostById", null);
+
         return ResponseEntity.noContent().build();
     }
 
@@ -113,6 +123,10 @@ public class ServicePostController {
             @RequestParam int limit,
             @RequestParam int offset
     ){
+
+        LuaModManager luaManager = LuaModManager.getInstance();
+        luaManager.triggerEvent("onGetUniqueServicePost", null);
+
         return ResponseEntity.ok(ServicePostPublicDto.fromAppServiceList(serviceDbService.getServicePostUnique(limit, (offset * limit))));
     }
 }

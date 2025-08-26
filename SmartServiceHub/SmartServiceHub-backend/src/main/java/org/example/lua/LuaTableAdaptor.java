@@ -11,7 +11,7 @@ public class LuaTableAdaptor {
         safeAppService.set("id", servicePost.getId());
         safeAppService.set("title", servicePost.getTitle());
         safeAppService.set("content", servicePost.getContent());
-        safeAppService.set("userId", servicePost.getCreatorId());
+        safeAppService.set("creatorId", servicePost.getCreatorId());
         safeAppService.set("timestamp", String.valueOf(servicePost.getTimestamp()));
         return safeAppService;
     }
@@ -31,5 +31,15 @@ public class LuaTableAdaptor {
         safeUser.set("email", savedUser.getEmail());
         safeUser.set("timestamp", String.valueOf(savedUser.getTimestamp()));
         return safeUser;
+    }
+
+    public static LuaTable fromServicePost(ServicePost servicePost) {
+        LuaTable safeServicePost = new LuaTable();
+        safeServicePost.set("id", servicePost.getId());
+        safeServicePost.set("title", servicePost.getTitle());
+        safeServicePost.set("content", servicePost.getContent());
+        safeServicePost.set("creatorId", servicePost.getCreatorId());
+        safeServicePost.set("timestamp", String.valueOf(servicePost.getTimestamp()));
+        return safeServicePost;
     }
 }

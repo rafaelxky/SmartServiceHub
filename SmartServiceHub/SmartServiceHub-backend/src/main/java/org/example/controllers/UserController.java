@@ -120,8 +120,7 @@ public class UserController {
 
 
         LuaModManager luaManager = LuaModManager.getInstance();
-        LuaTable safeUser = new LuaTable();
-        luaManager.triggerEvent("onDeleteUserById", safeUser);
+        luaManager.triggerEvent("onDeleteUserById", null);
 
         return ResponseEntity.noContent().build();
     }
