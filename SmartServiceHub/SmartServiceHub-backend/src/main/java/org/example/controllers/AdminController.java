@@ -56,8 +56,6 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.OK).body("All users have been deleted");
     }
 
-
-
     @PostMapping("/comments/deleteAll")
     public ResponseEntity<String> deleteAllComments(
             @RequestParam(required = false) String confirm

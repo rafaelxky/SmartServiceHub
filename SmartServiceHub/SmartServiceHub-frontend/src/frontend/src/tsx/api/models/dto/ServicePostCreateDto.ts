@@ -1,4 +1,4 @@
-export interface AppServiceCreateDto {
+export interface ServicePostCreateDto {
     title: String;
     content: String;
 }

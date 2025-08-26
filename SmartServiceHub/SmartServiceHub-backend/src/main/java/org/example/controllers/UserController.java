@@ -65,6 +65,7 @@ public class UserController {
         return ResponseEntity.notFound().build();
     }
 
+    // this is very risky maybe delete this because if 1000 users computer go boom (perhaps)
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<AppUser>> getAllUsers() {

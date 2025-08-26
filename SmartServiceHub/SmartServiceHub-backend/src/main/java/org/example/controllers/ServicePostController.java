@@ -65,11 +65,6 @@ public class ServicePostController {
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/limit/{limit}")
-    public ResponseEntity<List<ServicePost>> getServiceWithLimit(@PathVariable("limit") Integer limit) {
-        return ResponseEntity.ok(serviceDbService.getServiceWithLimit(limit));
-    }
-
     @PutMapping("/{id}")
     public ResponseEntity<ServicePost> updateService(
             @PathVariable Long id,

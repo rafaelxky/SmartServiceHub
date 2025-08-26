@@ -2,7 +2,7 @@ import type { AuthProvider } from "./auth/AuthInterface";
 import { get, post, put, del } from "./ApiService";
 
 
-export class Comment{
+export class CommentService{
     baseUrl: string;
     authService: AuthProvider;
 

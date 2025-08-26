@@ -1,4 +1,4 @@
-export interface AppServicePublicDto{
+export interface ServicePostPublicDto{
     title: string;
     content: string;
 }
