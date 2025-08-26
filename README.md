@@ -124,6 +124,13 @@ register_event {
 - onGetCommentById
 - onCreateComment
 
+## Methods
+- The program also exposes some java classes and methods that lua can call
+
+## List of methods
+### Network
+- static String httpGet(String urlStr) 
+- static String httpPost(String urlStr, String data)
 
 # Features
 ### Implemented

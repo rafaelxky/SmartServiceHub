@@ -1,7 +1,9 @@
 package org.example.lua;
 
+import org.example.utils.Network;
 import org.luaj.vm2.*;
 import org.luaj.vm2.lib.OneArgFunction;
+import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
 
 import java.io.*;
@@ -29,6 +31,7 @@ public class LuaModManager {
                 String eventName = table.get("event").checkjstring();
                 LuaFunction func = table.get("func").checkfunction();
 
+                registerFunctions();
 
                 // Determine which Lua script is currently registering the event
                 String currentScript = globals.get("CURRENT_SCRIPT").isstring() ?
@@ -51,6 +54,12 @@ public class LuaModManager {
                 return LuaValue.NIL;
             }
         });
+    }
+
+    public void registerFunctions(){
+        var modManager = LuaModManager.getInstance();
+        var globals = modManager.getGlobals();
+        globals.set("Network", CoerceJavaToLua.coerce(Network.class));
     }
 
     public static LuaModManager getInstance() {
