@@ -7,9 +7,13 @@ import './styles/styles.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { UserService } from './tsx/api/services/UserService';
 import { BasicAuthService } from './tsx/api/services/auth/BasicAuthService';
+import { ServicePostService } from './tsx/api/services/ServicePostService';
+import { CommentService } from './tsx/api/services/CommentService';
 
 let authService = new BasicAuthService("admin", "admin123");
 let userService: UserService = new UserService("http://localhost:8080/users", authService);
+let servicePostService: ServicePostService= new ServicePostService("http://localhost:8080/services", authService);
+let commentService: CommentService= new CommentService("http://localhost:8080/comments", authService);
 let user = await userService.getUserById(1);
 console.log("User: ", JSON.stringify(user, null, 2))
 
