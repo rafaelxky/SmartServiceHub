@@ -8,11 +8,13 @@ import java.io.*;
 import java.nio.file.*;
 import java.util.*;
 
+// Uses an observer pattern to register and trigger events that are loaded from lua files
 public class LuaModManager {
 
     private static LuaModManager instance;
 
     private final Globals globals;
+
     private final Map<String, Map<String, List<LuaFunction>>> scriptEventHooks = new HashMap<>();
 
     private final String SCRIPTS_PATH = LuaStartup.SCRIPTS_PATH;
@@ -99,7 +101,7 @@ public class LuaModManager {
         return globals;
     }
 
-
+    // watches for updates to lua files, reloads events on update
     public void watchLuaFolder(String folderPath) {
         new Thread(() -> {
             try {
