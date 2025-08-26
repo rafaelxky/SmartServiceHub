@@ -19,9 +19,9 @@ export class CommentService{
     async getComment(id: number){
         return await get<Comment>(this.baseUrl + "/" + id, this.authService)
     }
-
-    async getAllComments(){
-        return await get<Comment[]>(this.baseUrl, this.authService)
+    
+    async updateComment(id: number, comment: Comment){
+        return await put<Comment>(this.baseUrl + "/" + id, comment)
     }
 
     async deleteComment(id: number){

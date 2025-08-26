@@ -14,7 +14,22 @@ export class ServicePostService{
    } 
 
    async createService(service: ServicePostCreateDto){
-          return await post<ServicePost>(this.baseUrl, this.authService)
+          return await post<ServicePost>(this.baseUrl, service ,this.authService)
    }
 
+   async getServiceById(id: number){
+      return await get<ServicePost>(this.baseUrl + "/" + id, this.authService)
+   }
+
+   async updateService( id: number, servicePost: ServicePost){
+      return await put<ServicePost>(this.baseUrl + "/" + id, servicePost ,this.authService)
+   }
+
+   async deleteServiceById(id: number){
+      return await del<ServicePost>(this.baseUrl + "/" + id, this.authService)
+   }
+
+   async getUniqueServicePost(id: number, limit: number, offset: number){
+      return await get<ServicePost[]>(this.baseUrl + "/unique?limit=" + limit + "&offset=" + offset)
+   }
 }
