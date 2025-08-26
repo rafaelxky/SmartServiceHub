@@ -36,11 +36,11 @@ When the program is ran, it will automatically create an ADMIN user with the nam
 - AppUser <- user model to interact with db 
 - UserPublicDto <- user model for showing (hides password)
 - UserCreateDto <- user model for creation
-## AppService
-- AppService <- Service post model to interact with db
-- AppServicePublicDto <- Service post model for showing 
-- AppServiceCreateDto <- Service post model from creation
-## Comments
+## ServicePost
+- ServicePost <- Service post model to interact with db
+- ServicePostPublicDto <- Service post model for showing 
+- ServicePostCreateDto <- Service post model from creation
+## Comment
 - Comment <- comment model for interaction with db
 - CommentCreateDto <- comment model for creation
 - CommentPublicDto <- comment model for showing
@@ -105,6 +105,25 @@ register_event {
 - onUpdateUserById(AppUser)
 - onDeleteUserById(null)
 - onGetUniqueUsers(List<UserPublicDto>)
+### Admin
+- onDeleteAllPosts
+- onDeleteAllComments
+- onDeleteAllUsers
+- onAdminCreate
+### ServicePost
+- onGetUniqueServicePost
+- onDeleteServiceByPostId
+- onUpdateService
+- onGetServiceById
+- onAppServiceCreate
+### Comment
+- onGetUniqueComments
+- onGetCommentsFromPost
+- onDeleteCommentById
+- onUpdateComment
+- onGetCommentById
+- onCreateComment
+
 
 # Features
 ### Implemented
@@ -113,6 +132,7 @@ register_event {
 - Comment creation
 - User autentication
 - Roles
+- Lua script events
 ### TODO
 - AI integration
 - Frontend implementation
@@ -122,4 +142,3 @@ register_event {
 - Chat
 - Job acceptance
 - Skill matching
-- Finish script integration
