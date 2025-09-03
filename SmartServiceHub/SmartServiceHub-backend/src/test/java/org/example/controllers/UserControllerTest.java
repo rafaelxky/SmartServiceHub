@@ -135,7 +135,6 @@ public void testCreateUser() throws Exception {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username").value("name"))
                 .andExpect(jsonPath("$.email").value("mail"))
-                .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.password").value("encoded-pass"));
+                .andExpect(jsonPath("$.id").value(1));
     }
 }
