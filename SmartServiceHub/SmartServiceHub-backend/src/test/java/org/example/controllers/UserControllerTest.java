@@ -1,6 +1,8 @@
 package org.example.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.val;
 import org.example.config.DataInitializer;
 import org.example.lua.LuaModManager;
 import org.example.lua.LuaStartup;
@@ -16,17 +18,23 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -67,14 +75,13 @@ class UserControllerTest {
 
         when(userDbService.getUserById(1L)).thenReturn(Optional.of(user1));
 
-        mockMvc.perform(get("/users/1"))
+        val resultActions = mockMvc.perform(get("/users/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.username").value("name"))
                 .andExpect(jsonPath("$.email").value("mail"))
                 .andExpect(jsonPath("$.password").doesNotExist())
-                .andExpect(jsonPath("$.role").doesNotExist())
-        ;
+                .andExpect(jsonPath("$.role").doesNotExist());
 
         mockMvc.perform(get("/users/2"))
                 .andExpect(status().isNotFound());
@@ -82,14 +89,15 @@ class UserControllerTest {
 
 @Test
 public void testCreateUser() throws Exception {
+        // test: normal, malformed / missing parameter
     UserCreateDto user1creation = new UserCreateDto("name", "mail", "pass");
     AppUser user1 = new AppUser(1L, "name", "mail", "pass", Roles.USER.roleName, LocalDateTime.now());
 
-    when(passwordEncoder.encode(org.mockito.ArgumentMatchers.anyString()))
+    when(passwordEncoder.encode(anyString()))
             .thenAnswer(invocation -> "encoded-" + invocation.getArgument(0));
 
     // trying to create any user will return user1
-    when(userDbService.createUser(org.mockito.ArgumentMatchers.any(AppUser.class)))
+    when(userDbService.createUser(any(AppUser.class)))
             .thenReturn(user1);
 
     mockMvc.perform(post("/users")
@@ -103,7 +111,31 @@ public void testCreateUser() throws Exception {
     ;
 }
 
+// todo: finish
+    @Test
+    public void testUpdateUser() throws Exception {
+        // Mock current user with id 1
+        AppUser currentUser = new AppUser(1L, "name", "mail", "pass", Roles.USER.roleName, LocalDateTime.now());
+        UsernamePasswordAuthenticationToken auth =
+                new UsernamePasswordAuthenticationToken(currentUser, null, currentUser.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(auth);
 
+        // Mock the service calls
+        when(passwordEncoder.encode(anyString()))
+                .thenAnswer(invocation -> "encoded-" + invocation.getArgument(0));
 
+        when(userDbService.getUserById(1L)).thenReturn(Optional.of(currentUser));
+        when(userDbService.saveUser(any(AppUser.class))).thenReturn(currentUser);
 
+        UserCreateDto updateDto = new UserCreateDto("name", "mail", "pass");
+
+        mockMvc.perform(put("/users/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updateDto)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.username").value("name"))
+                .andExpect(jsonPath("$.email").value("mail"))
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.password").value("encoded-pass"));
+    }
 }

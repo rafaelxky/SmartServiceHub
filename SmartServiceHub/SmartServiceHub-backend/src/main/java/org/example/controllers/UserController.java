@@ -20,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -84,7 +85,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        if (!currentUser.getId().equals(id)) {
+        if (!Objects.equals(currentUser.getId(), id)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
