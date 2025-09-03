@@ -111,7 +111,6 @@ public void testCreateUser() throws Exception {
     ;
 }
 
-// todo: finish
     @Test
     public void testUpdateUser() throws Exception {
         // Mock current user with id 1
@@ -120,7 +119,6 @@ public void testCreateUser() throws Exception {
                 new UsernamePasswordAuthenticationToken(currentUser, null, currentUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
 
-        // Mock the service calls
         when(passwordEncoder.encode(anyString()))
                 .thenAnswer(invocation -> "encoded-" + invocation.getArgument(0));
 
