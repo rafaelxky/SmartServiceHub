@@ -35,6 +35,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -71,7 +72,7 @@ class UserControllerTest {
     public void testGetUserById() throws Exception {
         // Id is always valid because it's handled by db
         // Role and timestamp are also auto managed
-        AppUser user1 = new AppUser(1L, "name", "mail", "encoded-pass", Roles.USER.getRoleName(), LocalDateTime.now());
+        AppUser user1 = new AppUser(1L, "name", "mail", "encoded-pass", Roles.USER.roleName, LocalDateTime.now());
 
         when(userDbService.getUserById(1L)).thenReturn(Optional.of(user1));
 
@@ -134,5 +135,33 @@ public void testCreateUser() throws Exception {
                 .andExpect(jsonPath("$.username").value("name"))
                 .andExpect(jsonPath("$.email").value("mail"))
                 .andExpect(jsonPath("$.id").value(1));
+    }
+
+    @Test
+    public void testDeleteUser() throws Exception {
+        AppUser currentUser = new AppUser(1L, "name", "mail", "pass", Roles.USER.roleName, LocalDateTime.now());
+        AppUser wrongUser = new AppUser(2L, "name2", "mail2", "pass2", Roles.USER.roleName, LocalDateTime.now());
+
+        when(passwordEncoder.encode(anyString()))
+                .thenAnswer(invocation -> "encoded-" + invocation.getArgument(0));
+
+        when(userDbService.getUserById(1L)).thenReturn(Optional.of(currentUser));
+
+        // unauthorized
+        mockMvc.perform(delete("/users/1")).andExpect(status().isUnauthorized());
+
+        UsernamePasswordAuthenticationToken auth2 =
+                new UsernamePasswordAuthenticationToken(wrongUser, null, wrongUser.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(auth2);
+
+        // wrong user
+        mockMvc.perform(delete("/users/1")).andExpect(status().isForbidden());
+
+        UsernamePasswordAuthenticationToken auth =
+                new UsernamePasswordAuthenticationToken(currentUser, null,currentUser.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(auth);
+
+        // no content (success)
+        mockMvc.perform(delete("/users/1")).andExpect(status().isNoContent());
     }
 }
