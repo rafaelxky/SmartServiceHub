@@ -114,6 +114,7 @@ public void testCreateUser() throws Exception {
 
     @Test
     public void testUpdateUser() throws Exception {
+        // todo: separate the test cases into their own test methods
         // Mock current user with id 1
         AppUser currentUser = new AppUser(1L, "name", "mail", "pass", Roles.USER.roleName, LocalDateTime.now());
         AppUser wrongUser = new AppUser(2L, "name2", "mail2", "pass2", Roles.USER.roleName, LocalDateTime.now());
