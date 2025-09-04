@@ -116,9 +116,8 @@ public void testCreateUser() throws Exception {
     public void testUpdateUser() throws Exception {
         // Mock current user with id 1
         AppUser currentUser = new AppUser(1L, "name", "mail", "pass", Roles.USER.roleName, LocalDateTime.now());
-        UsernamePasswordAuthenticationToken auth =
-                new UsernamePasswordAuthenticationToken(currentUser, null, currentUser.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(auth);
+        AppUser wrongUser = new AppUser(2L, "name2", "mail2", "pass2", Roles.USER.roleName, LocalDateTime.now());
+
 
         when(passwordEncoder.encode(anyString()))
                 .thenAnswer(invocation -> "encoded-" + invocation.getArgument(0));
@@ -127,6 +126,27 @@ public void testCreateUser() throws Exception {
         when(userDbService.saveUser(any(AppUser.class))).thenReturn(currentUser);
 
         UserCreateDto updateDto = new UserCreateDto("name", "mail", "pass");
+
+        // null authentication (unauthorized)
+        mockMvc.perform(put("/users/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updateDto)))
+                .andExpect(status().isUnauthorized());
+
+        // wrong user logged in (forbidden)
+        UsernamePasswordAuthenticationToken authFail =
+                new UsernamePasswordAuthenticationToken(wrongUser, null, wrongUser.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authFail);
+
+        mockMvc.perform(put("/users/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updateDto)))
+                .andExpect(status().isForbidden());
+
+        // success
+        UsernamePasswordAuthenticationToken auth =
+                new UsernamePasswordAuthenticationToken(currentUser, null, currentUser.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(auth);
 
         mockMvc.perform(put("/users/1")
                         .contentType(MediaType.APPLICATION_JSON)
