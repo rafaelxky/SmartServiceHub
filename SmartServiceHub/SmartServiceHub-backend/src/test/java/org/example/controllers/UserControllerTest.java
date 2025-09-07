@@ -21,7 +21,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.lang.reflect.Array;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -290,10 +294,31 @@ class UserControllerTest {
         mockMvc.perform(delete("/users/2")).andExpect(status().isUnauthorized());
     }
     
-    // todo:       |
-    // todo: this \/
     @Test
     public void successGetUniqueUsers() throws Exception{
+        AppUser currentUser3 = new AppUser(3L, "name3", "mail3", "pass3", Roles.USER.roleName, LocalDateTime.now());
+        AppUser currentUser4 = new AppUser(4L, "name4", "mail4", "pass4", Roles.USER.roleName, LocalDateTime.now());
 
+        AppUser[] userList = {currentUser3, currentUser4};
+        when(userDbService.getUserUnique(2, 2)).thenReturn(Arrays.asList(userList));
+
+        mockMvc.perform(get("/users/unique?limit=2&offset=1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].username").value("name3"))
+                .andExpect(jsonPath("$[0].email").value("mail3"))
+                .andExpect(jsonPath("$[1].username").value("name4"))
+                .andExpect(jsonPath("$[1].email").value("mail4"));
+    }
+
+    @Test
+    public void emptyGetUniqueUser() throws Exception{
+        AppUser currentUser3 = new AppUser(3L, "name3", "mail3", "pass3", Roles.USER.roleName, LocalDateTime.now());
+        AppUser currentUser4 = new AppUser(4L, "name4", "mail4", "pass4", Roles.USER.roleName, LocalDateTime.now());
+
+        AppUser[] userList = {currentUser3, currentUser4};
+        when(userDbService.getUserUnique(2, 1)).thenReturn(Arrays.asList(userList));
+
+        mockMvc.perform(get("/users/unique?limit=2&offset=1"))
+                .andExpect(status().isOk());
     }
 }

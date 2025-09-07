@@ -151,23 +151,29 @@
                 <version>${kotlin.version}</version>
                 <executions>
                     <execution>
-                        <id>compile</id>
-                        <phase>compile</phase>
+                        <id>kotlin-compile</id>
+                        <phase>process-sources</phase> <!-- Run Kotlin before Java -->
                         <goals>
                             <goal>compile</goal>
                         </goals>
                         <configuration>
                             <jvmTarget>21</jvmTarget>
+                            <sourceDirs>
+                                <sourceDir>src/main/java</sourceDir>
+                            </sourceDirs>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>test-compile</id>
-                        <phase>test-compile</phase>
+                        <id>kotlin-test-compile</id>
+                        <phase>process-test-sources</phase>
                         <goals>
                             <goal>test-compile</goal>
                         </goals>
                         <configuration>
                             <jvmTarget>21</jvmTarget>
+                            <sourceDirs>
+                                <sourceDir>src/test/java</sourceDir>
+                            </sourceDirs>
                         </configuration>
                     </execution>
                 </executions>
