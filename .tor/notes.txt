@@ -5,8 +5,9 @@ sudo systemctl enable tor
 # Append hidden service config safely
 sudo tee -a /etc/tor/torrc > /dev/null <<EOL
 HiddenServiceDir /var/lib/tor/my_hidden_service/
-HiddenServicePort 80 127.0.0.1:8080
+HiddenServicePort 8080 127.0.0.1:8080
 EOL
+HiddenServicePort 5173 127.0.0.1:5173
 
 # Create hidden service directory
 sudo mkdir -p /var/lib/tor/my_hidden_service
@@ -18,6 +19,11 @@ sudo systemctl restart tor
 
 # Check the hostname (your .onion address)
 sudo cat /var/lib/tor/my_hidden_service/hostname
+
+# setup the onion url in the project
+# from SmartServiceHub/SmartServiceHub
+export ONION_URL=$(sudo cat /var/lib/tor/my_hidden_service/hostname)
+echo "ONION_URL=$ONION_URL" > SmartServiceHub-frontend/src/frontend/src/.env.local
 
 # Verify Tor status
 systemctl status tor

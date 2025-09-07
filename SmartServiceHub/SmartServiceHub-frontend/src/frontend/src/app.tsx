@@ -10,9 +10,10 @@ import { BasicAuthService } from './tsx/api/services/auth/BasicAuthService';
 import { ServicePostService } from './tsx/api/services/ServicePostService';
 import { CommentService } from './tsx/api/services/CommentService';
 
-// error here
+//let default_url: String = "http://localhost:8080"
+const default_url = "http://" + import.meta.env.ONION_URL + "";
 let authService = new BasicAuthService("admin", "admin123");
-let userService: UserService = new UserService("http://localhost:8080/users", authService);
+let userService: UserService = new UserService(default_url + "/users", authService);
 console.log(await userService.getUserById(1));
 /*
 let servicePostService: ServicePostService= new ServicePostService("http://localhost:8080/services", authService);
