@@ -1,22 +1,23 @@
-# full config
-sudo systemctl enable tor
-sudo systemctl start tor
 
-echo "
+# Enable Tor at boot
+sudo systemctl enable tor
+
+# Append hidden service config safely
+sudo tee -a /etc/tor/torrc > /dev/null <<EOL
 HiddenServiceDir /var/lib/tor/my_hidden_service/
 HiddenServicePort 80 127.0.0.1:8080
-" > /etc/tor/torrc
+EOL
 
+# Create hidden service directory
 sudo mkdir -p /var/lib/tor/my_hidden_service
 sudo chown -R tor:tor /var/lib/tor/my_hidden_service
 sudo chmod 700 /var/lib/tor/my_hidden_service
 
-sudo cat /var/lib/tor/my_hidden_service/hostname
+# Restart Tor to apply changes
 sudo systemctl restart tor
 
-# start tor
-sudo systemctl start tor
+# Check the hostname (your .onion address)
+sudo cat /var/lib/tor/my_hidden_service/hostname
 
-# check status
+# Verify Tor status
 systemctl status tor
-
