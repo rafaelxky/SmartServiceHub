@@ -1,13 +1,13 @@
 # assuming you already have tor installed
-# Enable Tor at boot
-sudo systemctl enable tor
+# Start tor
+sudo systemctl start tor
 
 # Append hidden service config safely
 sudo tee -a /etc/tor/torrc > /dev/null <<EOL
 HiddenServiceDir /var/lib/tor/my_hidden_service/
 HiddenServicePort 8080 127.0.0.1:8080
-EOL
 HiddenServicePort 5173 127.0.0.1:5173
+EOL
 
 # Create hidden service directory
 sudo mkdir -p /var/lib/tor/my_hidden_service
@@ -28,4 +28,7 @@ echo "VITE_ONION_URL=$ONION_URL" > SmartServiceHub-frontend/src/frontend/.env.lo
 # Verify Tor status
 systemctl status tor
 
-# after setup you just need to start tor normally
+# After setup you just need to start tor normally on subsequent sessions
+
+# To stop tor (recomended when not using)
+sudo systemctl stop tor
