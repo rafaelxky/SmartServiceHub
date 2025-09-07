@@ -10,12 +10,15 @@ import { BasicAuthService } from './tsx/api/services/auth/BasicAuthService';
 import { ServicePostService } from './tsx/api/services/ServicePostService';
 import { CommentService } from './tsx/api/services/CommentService';
 
+// error here
+/*
 let authService = new BasicAuthService("admin", "admin123");
 let userService: UserService = new UserService("http://localhost:8080/users", authService);
 let servicePostService: ServicePostService= new ServicePostService("http://localhost:8080/services", authService);
 let commentService: CommentService= new CommentService("http://localhost:8080/comments", authService);
 let user = await userService.getUserById(1);
 console.log("User: ", JSON.stringify(user, null, 2))
+*/
 
 const posts: ServicePost[] = [
   { id: 1, title: 'First Post', content: 'This is the first post.', creatorId: 1, timestamp: '2025-08-19' },
