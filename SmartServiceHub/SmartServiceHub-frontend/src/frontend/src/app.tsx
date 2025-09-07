@@ -10,10 +10,12 @@ import { BasicAuthService } from './tsx/api/services/auth/BasicAuthService';
 import { ServicePostService } from './tsx/api/services/ServicePostService';
 import { CommentService } from './tsx/api/services/CommentService';
 
-//let default_url: String = "http://localhost:8080"
-const default_url = "http://" + import.meta.env.VITE_ONION_URL + ":8080";
+const baseUrl = window.location.hostname.endsWith('.onion')
+  ? "http://" + import.meta.env.VITE_ONION_URL + ":8080"
+  : "http://localhost:8080";
+
 let authService = new BasicAuthService("admin", "admin123");
-let userService: UserService = new UserService(default_url + "/users", authService);
+let userService: UserService = new UserService(baseUrl+ "/users", authService);
 console.log(await userService.getUserById(1));
 /*
 let servicePostService: ServicePostService= new ServicePostService("http://localhost:8080/services", authService);
