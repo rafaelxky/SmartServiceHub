@@ -1,0 +1,22 @@
+# full config
+sudo systemctl enable tor
+sudo systemctl start tor
+
+echo "
+HiddenServiceDir /var/lib/tor/my_hidden_service/
+HiddenServicePort 80 127.0.0.1:8080
+" > /etc/tor/torrc
+
+sudo mkdir -p /var/lib/tor/my_hidden_service
+sudo chown -R tor:tor /var/lib/tor/my_hidden_service
+sudo chmod 700 /var/lib/tor/my_hidden_service
+
+sudo cat /var/lib/tor/my_hidden_service/hostname
+sudo systemctl restart tor
+
+# start tor
+sudo systemctl start tor
+
+# check status
+systemctl status tor
+
