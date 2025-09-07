@@ -23,7 +23,9 @@ sudo cat /var/lib/tor/my_hidden_service/hostname
 # setup the onion url in the project
 # from SmartServiceHub/SmartServiceHub
 export ONION_URL=$(sudo cat /var/lib/tor/my_hidden_service/hostname)
-echo "VITE_ONION_URL=$ONION_URL" > SmartServiceHub-frontend/src/frontend/src/.env.local
+echo "VITE_ONION_URL=$ONION_URL" > SmartServiceHub-frontend/src/frontend/.env.local
 
 # Verify Tor status
 systemctl status tor
+
+# after setup you just need to start tor normally
