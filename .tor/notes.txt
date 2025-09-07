@@ -1,4 +1,4 @@
-
+# assuming you already have tor installed
 # Enable Tor at boot
 sudo systemctl enable tor
 
