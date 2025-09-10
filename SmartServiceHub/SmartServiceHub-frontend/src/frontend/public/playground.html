@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Preact + Bootstrap App</title>
+  <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+  <h1>Test Interface</h1>
+
+  <form id="getUserByIdForm" class="form">
+    <button type="submit">Get user</button> <br>
+    <label for="id">ID</label><br />
+    <input type="text" id="id" name="id" required /><br /><br />
+  </form>
+  <br>
+  <form id="createUserForm" class="form">
+    <button type="submit"> Create user</button> <br> <br>
+    <input type="text" id="name" name="name" required />
+    <label for="name">name</label><br /><br />
+    <input type="text" id="mail" name="mail" required />
+    <label for="name">mail</label><br /><br />
+    <input type="text" id="pass" name="pass" required />
+    <label for="name">password</label><br /><br />
+  </form>
+  <div id="app" class="w-100 mt-3"></div>
+
+  <script type="module" src="../tsplayground/playground.ts"></script>
+</body>
+</html>

@@ -1,6 +1,9 @@
 import { defineConfig } from 'vite'
 import preact from '@preact/preset-vite'
 
+
+// todo: change the onion URL to fetch from file automatically
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [preact()],
