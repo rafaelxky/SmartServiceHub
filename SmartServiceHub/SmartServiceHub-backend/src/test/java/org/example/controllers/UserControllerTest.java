@@ -36,8 +36,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
@@ -90,10 +89,8 @@ class UserControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-
     @Test
     public void successCreateUser() throws Exception {
-        // test: normal, malformed / missing parameter
         AppUser user1 = new AppUser(1L, "name", "mail", "pass", Roles.USER.roleName, LocalDateTime.now());
 
         when(passwordEncoder.encode(anyString()))
@@ -312,13 +309,18 @@ class UserControllerTest {
 
     @Test
     public void emptyGetUniqueUser() throws Exception{
-        AppUser currentUser3 = new AppUser(3L, "name3", "mail3", "pass3", Roles.USER.roleName, LocalDateTime.now());
-        AppUser currentUser4 = new AppUser(4L, "name4", "mail4", "pass4", Roles.USER.roleName, LocalDateTime.now());
+        mockMvc.perform(get("/users/unique?limit=-1&offset=-1"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("[]"));
+    }
 
-        AppUser[] userList = {currentUser3, currentUser4};
-        when(userDbService.getUserUnique(2, 1)).thenReturn(Arrays.asList(userList));
-
-        mockMvc.perform(get("/users/unique?limit=2&offset=1"))
-                .andExpect(status().isOk());
+    @Test
+    public void badRequestGetUniqueUser() throws Exception{
+        mockMvc.perform(get("/users/unique?limit=hello&offset=world"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
+                .andExpect(jsonPath("$.message").value("Parameter 'limit' must be of type int"))
+                .andExpect(jsonPath("$.data").doesNotExist());
     }
 }
