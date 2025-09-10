@@ -1,9 +1,8 @@
 
 #!/bin/bash
 
-echo "==== Environment Check ===="
+echo "======== Environment Check ========"
 
-# Function to check if a command exists
 check_command() {
   local cmd=$1
   local name=$2
