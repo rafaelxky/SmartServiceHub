@@ -17,37 +17,44 @@ The table names are all lowercase and plural (users, comments, services)
 # Architecture
 ## Connection
 The frontend and backend communicate trough REST api 
+It uses the http protocol altough https and http2 support should be implemented soon™
 
-## Scripting
+## Lua Scripting
 The lua scripts use an observer model to subsctribe to program events
+
+## Shell scripts
+Shell scripts can be found under ./scripts except for quick setup scripts such as start.sh and stop.sh
+
+## Tor setup
+All tor related scripts and notes should be under ./.tor
 
 ## DB
 "users" hold basic user data 
 "services" have a reference its creator
 "comments" have a reference to the creator and the "service" they bellong to
 
-erDiagram
-    USERS {
+classDiagram
+    class User {
         int id
         string name
         string email
     }
-    SERVICES {
+
+    class Service {
         int id
         string title
         string content
         int creator
     }
-    COMMENTS {
+
+    class Comment {
         int id
         string content
         int creator
         int service
     }
 
-    USERS ||--o{ SERVICES : "creator"
-    USERS ||--o{ COMMENTS : "creator"
-    SERVICES ||--o{ COMMENTS : "service"
-
-
+    User "1" --> "many" Service : creates
+    User "1" --> "many" Comment : writes
+    Service "1" --> "many" Comment : receives
 
