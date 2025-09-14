@@ -21,6 +21,7 @@ You can create a service post to request a service and other users can comment a
   - [User Endpoints](#user-endpoints)
   - [App Services Endpoints](#app-services-endpoints)
   - [Comments Endpoints](#comments-endpoints)
+  - [Roles](#roles)
 - [Addons](#addons)
   - [Hooks / Events](#hooks--events)
   - [List of Events](#list-of-events)
@@ -88,7 +89,7 @@ When the program is ran, it will automatically create an ADMIN user with the nam
 Currently this app allows CORS from all sources tough this can be changed at "/config/WebConfig.java"
 
 # Endpoints
-The frontend and backend communicate trough REST api
+The frontend and backend communicate trough REST api using json
 A list of all endpoints can be found under the folder "controllers" or listed at "http://localhost:8080/home"
 
 ## User Endpoints
@@ -116,6 +117,12 @@ A list of all endpoints can be found under the folder "controllers" or listed at
 
 ## Comments Endpoints
 - to be written
+
+# Roles
+- Users can have 3 roles currently, USER, ADMIN, MODERATOR wich can be found at the roles enum in the backend
+- USER is the basic user, has access to the basic features ,can only update and delete its own content and can be created by anyone
+- ADMIN users can delete, update and get detailed information from the DB, these can only be created from the first ADMIN user that is created when the app launches
+- MODERATOR users are currently unimplemented but they will have the tools to moderate content without having access to potentially destructive tools
 
 # Addons
 - this app provides extensability via Lua scripts
