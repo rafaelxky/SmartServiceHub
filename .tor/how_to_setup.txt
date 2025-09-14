@@ -1,0 +1,6 @@
+This is a step by step on how to setup tor for this project
+1 - install tor
+2 - run the setup script with sudo
+3 - run tor
+
+On subsequent initialization it is only needed to run tor so setup is done only 1 time
