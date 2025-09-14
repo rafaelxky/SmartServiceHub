@@ -8,7 +8,7 @@ You can create a service post to request a service and other users can comment a
 - [SmartServiceHub](#smartservicehub)
 - [Dependencies](#dependencies)
 - [Recommended](#recommended)
-- [Getting Started](#getting started)
+- [Getting Started](#getting-started)
 - [Scripts](#scripts)
 - [Authentication](#authentication)
 - [Models](#models)
