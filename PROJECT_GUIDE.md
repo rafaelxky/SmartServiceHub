@@ -1,66 +1,45 @@
 
+# Project Guide
+
 This document facilitates project navigation and contributing
 
-# Structure
-It is divided firstly into 2 parts, the backend and frontend
+## Structure
+The project is divided into two main parts: the **Backend** and **Frontend**
 
-# Conventions
-## Backend
-The backend follows Spring and MVC standards
-The naming convention follows Java's standard conventions
+## Conventions
 
-## Frontend
-Frontend follows the Vite standards
-Naming conventions are Typescript / JavaScript standards
+### Backend
+- Follows Spring and MVC standards  
+- Naming conventions follow Java standard conventions
 
-## DB
-The DB naming follows snake case (service_hub)
-The table names are all lowercase and plural (users, comments, services)
+### Frontend
+- Follows Vite standards  
+- Naming conventions follow JavaScript/TypeScript standards
 
-## Documentation
-Sentences in documentation should start with an uppercase letter and end with "!", "?", "..." or nothing at all depending on the situation but shouldn't end with "." altough exceptions may apear
-Titles use Pascal Case
+### DB
+- Uses snake_case for table and column names  
+- Table names are lowercase and plural: `users`, `services`, `comments`  
+- Relationships:  
+  - `users` hold basic user data  
+  - `services` reference their creator (`users`)  
+  - `comments` reference both the creator (`users`) and the service they belong to (`services`)
 
-# Technology
-## Languages
-The project official languages are as follows
-- Java (backend)
-- Kotlin (backend)
-- Lua (backend scripting)
-- Javascript (frontend)
-- Typescript (frontend)
-- Tsx (frontend)
-- Html (frontend)
-- Css (frontend)
-- Bash Linux (scripting)
+### Documentation
+- Sentences start with uppercase letters  
+- Sentences may end with `!`, `?`, `...`, or nothing, but should generally **not** end with `.`  
+- Titles use Pascal Case 
 
-## Programs
-- Maven (java dependency manager)
-- Spring (java framework)
-- Npm (js dependency manager)
-- Vue (js framework)
-- Preact (js framework, lightweight alternative to react but almost the same)
-- Postgres (DB)
+## Technology
 
-# Architecture
-## Connection
-The frontend and backend communicate through REST api 
-It uses the http protocol altough https and http2 support should be implemented soon™
+### Languages
+- Java, Kotlin (backend)  
+- Lua (backend scripting)  
+- JavaScript, TypeScript, TSX, HTML, CSS (frontend)  
+- Bash (scripting)
 
-## Lua Scripting
-The lua scripts use an observer model to subscribe to program events
-They work for the backend and can be found under SmartServiceHub/scripts
-Any .lua files under this directory will be valid scripts and will be loaded by the program
-
-## Shell Scripts
-Shell scripts can be found under ./scripts except for quick setup scripts such as start.sh and stop.sh
-
-## Tor Setup
-All tor related scripts and notes should be under ./.tor
-
-## DB
-"users" hold basic user data 
-"services" have a reference its creator
-"comments" have a reference to the creator and the "service" they belong to
-
-
+### Programs
+- Maven (Java dependency manager)  
+- Spring (Java framework)  
+- Npm (JS dependency manager)  
+- Preact (JS framework, lightweight React alternative)  
+- PostgreSQL (Database)
