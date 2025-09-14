@@ -180,7 +180,7 @@ register_event {
 - AI integration
 - Frontend implementation
 - Adaptive recomendations
-- Docker integration
+- Docker integration (by at least october)
 - Tests
 - Chat
 - Job acceptance
