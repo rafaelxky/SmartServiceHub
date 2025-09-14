@@ -21,7 +21,10 @@ paths:
           application/json:
             schema:
               type: object
-              required: [username, email, password]
+              required:
+                - username
+                - email
+                - password
               properties:
                 username:
                   type: string
@@ -31,6 +34,10 @@ paths:
                 password:
                   type: string
                   format: password
+            example:
+              username: "johndoe"
+              email: "john@example.com"
+              password: "password123"
       responses:
         '201':
           description: User created successfully
@@ -50,11 +57,12 @@ paths:
     get:
       summary: Get a user by ID (public view)
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
           required: true
           schema:
             type: integer
+            example: 1
       responses:
         '200':
           description: Public user info
@@ -62,6 +70,12 @@ paths:
       summary: Update a user by ID (self only)
       security:
         - basicAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       requestBody:
         required: true
         content:
@@ -69,9 +83,18 @@ paths:
             schema:
               type: object
               properties:
-                username: { type: string }
-                email: { type: string, format: email }
-                password: { type: string, format: password }
+                username:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+            example:
+              username: "johndoe_updated"
+              email: "john_updated@example.com"
+              password: "newpassword123"
       responses:
         '200':
           description: User updated
@@ -79,6 +102,12 @@ paths:
       summary: Delete a user by ID (self only)
       security:
         - basicAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
         '204':
           description: User deleted
@@ -91,10 +120,12 @@ paths:
           name: limit
           schema:
             type: integer
+            example: 10
         - in: query
           name: offset
           schema:
             type: integer
+            example: 0
       responses:
         '200':
           description: List of unique users
@@ -110,10 +141,17 @@ paths:
           application/json:
             schema:
               type: object
-              required: [title, content]
+              required:
+                - title
+                - content
               properties:
-                title: { type: string }
-                content: { type: string }
+                title:
+                  type: string
+                content:
+                  type: string
+            example:
+              title: "Website Design"
+              content: "I need a website designed for my business."
       responses:
         '201':
           description: Service created
@@ -127,10 +165,12 @@ paths:
     get:
       summary: Get a service by ID
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
           required: true
-          schema: { type: integer }
+          schema:
+            type: integer
+            example: 1
       responses:
         '200':
           description: Service post details
@@ -138,14 +178,26 @@ paths:
       summary: Update a service (creator only)
       security:
         - basicAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               type: object
               properties:
-                title: { type: string }
-                content: { type: string }
+                title:
+                  type: string
+                content:
+                  type: string
+            example:
+              title: "Updated Service Title"
+              content: "Updated service description"
       responses:
         '200':
           description: Service updated
@@ -153,6 +205,12 @@ paths:
       summary: Delete a service (creator only)
       security:
         - basicAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
         '204':
           description: Service deleted
@@ -161,10 +219,12 @@ paths:
     get:
       summary: Get limited list of services
       parameters:
-        - in: path
-          name: limit
+        - name: limit
+          in: path
           required: true
-          schema: { type: integer }
+          schema:
+            type: integer
+            example: 5
       responses:
         '200':
           description: List of limited services
@@ -177,10 +237,12 @@ paths:
           name: limit
           schema:
             type: integer
+            example: 10
         - in: query
           name: offset
           schema:
             type: integer
+            example: 0
       responses:
         '200':
           description: List of unique services
@@ -191,7 +253,7 @@ paths:
   /comments:
     post:
       summary: Create a comment
-      description: Placeholder — details TBD
+      description: "Placeholder — details TBD"
       security:
         - basicAuth: []
       requestBody:
@@ -201,15 +263,19 @@ paths:
             schema:
               type: object
               properties:
-                content: { type: string }
-                serviceId: { type: integer }
+                content:
+                  type: string
+                serviceId:
+                  type: integer
+            example:
+              content: "I can help with this service"
+              serviceId: 1
       responses:
         '201':
           description: Comment created
-
     get:
       summary: Get all comments (placeholder)
-      description: Likely not exposed publicly
+      description: "Likely not exposed publicly"
       responses:
         '200':
           description: List of comments
@@ -217,35 +283,53 @@ paths:
   /comments/{id}:
     get:
       summary: Get a comment by ID
-      description: Placeholder — details TBD
+      description: "Placeholder — details TBD"
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
           required: true
-          schema: { type: integer }
+          schema:
+            type: integer
+            example: 1
       responses:
         '200':
           description: Comment details
     put:
       summary: Update a comment by ID (creator only)
-      description: Placeholder — details TBD
+      description: "Placeholder — details TBD"
       security:
         - basicAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               type: object
               properties:
-                content: { type: string }
+                content:
+                  type: string
+            example:
+              content: "Updated comment content"
       responses:
         '200':
           description: Comment updated
     delete:
       summary: Delete a comment by ID (creator only)
-      description: Placeholder — details TBD
+      description: "Placeholder — details TBD"
       security:
         - basicAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
         '204':
           description: Comment deleted
@@ -253,12 +337,14 @@ paths:
   /services/{id}/comments:
     get:
       summary: Get comments for a service
-      description: Placeholder — details TBD
+      description: "Placeholder — details TBD"
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
           required: true
-          schema: { type: integer }
+          schema:
+            type: integer
+            example: 1
       responses:
         '200':
           description: List of comments for the service
