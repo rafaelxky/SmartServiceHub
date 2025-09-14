@@ -2,6 +2,34 @@
 A full-stack Java + Preact service marketplace with AI-powered recommendations and real-time chat.
 You can create a service post to request a service and other users can comment and accept you proposal. 
 
+
+## Table of Contents
+
+- [SmartServiceHub](#smartservicehub)
+- [Dependencies](#dependencies)
+- [Recommended](#recommended)
+- [Getting Started](#getting-started)
+- [Scripts](#scripts)
+- [Authentication](#authentication)
+- [Models](#models)
+  - [User](#user)
+  - [ServicePost](#servicepost)
+  - [Comment](#comment)
+  - [Others](#others)
+- [CORS Policy](#cors-policy)
+- [Endpoints](#endpoints)
+  - [User Endpoints](#user-endpoints)
+  - [App Services Endpoints](#app-services-endpoints)
+  - [Comments Endpoints](#comments-endpoints)
+- [Addons](#addons)
+  - [Hooks / Events](#hooks--events)
+  - [List of Events](#list-of-events)
+- [Methods](#methods)
+  - [Network](#network)
+- [Features](#features)
+  - [Implemented](#implemented)
+  - [TODO](#todo)
+
 ## Dependencies 
 - Java 21
 - NodeJS
