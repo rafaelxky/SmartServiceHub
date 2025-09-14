@@ -27,7 +27,7 @@ The project is divided into two main parts: the **Backend** and **Frontend**
 ### Documentation
 - Sentences start with uppercase letters  
 - Sentences may end with `!`, `?`, `...`, or nothing, but should generally **not** end with `.`  
-- Titles use Pascal Case 
+- Titles use [title case](https://en.wikipedia.org/wiki/Title_case) 
 
 ## Technology
 
