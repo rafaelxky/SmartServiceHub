@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import Header from './components/Header';
 import Posts from './components/Posts';
 import type { ServicePost } from './tsx/api/models/ServicePost';
@@ -7,8 +6,6 @@ import './styles/styles.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { UserService } from './tsx/api/services/UserService';
 import { BasicAuthService } from './tsx/api/services/auth/BasicAuthService';
-import { ServicePostService } from './tsx/api/services/ServicePostService';
-import { CommentService } from './tsx/api/services/CommentService';
 
 const baseUrl = window.location.hostname.endsWith('.onion')
   ? "http://" + import.meta.env.VITE_ONION_URL + ":8080"

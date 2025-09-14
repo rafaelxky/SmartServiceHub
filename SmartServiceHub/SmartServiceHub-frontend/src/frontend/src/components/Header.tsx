@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import { Form, FormControl, Navbar, Nav, Container } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';

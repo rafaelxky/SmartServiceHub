@@ -29,7 +29,7 @@ export class ServicePostService{
       return await del<ServicePost>(this.baseUrl + "/" + id, this.authService)
    }
 
-   async getUniqueServicePost(id: number, limit: number, offset: number){
+   async getUniqueServicePost(limit: number, offset: number){
       return await get<ServicePost[]>(this.baseUrl + "/unique?limit=" + limit + "&offset=" + offset)
    }
 }

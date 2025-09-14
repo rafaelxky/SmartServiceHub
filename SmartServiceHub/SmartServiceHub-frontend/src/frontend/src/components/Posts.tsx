@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import PostCard from './PostCard';
 import type { ServicePost } from '../tsx/api/models/ServicePost';
 import 'bootstrap/dist/css/bootstrap.min.css';

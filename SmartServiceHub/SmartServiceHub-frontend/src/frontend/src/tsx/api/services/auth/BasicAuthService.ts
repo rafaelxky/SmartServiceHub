@@ -1,4 +1,3 @@
-import { Injectable } from '@nestjs/common';
 import type { AuthProvider } from './AuthInterface';
 
 export class BasicAuthService implements AuthProvider{

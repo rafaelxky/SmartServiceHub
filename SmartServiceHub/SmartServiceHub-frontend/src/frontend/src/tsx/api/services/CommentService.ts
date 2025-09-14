@@ -25,7 +25,7 @@ export class CommentService{
     }
 
     async deleteComment(id: number){
-        return await del<Comment>(this.baseUrl, this.authService)
+        return await del<Comment>(this.baseUrl + "/" + id, this.authService)
     }
 
     async getPostComments(id:number){

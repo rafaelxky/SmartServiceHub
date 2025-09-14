@@ -17,6 +17,5 @@ NGINX_CONF="$(cd "$(dirname "$0")" && pwd)/nginx.conf"
 echo -e "${YELLOW}Starting NGINX...${NC}"
 
 # Start NGINX in background and log output
-nginx -c "$NGINX_CONF" 2>&1 | tee nginx.log &
+nginx -c "$NGINX_CONF" 2>&1 | tee nginx.log 
 
-echo "NGINX started. Logs: nginx.log"
