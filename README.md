@@ -8,7 +8,7 @@ You can create a service post to request a service and other users can comment a
 - [SmartServiceHub](#smartservicehub)
 - [Dependencies](#dependencies)
 - [Recommended](#recommended)
-- [Getting Started](#getting-started)
+- [Getting Started](#getting started)
 - [Scripts](#scripts)
 - [Authentication](#authentication)
 - [Models](#models)
@@ -37,10 +37,10 @@ You can create a service post to request a service and other users can comment a
 - Postgres
 - Git
 
-## Recomended
+## Recommended
 - Postman
 
-## How to run
+## Getting Started
 1. install dependencies
 2. clone the repo
 3. create a db in postgres with the name "servicehub_dev". You can also change the name of the db in "/SmartServiceHub-backend/src/main/resource/db.env"
@@ -83,13 +83,13 @@ When the program is ran, it will automatically create an ADMIN user with the nam
 - ApiResponse <- model for responding to requests, however this must be changed in the future as it is a source of inconsistencies
 - Roles <- Enum for roles "ADMIN, USER, MODERATOR"1
 
-## CORS policy
+## CORS Policy
 Currently this app allows CORS from all sources tough this can be changed at "/config/WebConfig.java"
 
 # Endpoints
 Can be found under the folder "controllers" or listed at "http://localhost:8080/home"
 
-## User endpoints
+## User Endpoints
 - /users POST <- creates a user, users are created like 
 ```JSON 
 {"username": "name", "email": "mail@mail.com", "password": "password123"} 
@@ -100,7 +100,7 @@ Can be found under the folder "controllers" or listed at "http://localhost:8080/
 - /users DELETE <- deletes a user by id, requires you to be logged in as the user you are trying to delete
 - /users/unique?limit=int&offset=int GET <- gets unique public users based on a limit and offset 
 
-## App services endpoints
+## App Services Endpoints
 - /services POST <- creates a post, must be logged in. Post are created like 
 ```JSON
 {"title": "title", "content": "Stuffs"}
@@ -112,7 +112,7 @@ Can be found under the folder "controllers" or listed at "http://localhost:8080/
 - /services/{id} DELETE <- deletes a service by id, must be logged in as the user who created the service
 - /services/unique?limiy=int&offset=int GET <- gets a unique public list of services based on limit and offset
 
-## Comments endpoints
+## Comments Endpoints
 - to be written
 
 # Addons
@@ -129,7 +129,7 @@ register_event {
     end
 }
 ```
-## List of events
+## List of Events
 ### Startup
 - onAppStartup(null)
 ### Home
@@ -162,7 +162,7 @@ register_event {
 ## Methods
 - The program also exposes some java classes and methods that lua can call
 
-## List of methods
+## List of Methods
 ### Network
 - static String httpGet(String urlStr) 
 - static String httpPost(String urlStr, String data)
