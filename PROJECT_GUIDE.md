@@ -4,7 +4,10 @@
 This document facilitates project navigation and contributing
 
 ## Structure
-The project is divided into two main parts: the **Backend** and **Frontend**
+- The project is divided into two main parts: the [**Backend**](./SmartServiceHub/SmartServiceHub-backend) and [**Frontend**](./SmartServiceHub/SmartServiceHub-frontend)
+- Shell scripts can be found under [Scripts Folder](./scripts/)
+- The [etc](./etc/) folder contains misc files and stuffs
+- The [.tor](./.tor/) folder contains scripts and notes related to seting up the project on tor
 
 ## Conventions
 
