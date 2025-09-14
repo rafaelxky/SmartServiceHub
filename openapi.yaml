@@ -1,0 +1,270 @@
+
+openapi: 3.0.3
+info:
+  title: SmartServiceHub API
+  version: 1.0.0
+  description: >
+    API specification for SmartServiceHub, a service marketplace platform.
+    Provides endpoints for user management, service posts, and comments.
+
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+
+paths:
+  /users:
+    post:
+      summary: Create a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [username, email, password]
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+      responses:
+        '201':
+          description: User created successfully
+        '400':
+          description: Invalid request
+        '409':
+          description: User already exists
+    get:
+      summary: Get all users (Admin only)
+      security:
+        - basicAuth: []
+      responses:
+        '200':
+          description: List of users
+
+  /users/{id}:
+    get:
+      summary: Get a user by ID (public view)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Public user info
+    put:
+      summary: Update a user by ID (self only)
+      security:
+        - basicAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username: { type: string }
+                email: { type: string, format: email }
+                password: { type: string, format: password }
+      responses:
+        '200':
+          description: User updated
+    delete:
+      summary: Delete a user by ID (self only)
+      security:
+        - basicAuth: []
+      responses:
+        '204':
+          description: User deleted
+
+  /users/unique:
+    get:
+      summary: Get unique users
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+        - in: query
+          name: offset
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of unique users
+
+  /services:
+    post:
+      summary: Create a service post
+      security:
+        - basicAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title, content]
+              properties:
+                title: { type: string }
+                content: { type: string }
+      responses:
+        '201':
+          description: Service created
+    get:
+      summary: Get all services
+      responses:
+        '200':
+          description: List of services
+
+  /services/{id}:
+    get:
+      summary: Get a service by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Service post details
+    put:
+      summary: Update a service (creator only)
+      security:
+        - basicAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title: { type: string }
+                content: { type: string }
+      responses:
+        '200':
+          description: Service updated
+    delete:
+      summary: Delete a service (creator only)
+      security:
+        - basicAuth: []
+      responses:
+        '204':
+          description: Service deleted
+
+  /services/limit/{limit}:
+    get:
+      summary: Get limited list of services
+      parameters:
+        - in: path
+          name: limit
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: List of limited services
+
+  /services/unique:
+    get:
+      summary: Get unique services
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+        - in: query
+          name: offset
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of unique services
+
+  # -----------------------------
+  # Comments API (placeholders)
+  # -----------------------------
+  /comments:
+    post:
+      summary: Create a comment
+      description: Placeholder — details TBD
+      security:
+        - basicAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content: { type: string }
+                serviceId: { type: integer }
+      responses:
+        '201':
+          description: Comment created
+
+    get:
+      summary: Get all comments (placeholder)
+      description: Likely not exposed publicly
+      responses:
+        '200':
+          description: List of comments
+
+  /comments/{id}:
+    get:
+      summary: Get a comment by ID
+      description: Placeholder — details TBD
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Comment details
+    put:
+      summary: Update a comment by ID (creator only)
+      description: Placeholder — details TBD
+      security:
+        - basicAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content: { type: string }
+      responses:
+        '200':
+          description: Comment updated
+    delete:
+      summary: Delete a comment by ID (creator only)
+      description: Placeholder — details TBD
+      security:
+        - basicAuth: []
+      responses:
+        '204':
+          description: Comment deleted
+
+  /services/{id}/comments:
+    get:
+      summary: Get comments for a service
+      description: Placeholder — details TBD
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: List of comments for the service
+
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic

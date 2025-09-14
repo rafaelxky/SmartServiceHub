@@ -49,6 +49,7 @@ This document facilitates project navigation and contributing
 - Spring (Java framework)  
 - Npm (JS dependency manager)  
 - Preact (JS framework, lightweight React alternative)  
+- Tailwind (JS framework)
 - PostgreSQL (Database)
 - Nginx (Reverse proxy)
 - Docker (Containerization) unimplemented yet
