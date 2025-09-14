@@ -88,7 +88,8 @@ When the program is ran, it will automatically create an ADMIN user with the nam
 Currently this app allows CORS from all sources tough this can be changed at "/config/WebConfig.java"
 
 # Endpoints
-Can be found under the folder "controllers" or listed at "http://localhost:8080/home"
+The frontend and backend communicate trough REST api
+A list of all endpoints can be found under the folder "controllers" or listed at "http://localhost:8080/home"
 
 ## User Endpoints
 - /users POST <- creates a user, users are created like 

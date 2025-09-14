@@ -53,3 +53,9 @@ This document facilitates project navigation and contributing
 - Nginx (Reverse proxy)
 - Docker (Containerization) unimplemented yet
 
+### Recomendations
+- Intelij for backend 
+- VsCode for frontend
+- Postman for testing the api
+- Firefox or Brave browser, Tor browser if you want to deploy for it
+
