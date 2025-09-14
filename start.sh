@@ -1,42 +1,74 @@
 
 #!/bin/bash
+# ================================================
+# SmartServiceHub: Start Backend, Frontend & NGINX
+# ================================================
 
-BASE_DIR="$(dirname "$0")/SmartServiceHub"
+set -e  # Exit on error
+
+# -------------------------------
+# Config
+# -------------------------------
+BASE_DIR="$(cd "$(dirname "$0")/SmartServiceHub" && pwd)"
 MVN_URL="http://localhost:8080/status"
+NGINX_CONF="$BASE_DIR/srv/nginx.conf"
 
+GREEN="\e[32m"
+YELLOW="\e[33m"
+RED="\e[31m"
+NC="\e[0m" # Reset color
+
+# -------------------------------
+# Start Backend
+# -------------------------------
 (
-
   if curl -s "$MVN_URL" | grep -q "up"; then
-    echo "Backend is already running"
+    echo -e "${GREEN}Backend is already running${NC}"
   else
-      cd "$BASE_DIR/SmartServiceHub-backend" || exit
-      mvn spring-boot:run > backend.log 2>&1 &
-      echo $! > /tmp/backend.pid
+    echo -e "${YELLOW}Starting backend...${NC}"
+    cd "$BASE_DIR/SmartServiceHub-backend" || exit
+    mvn spring-boot:run > backend.log 2>&1 &
+    echo $! > /tmp/backend.pid
   fi
 )
 
+# -------------------------------
+# Start Frontend
+# -------------------------------
 (
-    cd "$BASE_DIR/SmartServiceHub-frontend/src/frontend" || exit
-    npm run dev > frontend.log 2>&1 &
-    echo $! > /tmp/frontend.pid
+  echo -e "${YELLOW}Starting frontend...${NC}"
+  cd "$BASE_DIR/SmartServiceHub-frontend/src/frontend" || exit
+  npm run dev > frontend.log 2>&1 &
+  echo $! > /tmp/frontend.pid
 )
 
+# -------------------------------
+# Start NGINX
+# -------------------------------
+(
+  echo -e "${YELLOW}Starting NGINX...${NC}"
+  nginx -c "$NGINX_CONF" > nginx.log 2>&1 &
+  echo $! > /tmp/nginx.pid
+)
+
+# -------------------------------
+# Wait for Backend to be Up
+# -------------------------------
 timer=0
 spinner=('\' '|' '/' '-')
 i=0
 
-echo "Starting..."
+echo "Waiting for backend to be ready..."
 while true; do
   if curl -s "$MVN_URL" | grep -q "up"; then
-    printf "\rThe app is ready to go! (in %ds)\n" "$timer"
-    printf "Get the backend endpoints at http://localhost:8080/home \n"
-    printf "Frontend URL http://localhost:5173/ \n" 
-
+    printf "\r${GREEN}The app is ready! (in %ds)${NC}\n" "$timer"
+    printf "Backend endpoints: http://localhost:8080/home\n"
+    printf "Frontend URL: http://localhost:5173/\n"
     break
   else
     sleep 1
     ((timer++))
-    i=$(( (i+1) % 4 ))  # rotate spinner index
+    i=$(( (i+1) % 4 ))  # rotate spinner
     printf "\rTimer: %d %s" "$timer" "${spinner[i]}"
   fi
 done

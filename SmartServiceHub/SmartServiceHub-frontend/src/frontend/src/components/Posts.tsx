@@ -1,10 +1,10 @@
 import { h } from 'preact';
 import PostCard from './PostCard';
-import type { Post } from '../tsx/api/models/models';
+import type { ServicePost } from '../tsx/api/models/ServicePost';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 interface Props {
-  posts: Post[];
+  posts: ServicePost[];
 }
 
 const Posts = ({ posts }: Props) => {

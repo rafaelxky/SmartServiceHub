@@ -14,3 +14,10 @@ if [ -f /tmp/frontend.pid ]; then
 else
   echo "No frontend PID file found"
 fi
+
+if [ -f /tmp/nginx.pid ]; then
+  kill "$(cat /tmp/nginx.pid)" && echo "Stopped nginx"
+  rm /tmp/nginx.pid
+else
+  echo "No nginx PID file found"
+fi

@@ -18,5 +18,6 @@ check_command mvn "Maven"
 check_command node "Node.js"
 check_command npm "NPM"
 check_command psql "Postgres"
+check_command nginx "Nginx"
 
 echo "==== Environment Check Complete ===="

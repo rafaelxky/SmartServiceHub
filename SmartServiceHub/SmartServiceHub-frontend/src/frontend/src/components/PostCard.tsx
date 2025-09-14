@@ -1,10 +1,10 @@
 import { h } from 'preact';
 import { Card } from 'react-bootstrap';
-import type { Post } from '../tsx/api/models/models';
+import type { ServicePost } from '../tsx/api/models/ServicePost';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 interface Props {
-  post: Post;
+  post: ServicePost;
 }
 
 const PostCard = ({ post }: Props) => {
@@ -14,7 +14,7 @@ const PostCard = ({ post }: Props) => {
         <Card.Title>{post.title ?? "title"}</Card.Title>
         <Card.Text>{post.content ?? "content"}</Card.Text>
         <Card.Subtitle className="text-muted">
-          By {post.author ?? "author"} on {post.date ?? "date"}
+          By {post.creatorId ?? "author"} on {post.timestamp ?? "date"}
         </Card.Subtitle>
       </Card.Body>
     </Card>
