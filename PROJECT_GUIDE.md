@@ -43,3 +43,6 @@ The project is divided into two main parts: the **Backend** and **Frontend**
 - Npm (JS dependency manager)  
 - Preact (JS framework, lightweight React alternative)  
 - PostgreSQL (Database)
+- Nginx (Reverse proxy)
+- Docker (Containerization) unimplemented yet
+
