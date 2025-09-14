@@ -35,14 +35,14 @@ You can create a service post to request a service and other users can comment a
 - NodeJS
 - npm
 - Postgres
-- Git (duh)
+- Git
 
 ## Recomended
 - Postman
 
 ## How to run
 1. install dependencies
-2. clone the repo with "git clone https://github.com/rafaelxky/SmartServiceHub"
+2. clone the repo
 3. create a db in postgres with the name "servicehub_dev". You can also change the name of the db in "/SmartServiceHub-backend/src/main/resource/db.env"
 4. run the start.sh script
 5. if it works ignore 6 trough 9 included
