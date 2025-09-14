@@ -32,6 +32,10 @@ This document facilitates project navigation and contributing
 - Sentences may end with `!`, `?`, `...`, or nothing, but should generally **not** end with `.`  
 - Titles use [title case](https://en.wikipedia.org/wiki/Title_case) 
 
+### Environmental Variables
+- All variables that must not be public must be on a file ending with .local such as .env.local
+- These are already present on the .gitignore file
+
 ## Technology
 
 ### Languages
