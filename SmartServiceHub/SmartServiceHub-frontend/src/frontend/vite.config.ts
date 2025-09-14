@@ -1,19 +1,20 @@
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import preact from '@preact/preset-vite'
 
+export default defineConfig(({ mode }) => {
+  // Load environment variables
+  const env = loadEnv(mode, process.cwd(), '')
 
-// todo: change the onion URL to fetch from file automatically
-
-// https://vite.dev/config/
-export default defineConfig({
-  plugins: [preact()],
-  server: {
-    host: true, // listen on all interfaces, not just localhost
-    allowedHosts: [
-      'phcsskv6qsvplkt53ubqcpvbpotecvqewn7vheqizzvoh4iu7zxrznyd.onion',
-      'localhost',
-      '127.0.0.1'
-    ],
-    port: 5173
+  return {
+    plugins: [preact()],
+    server: {
+      host: true,
+      allowedHosts: [
+        env.VITE_ONION_URL,
+        'localhost',
+        '127.0.0.1'
+      ],
+      port: 5173
+    }
   }
 })
