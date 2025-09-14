@@ -33,28 +33,3 @@ All tor related scripts and notes should be under ./.tor
 "services" have a reference its creator
 "comments" have a reference to the creator and the "service" they bellong to
 
-classDiagram
-    class User {
-        int id
-        string name
-        string email
-    }
-
-    class Service {
-        int id
-        string title
-        string content
-        int creator
-    }
-
-    class Comment {
-        int id
-        string content
-        int creator
-        int service
-    }
-
-    User "1" --> "many" Service : creates
-    User "1" --> "many" Comment : writes
-    Service "1" --> "many" Comment : receives
-
