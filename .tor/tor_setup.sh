@@ -33,8 +33,9 @@ echo -e "\e[34mHidden service directory prepared: $HIDDEN_SERVICE_DIR\e[0m"
 if ! grep -q "$HIDDEN_SERVICE_DIR" "$TORRC_FILE"; then
     sudo tee -a "$TORRC_FILE" > /dev/null <<EOL
 HiddenServiceDir $HIDDEN_SERVICE_DIR/
-HiddenServicePort 8080 127.0.0.1:8080
-HiddenServicePort 5173 127.0.0.1:5173
+HiddenServicePort 80 127.0.0.1:8080
+HiddenServicePort 81 127.0.0.1:8081
+HiddenServicePort 82 127.0.0.1:8082
 EOL
     echo -e "\e[32mTor hidden service config added to $TORRC_FILE\e[0m"
 else
