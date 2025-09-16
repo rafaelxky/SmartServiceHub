@@ -1,6 +1,6 @@
 # SmartServiceHub
 A full-stack Java + Preact service marketplace with AI-powered recommendations and real-time chat.
-You can create a service post to request a service and other users can comment and accept you proposal. 
+You can create a service post to request a service and other users can comment and accept your proposal. 
 
 
 ## Table of Contents
