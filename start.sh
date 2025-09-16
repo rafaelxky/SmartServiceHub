@@ -73,7 +73,7 @@ while true; do
     if curl -s "$MVN_URL" | grep -q "up"; then
         printf "\r${GREEN}The app is ready! (in %ds)${NC}\n" "$timer"
         printf "${GREEN}Backend endpoints: ${NC}http://localhost:8080/home\n"
-        printf "${GREEN}Frontend URL: ${NC}http://localhost:5173/\n"
+        printf "${GREEN}Frontend URL: ${NC}http://localhost:8082/\n"
         printf "${GREEN}NGINX URL: ${NC}http://localhost:8081/\n"
         break
     else
