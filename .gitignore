@@ -69,3 +69,4 @@ desktop.ini
 *.log
 
 todo*
+*.pid
