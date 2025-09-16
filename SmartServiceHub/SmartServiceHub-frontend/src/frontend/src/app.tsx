@@ -8,7 +8,7 @@ import { UserService } from './tsx/api/services/UserService';
 import { BasicAuthService } from './tsx/api/services/auth/BasicAuthService';
 
 const baseUrl = window.location.hostname.endsWith('.onion')
-  ? "http://" + import.meta.env.VITE_ONION_URL + ":8080"
+  ? "http://" + import.meta.env.VITE_ONION_URL + ":80"
   : "http://localhost:8080";
 
 let authService = new BasicAuthService("admin", "admin123");
