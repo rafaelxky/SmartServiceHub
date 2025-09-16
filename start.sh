@@ -10,7 +10,7 @@ echo "Started script"
 # Config
 # -------------------------------
 BASE_DIR="$(cd "$(dirname "$0")/SmartServiceHub" && pwd)"
-TEMP_DIR="$(cd "$(dirnmae "$0")/.temp" && pwd)"
+TEMP_DIR="$(cd "$(dirname "$0")/.temp" && pwd)"
 MVN_URL="http://localhost:8080/status"
 NGINX_CONF="$BASE_DIR/srv/nginx.conf"
 LOG_DIR="$BASE_DIR/logs"
