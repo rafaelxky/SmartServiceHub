@@ -12,6 +12,43 @@ servers:
     description: Local development server
 
 paths:
+  /auth/login:
+    post:
+      summary: Log in a user
+      description: >
+        Authenticate a user using Basic Auth-style credentials.
+        This is primarily for Postman autofill with placeholder values.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - password
+              properties:
+                username:
+                  type: string
+                  example: johndoe
+                password:
+                  type: string
+                  format: password
+                  example: password123
+      responses:
+        '200':
+          description: Login successful (placeholder response)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        '401':
+          description: Invalid username or password
+
   /users:
     post:
       summary: Create a user
@@ -28,16 +65,15 @@ paths:
               properties:
                 username:
                   type: string
+                  example: johndoe
                 email:
                   type: string
                   format: email
+                  example: john@example.com
                 password:
                   type: string
                   format: password
-            example:
-              username: "johndoe"
-              email: "john@example.com"
-              password: "password123"
+                  example: password123
       responses:
         '201':
           description: User created successfully
@@ -76,6 +112,7 @@ paths:
           required: true
           schema:
             type: integer
+            example: 1
       requestBody:
         required: true
         content:
@@ -85,16 +122,15 @@ paths:
               properties:
                 username:
                   type: string
+                  example: johndoe_updated
                 email:
                   type: string
                   format: email
+                  example: john_updated@example.com
                 password:
                   type: string
                   format: password
-            example:
-              username: "johndoe_updated"
-              email: "john_updated@example.com"
-              password: "newpassword123"
+                  example: newpassword123
       responses:
         '200':
           description: User updated
@@ -108,6 +144,7 @@ paths:
           required: true
           schema:
             type: integer
+            example: 1
       responses:
         '204':
           description: User deleted
@@ -147,11 +184,10 @@ paths:
               properties:
                 title:
                   type: string
+                  example: Website Design
                 content:
                   type: string
-            example:
-              title: "Website Design"
-              content: "I need a website designed for my business."
+                  example: I need a website designed for my business.
       responses:
         '201':
           description: Service created
@@ -184,6 +220,7 @@ paths:
           required: true
           schema:
             type: integer
+            example: 1
       requestBody:
         required: true
         content:
@@ -193,11 +230,10 @@ paths:
               properties:
                 title:
                   type: string
+                  example: Updated Service Title
                 content:
                   type: string
-            example:
-              title: "Updated Service Title"
-              content: "Updated service description"
+                  example: Updated service description
       responses:
         '200':
           description: Service updated
@@ -211,6 +247,7 @@ paths:
           required: true
           schema:
             type: integer
+            example: 1
       responses:
         '204':
           description: Service deleted
@@ -247,9 +284,6 @@ paths:
         '200':
           description: List of unique services
 
-  # -----------------------------
-  # Comments API (placeholders)
-  # -----------------------------
   /comments:
     post:
       summary: Create a comment
@@ -265,11 +299,10 @@ paths:
               properties:
                 content:
                   type: string
+                  example: I can help with this service
                 serviceId:
                   type: integer
-            example:
-              content: "I can help with this service"
-              serviceId: 1
+                  example: 1
       responses:
         '201':
           description: Comment created
@@ -305,6 +338,7 @@ paths:
           required: true
           schema:
             type: integer
+            example: 1
       requestBody:
         required: true
         content:
@@ -314,8 +348,7 @@ paths:
               properties:
                 content:
                   type: string
-            example:
-              content: "Updated comment content"
+                  example: Updated comment content
       responses:
         '200':
           description: Comment updated
@@ -330,6 +363,7 @@ paths:
           required: true
           schema:
             type: integer
+            example: 1
       responses:
         '204':
           description: Comment deleted
@@ -354,3 +388,8 @@ components:
     basicAuth:
       type: http
       scheme: basic
+      description: |
+        Use HTTP Basic authentication.
+        Example credentials:
+          Username: johndoe
+          Password: password123

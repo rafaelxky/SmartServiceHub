@@ -6,13 +6,15 @@ import './styles/styles.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { UserService } from './tsx/api/services/UserService';
 import { BasicAuthService } from './tsx/api/services/auth/BasicAuthService';
+import { ServicePostService } from './tsx/api/services/ServicePostService';
 
 const baseUrl = window.location.hostname.endsWith('.onion')
-  ? "http://" + import.meta.env.VITE_ONION_URL + ":80"
-  : "http://localhost:8080";
+  ? "http://" + import.meta.env.VITE_ONION_URL + ":81"
+  : "http://localhost:8081/api";
 
 let authService = new BasicAuthService("admin", "admin123");
 let userService: UserService = new UserService(baseUrl+ "/users", authService);
+let servicePostService: ServicePostService = new ServicePostService(baseUrl+ "/users", authService);
 console.log(await userService.getUserById(1));
 /*
 let servicePostService: ServicePostService= new ServicePostService("http://localhost:8080/services", authService);
@@ -21,10 +23,12 @@ let user = await userService.getUserById(1);
 console.log("User: ", JSON.stringify(user, null, 2))
 */
 
-const posts: ServicePost[] = [
+const posts_static: ServicePost[] = [
   { id: 1, title: 'First Post', content: 'This is the first post.', creatorId: 1, timestamp: '2025-08-19' },
   { id: 2, title: 'Second Post', content: 'This is another post.', creatorId: 1, timestamp: '2025-08-18' },
 ];
+
+const posts: ServicePost[] = await servicePostService.getUniqueServicePost(5, 0);
 
 export function App() {
   return (

@@ -44,8 +44,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/users/name/**").hasRole(Roles.ADMIN.getRoleName())
                         .requestMatchers("/admin").hasRole(Roles.ADMIN.getRoleName())
                         .anyRequest().permitAll()
-                )
-                .httpBasic(Customizer.withDefaults());
+                );
         return http.build();
     }
 
