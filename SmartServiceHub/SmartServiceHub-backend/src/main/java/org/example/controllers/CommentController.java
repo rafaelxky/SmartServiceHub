@@ -42,11 +42,11 @@ public class CommentController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        Comment savedComment = commentDbService.saveComment(Comment.formCreateDto(comment, currentUser));
+        Comment savedComment = commentDbService.saveComment(Comment.fromCreateDto(comment, currentUser));
 
         LuaModManager luaManager = LuaModManager.getInstance();
         luaManager.triggerEvent("onCreateComment", null);
-        
+
         return ResponseEntity.status(HttpStatus.CREATED).body(savedComment);
     }
 

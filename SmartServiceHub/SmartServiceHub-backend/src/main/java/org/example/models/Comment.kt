@@ -35,7 +35,7 @@ class Comment(
 ) {
     companion object {
         @JvmStatic
-        fun formCreateDto(commentCreateDto: CommentCreateDto, user: AppUser): Comment{
+        fun fromCreateDto(commentCreateDto: CommentCreateDto, user: AppUser): Comment{
             return Comment(null, commentCreateDto.content, commentCreateDto.postId, user.id)
         }
     }
