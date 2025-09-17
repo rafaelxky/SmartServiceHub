@@ -45,21 +45,16 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/users/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/users/name/**").hasRole(Roles.ADMIN.getRoleName())
                         .requestMatchers("/admin").hasRole(Roles.ADMIN.getRoleName())
-                        // Allow unauthenticated access to auth endpoints
                         .requestMatchers("/authenticate").permitAll()
                         .anyRequest().permitAll()
                 )
-                // Make the session stateless
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                // Add JWT filter before UsernamePasswordAuthenticationFilter
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
     }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
-        System.out.println("AuthManager - sec conf");
         return authConfig.getAuthenticationManager();
     }
 
@@ -69,7 +64,6 @@ public class SecurityConfig {
     }
 
     public UserDetailsService userDetailsService() {
-        System.out.println("MyUserDetailService - sec conf");
         return myUserDetailsService;
     }
 }

@@ -1,0 +1,3 @@
+Fixed:
+- anotating userDetailsService with @Bean in SecurityConfig causes Stack Overflow error
+
