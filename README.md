@@ -196,9 +196,10 @@ register_event {
 - User creation
 - Post creation
 - Comment creation
-- User autentication
+- User autentication (JWT)
 - Roles
 - Lua script events
+- Nginx integration
 ### TODO
 - AI integration
 - Frontend implementation
