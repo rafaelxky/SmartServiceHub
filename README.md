@@ -117,7 +117,15 @@ A list of all endpoints can be found under the folder "controllers" or listed at
 - /services/unique?limiy=int&offset=int GET <- gets a unique public list of services based on limit and offset
 
 ## Comments Endpoints
-- to be written
+- /comments POST <- creates a comment for a post, must be logged in. Comments are creted like
+```JSON
+{"content": "content", "postId": "postId"}
+```
+- /comments/{id} GET <- gets a comment by id
+- /comments/{put} PUT <- updates a comment by id, must be logged in as the user who created it
+- /comments/{id} DELETE <- deletes a comment by id, must be logged in as the user who created it
+- /comments/post/{post_id} GET <- gets all comments from a post with the specific id
+- /comments/unique?limit=int&offset=int&post_id=int GET <- gets unique comments from a post based on a limit and offset
 
 ## Nginx
 - Nginx will route backend request from /api endpoint (ex: http://8081/api/home -> http://8080/home)
