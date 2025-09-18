@@ -70,6 +70,7 @@ The required parameters are username and password for user loggin
 Some endpoints will require authentication, these can be seen at "/config/SecurityConfig.java" or in their respective controllers from the notations.
 Accounts may be USER or ADMIN.
 When the program is ran, it will automatically create an ADMIN user with the name "admin" and password "admin123", this can be changed in "/config/DataInitialization.java".
+It is verry important that you change this is you intend yo deploy this application
 
 # Models
 ## User

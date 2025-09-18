@@ -1,7 +1,7 @@
 
 openapi: 3.0.3
 info:
-  title: SmartServiceHub API
+  title: ssh_api
   version: 1.0.0
   description: >
     SmartServiceHub is a service marketplace platform with JWT authentication,
@@ -30,11 +30,11 @@ paths:
               properties:
                 username:
                   type: string
-                  example: johndoe
+                  example: admin
                 password:
                   type: string
                   format: password
-                  example: password123
+                  example: admin123
       responses:
         '200':
           description: Login successful
