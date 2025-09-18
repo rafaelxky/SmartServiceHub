@@ -36,6 +36,11 @@ This document facilitates project navigation and contributing
 - All variables that must not be public must be on a file ending with .local such as .env.local
 - These are already present on the .gitignore file
 
+### Controllers
+- Controllers that use GET must return a public DTO of the class
+- Controllers for POST and PUT must use the create DTO of the class
+- Exceptions for admin controller
+
 ## Technology
 
 ### Languages
