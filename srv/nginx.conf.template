@@ -1,7 +1,7 @@
 
 worker_processes auto;
 
-pid /home/rafael/Code/SmartServiceHub/.temp/nginx.pid;
+pid {{PID}};
 
 events {
     worker_connections 1024;
@@ -17,8 +17,8 @@ http {
 
     limit_req_zone $binary_remote_addr zone=one:10m rate=5r/s;
 
-    access_log /home/rafael/Code/SmartServiceHub/SmartServiceHub/logs/nginx_access.log;
-    error_log  /home/rafael/Code/SmartServiceHub/SmartServiceHub/logs/nginx_error.log;
+    access_log {{ACCESS_LOG}};
+    error_log  {{ERROR_LOG}};
 
     server {
         listen 8081;

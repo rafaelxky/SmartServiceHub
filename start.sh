@@ -9,17 +9,32 @@ echo "Started script"
 # -------------------------------
 # Config
 # -------------------------------
-BASE_DIR="$(cd "$(dirname "$0")/SmartServiceHub" && pwd)"
-TEMP_DIR="$(cd "$(dirname "$0")/../.temp" && pwd)"
-MVN_URL="http://localhost:8080/status"
-NGINX_CONF="$BASE_DIR/../srv/nginx.conf"
+CURRENT_DIR="$(cd "$(dirname "$0")" && pwd)"
+BASE_DIR="$CURRENT_DIR/SmartServiceHub"
+TEMP_DIR="$CURRENT_DIR/.temp"
+NGINX_CONF="$CURRENT_DIR/srv/nginx.conf"
 LOG_DIR="$BASE_DIR/logs"
+MVN_URL="http://localhost:8080/status"
+
+echo Base dir
+echo $BASE_DIR
+echo Temp dir
+echo $TEMP_DIR
+echo Nginx conf
+echo $NGINX_CONF
 
 mkdir -p "$LOG_DIR"
 
 BACKEND_PID="$TEMP_DIR/backend.pid"
 FRONTEND_PID="$TEMP_DIR/frontend.pid"
 NGINX_PID="$TEMP_DIR/nginx.pid"
+
+echo "Backend pid"
+echo $BACKEND_PID
+echo "Frotend pid"
+echo $FRONTEND_PID
+echo "Nginx pid"
+echo $NGINX_PID
 
 rm -f "$BACKEND_PID" "$FRONTEND_PID" "$NGINX_PID"
 
@@ -52,6 +67,12 @@ echo $! > "$FRONTEND_PID"
 # -------------------------------
 # Start NGINX (non-root)
 # -------------------------------
+sed "
+s|{{ACCESS_LOG}}|$LOG_DIR/nginx_access.log|g; 
+s|{{ERROR_LOG}}|$LOG_DIR/nginx_error.log|g; 
+s|{{PID}}|$TEMP_DIR/nginx.pid|g;" \
+    "$CURRENT_DIR/srv/nginx.conf.template" > "$NGINX_CONF"
+
 echo -e "${YELLOW}Starting NGINX...${NC}"
 nginx -c "$NGINX_CONF" > "$LOG_DIR/nginx.log" 2>&1 &
 echo $! > "$NGINX_PID"
