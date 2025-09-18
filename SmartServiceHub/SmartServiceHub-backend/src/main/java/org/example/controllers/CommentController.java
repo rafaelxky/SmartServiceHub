@@ -34,12 +34,16 @@ public class CommentController {
     }
 
     @PostMapping
-    public ResponseEntity<Comment> createComment(
+    public ResponseEntity<Object> createComment(
             @RequestBody CommentCreateDto comment,
             @AuthenticationPrincipal AppUser currentUser
     ) {
         if (currentUser == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("""
+                    {
+                        "error": "User not logged in!"
+                    }
+                    """);
         }
 
         Comment savedComment = commentDbService.saveComment(Comment.fromCreateDto(comment, currentUser));
@@ -51,38 +55,47 @@ public class CommentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CommentPublicDto> getComment(@PathVariable Long id) {
-        CommentPublicDto comment = CommentPublicDto.fromComment(commentDbService.getCommentById(id).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND))
-        );
+    public ResponseEntity<Object> getComment(@PathVariable Long id) {
 
+        var comment_from_db = commentDbService.getCommentById(id);
+        if (comment_from_db.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("""
+                    {
+                        "message": "Comment %d not found!"
+                    }
+                    """.formatted(id));
+        }
+
+        CommentPublicDto comment = CommentPublicDto.fromComment(comment_from_db.get());
         LuaModManager luaManager = LuaModManager.getInstance();
         luaManager.triggerEvent("onGetCommentById", null);
 
         return ResponseEntity.ok(comment);
     }
 
-    // remove probab
-    @GetMapping
-    public List<Comment> getAllComments() {
-        return commentDbService.getAllComments();
-    }
-
     @PutMapping("/{id}")
-    public ResponseEntity<Comment> updateComment(
+    public ResponseEntity<Object> updateComment(
             @PathVariable Long id,
             @RequestBody Comment commentUpdate,
             @AuthenticationPrincipal AppUser currentUser
     ) {
         if (currentUser == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("""
+                    {
+                        "error": "User not logged in!"
+                    }
+                    """);
         }
 
         Comment existing = commentDbService.getCommentById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         if (!currentUser.getId().equals(existing.getCreatorId())) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("""
+                    {
+                        "error": "User id and comment creator id mismatch!"
+                    }
+                    """);
         }
 
         existing.setContent(commentUpdate.getContent());
@@ -96,19 +109,27 @@ public class CommentController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteComment(
+    public ResponseEntity<Object> deleteComment(
             @PathVariable Long id,
             @AuthenticationPrincipal AppUser currentUser
     ) {
         if (currentUser == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("""
+                    {
+                        "error": "User not logged in!"
+                    }
+                    """);
         }
 
         Comment existing = commentDbService.getCommentById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         if (!currentUser.getId().equals(existing.getCreatorId())) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("""
+                    {
+                        "error": "User id and comment creator id mismatch!"
+                    }
+                    """);
         }
 
         commentDbService.deleteCommentById(id);
@@ -116,31 +137,51 @@ public class CommentController {
         LuaModManager luaManager = LuaModManager.getInstance();
         luaManager.triggerEvent("onDeleteCommentById", null);
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.OK).body("""
+                {
+                    "message": "Comment %d deleted successfully!"
+                }
+                """.formatted(id));
     }
 
     @GetMapping("/post/{post_id}")
-    public ResponseEntity<Comment> getPostComments (
+    public ResponseEntity<Object> getPostComments (
             @PathVariable Long post_id
     ){
-        commentDbService.getCommentsFromPost(post_id);
+        var posts = commentDbService.getCommentsFromPost(post_id);
+
+        if (posts == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("""
+                    {
+                        "error": "Post %d not found!"
+                    }
+                    """.formatted(post_id));
+        }
 
         LuaModManager luaManager = LuaModManager.getInstance();
         luaManager.triggerEvent("onGetCommentsFromPost", null);
 
-        return null;
+        return ResponseEntity.status(HttpStatus.OK).body(posts);
     }
 
     @GetMapping("/unique")
-    public ResponseEntity<List<Comment>> getPostUniqueComments(
+    public ResponseEntity<Object> getPostUniqueComments(
         @RequestParam int limit,
         @RequestParam int offset,
         @RequestParam long post_id
     ){
+        var posts = commentDbService.getCommentUnique(limit, (offset * limit), post_id);
+        if (posts == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("""
+                    {
+                        "error": "Post %d not found!"
+                    }
+                    """.formatted(post_id));
+        }
 
         LuaModManager luaManager = LuaModManager.getInstance();
         luaManager.triggerEvent("onGetUniqueComments", null);
 
-        return ResponseEntity.ok(commentDbService.getCommentUnique(limit, (offset * limit), post_id));
+        return ResponseEntity.ok(posts);
     }
 }

@@ -37,7 +37,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse> createUser(@RequestBody UserCreateDto user) {
+    public ResponseEntity<Object> createUser(@RequestBody UserCreateDto user) {
         if (!user.isValid()){
            return user.badRequestResponse();
         }
@@ -52,7 +52,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserPublicDto> getUserByID(@PathVariable Long id) {
+    public ResponseEntity<Object> getUserByID(@PathVariable Long id) {
 
         Optional<UserPublicDto> maybeUser = userDbService.getUserById(id)
                 .map(UserPublicDto::fromAppUser);
@@ -64,29 +64,33 @@ public class UserController {
             return ResponseEntity.ok(savedUser);
         }
 
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("""
+                {
+                    "message": "User %d not found!"
+                }
+                """.formatted(id));
     }
-
-    // this is very risky maybe delete this because if 1000 users computer go boom (perhaps)
-    @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<AppUser>> getAllUsers() {
-        return ResponseEntity.ok(userDbService.getAllUsers());
-    }
-
 
     @PutMapping("/{id}")
-    public ResponseEntity<AppUser> updateUser(
+    public ResponseEntity<Object> updateUser(
             @PathVariable Long id,
             @RequestBody AppUser userUpdate,
             @AuthenticationPrincipal AppUser currentUser
     ) {
         if (currentUser == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("""
+                    {
+                        "error": "User not logged in!"
+                    }
+                    """);
         }
 
         if (!Objects.equals(currentUser.getId(), id)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("""
+                    {
+                        "error": "Logged user id and updated user id mismatch!"
+                    }
+                    """);
         }
 
         AppUser existing = userDbService.getUserById(id)
@@ -106,16 +110,24 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(
+    public ResponseEntity<String> deleteUser(
             @PathVariable Long id,
             @AuthenticationPrincipal AppUser currentUser
     ) {
         if (currentUser == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("""
+                    {
+                        "error": "User not logged in!"
+                    }
+                    """);
         }
 
         if (!currentUser.getId().equals(id)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("""
+                    {
+                        "error": "Logged user id and deleted user id mismatch!"
+                    }
+                    """);
         }
 
         userDbService.deleteUserById(id);
@@ -124,7 +136,11 @@ public class UserController {
         LuaModManager luaManager = LuaModManager.getInstance();
         luaManager.triggerEvent("onDeleteUserById", null);
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.OK).body("""
+                {
+                    "message": "User %d deleted successfully!"
+                }
+                """.formatted(id));
     }
 
     @GetMapping("/unique")

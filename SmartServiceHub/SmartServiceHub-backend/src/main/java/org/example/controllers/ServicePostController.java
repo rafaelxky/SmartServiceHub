@@ -31,10 +31,17 @@ public class ServicePostController {
 
     @PostMapping
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<ServicePost> createService(
+    public ResponseEntity<Object> createService(
             @RequestBody ServicePostCreateDto service,
             @AuthenticationPrincipal AppUser currentUser
     ){
+        if (service.getTitle() == null || service.getContent() == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("""
+                    {
+                        "error": "Error, malformed request! Parameters are as follows: title, content"
+                    }
+                    """);
+        }
         ServicePost savedService = serviceDbService.saveService(ServicePost.fromCreateDto(service, currentUser));
 
         LuaModManager luaManager = LuaModManager.getInstance();
@@ -43,15 +50,8 @@ public class ServicePostController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedService);
     }
 
-    // this one should probably be deleted too
-    // nah later
-    @GetMapping
-    public ResponseEntity<List<ServicePost>> getAllServices() {
-        return ResponseEntity.ok(serviceDbService.getAllServices());
-    }
-
     @GetMapping("/{id}")
-    public ResponseEntity<ServicePost> getServiceById(@PathVariable("id") Long id) {
+    public ResponseEntity<Object> getServiceById(@PathVariable("id") Long id) {
         Optional<ServicePost> maybeAppService = serviceDbService.getServiceById(id);
 
         if (maybeAppService.isPresent()){
@@ -64,24 +64,36 @@ public class ServicePostController {
             return ResponseEntity.ok(servicePost);
         }
 
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("""
+                {
+                    "not_found": "Service with id %d not found!"
+                }
+                """.formatted(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ServicePost> updateService(
+    public ResponseEntity<Object> updateService(
             @PathVariable Long id,
             @RequestBody ServicePost serviceUpdate,
             @AuthenticationPrincipal AppUser currentUser
     ) {
         if (currentUser == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("""
+                    {
+                        "error": "User not logged in!"
+                    }
+                    """);
         }
 
         ServicePost existing = serviceDbService.getServiceById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         if (!currentUser.getId().equals(existing.getCreatorId())) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("""
+                    {
+                        "error": "User id and post creator id mismatch!"
+                    }
+                    """);
         }
 
         existing.setTitle(serviceUpdate.getTitle());
@@ -96,19 +108,28 @@ public class ServicePostController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteServiceById(
+    public ResponseEntity<String> deleteServiceById(
             @PathVariable Long id,
             @AuthenticationPrincipal AppUser currentUser
     ) {
         if (currentUser == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("""
+                    {
+                        "error": "User not logged in!"
+                    }
+                    """);
         }
 
         ServicePost service = serviceDbService.getServiceById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         if (!currentUser.getId().equals(service.getCreatorId())) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("""
+                    {
+                        "error": "User id and post creator id mismatch!"
+                    }
+                    """);
+
         }
 
         serviceDbService.deleteServiceById(id);
@@ -116,7 +137,11 @@ public class ServicePostController {
         LuaModManager luaManager = LuaModManager.getInstance();
         luaManager.triggerEvent("onDeleteServicePostById", null);
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.OK).body("""
+                {
+                    "message": "Service %d successfully deleted!"
+                }
+                """.formatted(id));
     }
 
     @GetMapping("/unique")

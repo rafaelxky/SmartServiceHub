@@ -27,13 +27,17 @@ public class UserCreateDto {
         );
     }
 
-    public ResponseEntity<ApiResponse> badRequestResponse(){
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(HttpStatus.BAD_REQUEST, """ 
+    public ResponseEntity<Object> badRequestResponse(){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(""" 
                     Error, bad request. A user must be created like {"username": "exampleName", "email": "example@example.com", "password": "example123" }
-                    """, null));
+                    """);
     }
 
-    public ResponseEntity<ApiResponse> successResponse(AppUser savedUser){
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse(HttpStatus.OK, "User created successfully", savedUser));
+    public ResponseEntity<Object> successResponse(AppUser savedUser){
+        return ResponseEntity.status(HttpStatus.CREATED).body("""
+                {
+                    "message": "User created successfully!"
+                }
+                """);
     }
 }
