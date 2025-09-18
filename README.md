@@ -85,7 +85,6 @@ When the program is ran, it will automatically create an ADMIN user with the nam
 - CommentCreateDto <- comment model for creation
 - CommentPublicDto <- comment model for showing
 ## Others
-- ApiResponse <- model for responding to requests, however this must be changed in the future as it is a source of inconsistencies
 - Roles <- Enum for roles "ADMIN, USER, MODERATOR"1
 
 ## CORS Policy
