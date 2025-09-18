@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.models.AppUser;
+import org.example.models.responses_requests.GenericErrorResponse;
+import org.example.models.responses_requests.GenericSuccessResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import jakarta.validation.constraints.NotBlank;
@@ -27,16 +29,10 @@ public class UserCreateDto {
     }
 
     public ResponseEntity<Object> badRequestResponse(){
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(""" 
-                    Error, bad request. A user must be created like {"username": "exampleName", "email": "example@example.com", "password": "example123" }
-                    """);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new GenericErrorResponse("Incorrect creation parameters: username, email, passowrd"));
     }
 
     public ResponseEntity<Object> successResponse(AppUser savedUser){
-        return ResponseEntity.status(HttpStatus.CREATED).body("""
-                {
-                    "message": "User created successfully!"
-                }
-                """);
+        return ResponseEntity.status(HttpStatus.CREATED).body((new GenericSuccessResponse("User created successfully!")));
     }
 }

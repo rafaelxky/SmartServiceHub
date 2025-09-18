@@ -5,6 +5,8 @@ import org.example.lua.LuaTableAdaptor;
 import org.example.models.AppUser;
 import org.example.models.dto.UserPublicDto;
 import org.example.models.dto.UserCreateDto;
+import org.example.models.responses_requests.GenericErrorResponse;
+import org.example.models.responses_requests.GenericSuccessResponse;
 import org.example.services.persistance.UserDbService;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
@@ -60,11 +62,7 @@ public class UserController {
             return ResponseEntity.ok(savedUser);
         }
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("""
-                {
-                    "message": "User %d not found!"
-                }
-                """.formatted(id));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new GenericSuccessResponse("User %d not found".formatted(id)));
     }
 
     @PutMapping("/{id}")
@@ -74,19 +72,11 @@ public class UserController {
             @AuthenticationPrincipal AppUser currentUser
     ) {
         if (currentUser == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("""
-                    {
-                        "error": "User not logged in!"
-                    }
-                    """);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new GenericErrorResponse("User not logged in"));
         }
 
         if (!Objects.equals(currentUser.getId(), id)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("""
-                    {
-                        "error": "Logged user id and updated user id mismatch!"
-                    }
-                    """);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new GenericErrorResponse("Logged user cannot modify this other user"));
         }
 
         AppUser existing = userDbService.getUserById(id)
@@ -106,24 +96,16 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(
+    public ResponseEntity<Object> deleteUser(
             @PathVariable Long id,
             @AuthenticationPrincipal AppUser currentUser
     ) {
         if (currentUser == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("""
-                    {
-                        "error": "User not logged in!"
-                    }
-                    """);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new GenericErrorResponse("User not logged in!"));
         }
 
-        if (!currentUser.getId().equals(id)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("""
-                    {
-                        "error": "Logged user id and deleted user id mismatch!"
-                    }
-                    """);
+        if (!Objects.equals(currentUser.getId(), id)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new GenericErrorResponse("Logged user cannot modify other user or does not have enough permissions!"));
         }
 
         userDbService.deleteUserById(id);
@@ -132,15 +114,11 @@ public class UserController {
         LuaModManager luaManager = LuaModManager.getInstance();
         luaManager.triggerEvent("onDeleteUserById", null);
 
-        return ResponseEntity.status(HttpStatus.OK).body("""
-                {
-                    "message": "User %d deleted successfully!"
-                }
-                """.formatted(id));
+        return ResponseEntity.status(HttpStatus.OK).body(new GenericSuccessResponse("User %d deleted successfully".formatted(id)));
     }
 
     @GetMapping("/unique")
-    public ResponseEntity<List<UserPublicDto>> getUnique(
+    public ResponseEntity<Object> getUnique(
         @RequestParam int limit,
         @RequestParam int offset
     ){

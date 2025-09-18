@@ -58,6 +58,7 @@ public class HomeController {
         return endpoints;
     }
 
+    // must not touch this no matter what, it will screw all scripts
     @GetMapping("/status")
     @ResponseBody
     public String getServerStatus(){

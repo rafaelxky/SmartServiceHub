@@ -7,6 +7,9 @@ import org.example.models.AppUser;
 import org.example.models.Comment;
 import org.example.models.dto.CommentCreateDto;
 import org.example.models.dto.CommentPublicDto;
+import org.example.models.responses_requests.GenericErrorResponse;
+import org.example.models.responses_requests.GenericSuccessResponse;
+import org.example.models.responses_requests.NotFoundResponse;
 import org.example.services.persistance.CommentDbService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,11 +42,7 @@ public class CommentController {
             @AuthenticationPrincipal AppUser currentUser
     ) {
         if (currentUser == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("""
-                    {
-                        "error": "User not logged in!"
-                    }
-                    """);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new GenericErrorResponse("User not logged in"));
         }
 
         Comment savedComment = commentDbService.saveComment(Comment.fromCreateDto(comment, currentUser));
@@ -59,11 +58,7 @@ public class CommentController {
 
         var comment_from_db = commentDbService.getCommentById(id);
         if (comment_from_db.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("""
-                    {
-                        "message": "Comment %d not found!"
-                    }
-                    """.formatted(id));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new NotFoundResponse("Comment %d not found!".formatted(id)));
         }
 
         CommentPublicDto comment = CommentPublicDto.fromComment(comment_from_db.get());
@@ -80,22 +75,14 @@ public class CommentController {
             @AuthenticationPrincipal AppUser currentUser
     ) {
         if (currentUser == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("""
-                    {
-                        "error": "User not logged in!"
-                    }
-                    """);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new GenericErrorResponse("User not logged in!"));
         }
 
         Comment existing = commentDbService.getCommentById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         if (!currentUser.getId().equals(existing.getCreatorId())) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("""
-                    {
-                        "error": "User id and comment creator id mismatch!"
-                    }
-                    """);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new GenericErrorResponse("This user cannot edit this comment because it's not its creator or doesn't have enough permissions!"));
         }
 
         existing.setContent(commentUpdate.getContent());
@@ -114,22 +101,14 @@ public class CommentController {
             @AuthenticationPrincipal AppUser currentUser
     ) {
         if (currentUser == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("""
-                    {
-                        "error": "User not logged in!"
-                    }
-                    """);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new GenericErrorResponse("User not logged in!"));
         }
 
         Comment existing = commentDbService.getCommentById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         if (!currentUser.getId().equals(existing.getCreatorId())) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("""
-                    {
-                        "error": "User id and comment creator id mismatch!"
-                    }
-                    """);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new GenericErrorResponse("This user cannot edit this comment because it's not its creator or doesn't have enough permissions!"));
         }
 
         commentDbService.deleteCommentById(id);
@@ -137,11 +116,7 @@ public class CommentController {
         LuaModManager luaManager = LuaModManager.getInstance();
         luaManager.triggerEvent("onDeleteCommentById", null);
 
-        return ResponseEntity.status(HttpStatus.OK).body("""
-                {
-                    "message": "Comment %d deleted successfully!"
-                }
-                """.formatted(id));
+        return ResponseEntity.status(HttpStatus.OK).body(new GenericSuccessResponse("Comment %d deleted successfully!"));
     }
 
     @GetMapping("/post/{post_id}")
@@ -151,11 +126,7 @@ public class CommentController {
         var posts = commentDbService.getCommentsFromPost(post_id);
 
         if (posts == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("""
-                    {
-                        "error": "Post %d not found!"
-                    }
-                    """.formatted(post_id));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new NotFoundResponse("Post %d not found".formatted(post_id)));
         }
 
         LuaModManager luaManager = LuaModManager.getInstance();
@@ -172,11 +143,7 @@ public class CommentController {
     ){
         var posts = commentDbService.getCommentUnique(limit, (offset * limit), post_id);
         if (posts == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("""
-                    {
-                        "error": "Post %d not found!"
-                    }
-                    """.formatted(post_id));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new NotFoundResponse("Post %d not found!".formatted(post_id)));
         }
 
         LuaModManager luaManager = LuaModManager.getInstance();
