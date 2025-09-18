@@ -4,29 +4,29 @@ info:
   title: SmartServiceHub API
   version: 1.0.0
   description: >
-    API specification for SmartServiceHub, a service marketplace platform.
-    Provides endpoints for user management, service posts, and comments.
+    SmartServiceHub is a service marketplace platform with JWT authentication,
+    roles (USER, ADMIN, MODERATOR), and support for Lua script extensions.
 
 servers:
   - url: http://localhost:8080
     description: Local development server
 
+security:
+  - bearerAuth: []
+
 paths:
-  /auth/login:
+  /log-in:
     post:
       summary: Log in a user
       description: >
-        Authenticate a user using Basic Auth-style credentials.
-        This is primarily for Postman autofill with placeholder values.
+        Authenticate a user and receive a JWT token.
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: object
-              required:
-                - username
-                - password
+              required: [username, password]
               properties:
                 username:
                   type: string
@@ -37,7 +37,7 @@ paths:
                   example: password123
       responses:
         '200':
-          description: Login successful (placeholder response)
+          description: Login successful
           content:
             application/json:
               schema:
@@ -45,7 +45,7 @@ paths:
                 properties:
                   token:
                     type: string
-                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                    example: "eyJhbGciOiJIUzI1NiIsInR..."
         '401':
           description: Invalid username or password
 
@@ -57,26 +57,14 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - username
-                - email
-                - password
-              properties:
-                username:
-                  type: string
-                  example: johndoe
-                email:
-                  type: string
-                  format: email
-                  example: john@example.com
-                password:
-                  type: string
-                  format: password
-                  example: password123
+              $ref: '#/components/schemas/UserCreateDto'
       responses:
         '201':
           description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPublicDto'
         '400':
           description: Invalid request
         '409':
@@ -84,67 +72,68 @@ paths:
     get:
       summary: Get all users (Admin only)
       security:
-        - basicAuth: []
+        - bearerAuth: []
       responses:
         '200':
           description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserPublicDto'
 
   /users/{id}:
     get:
       summary: Get a user by ID (public view)
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           required: true
           schema:
             type: integer
-            example: 1
       responses:
         '200':
           description: Public user info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPublicDto'
+        '404':
+          description: User not found
     put:
       summary: Update a user by ID (self only)
       security:
-        - basicAuth: []
+        - bearerAuth: []
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           required: true
           schema:
             type: integer
-            example: 1
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                username:
-                  type: string
-                  example: johndoe_updated
-                email:
-                  type: string
-                  format: email
-                  example: john_updated@example.com
-                password:
-                  type: string
-                  format: password
-                  example: newpassword123
+              $ref: '#/components/schemas/UserCreateDto'
       responses:
         '200':
           description: User updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPublicDto'
     delete:
       summary: Delete a user by ID (self only)
       security:
-        - basicAuth: []
+        - bearerAuth: []
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           required: true
           schema:
             type: integer
-            example: 1
       responses:
         '204':
           description: User deleted
@@ -166,36 +155,42 @@ paths:
       responses:
         '200':
           description: List of unique users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserPublicDto'
 
   /services:
     post:
       summary: Create a service post
       security:
-        - basicAuth: []
+        - bearerAuth: []
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - title
-                - content
-              properties:
-                title:
-                  type: string
-                  example: Website Design
-                content:
-                  type: string
-                  example: I need a website designed for my business.
+              $ref: '#/components/schemas/ServicePostCreateDto'
       responses:
         '201':
           description: Service created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServicePostPublicDto'
     get:
       summary: Get all services
       responses:
         '200':
           description: List of services
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServicePostPublicDto'
 
   /services/{id}:
     get:
@@ -206,48 +201,46 @@ paths:
           required: true
           schema:
             type: integer
-            example: 1
       responses:
         '200':
           description: Service post details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServicePostPublicDto'
     put:
       summary: Update a service (creator only)
       security:
-        - basicAuth: []
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
           required: true
           schema:
             type: integer
-            example: 1
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                title:
-                  type: string
-                  example: Updated Service Title
-                content:
-                  type: string
-                  example: Updated service description
+              $ref: '#/components/schemas/ServicePostCreateDto'
       responses:
         '200':
           description: Service updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServicePostPublicDto'
     delete:
       summary: Delete a service (creator only)
       security:
-        - basicAuth: []
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
           required: true
           schema:
             type: integer
-            example: 1
       responses:
         '204':
           description: Service deleted
@@ -261,10 +254,15 @@ paths:
           required: true
           schema:
             type: integer
-            example: 5
       responses:
         '200':
           description: List of limited services
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServicePostPublicDto'
 
   /services/unique:
     get:
@@ -274,122 +272,233 @@ paths:
           name: limit
           schema:
             type: integer
-            example: 10
+          example: 10
         - in: query
           name: offset
           schema:
             type: integer
-            example: 0
+          example: 0
       responses:
         '200':
           description: List of unique services
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServicePostPublicDto'
 
   /comments:
     post:
       summary: Create a comment
-      description: "Placeholder — details TBD"
       security:
-        - basicAuth: []
+        - bearerAuth: []
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                content:
-                  type: string
-                  example: I can help with this service
-                serviceId:
-                  type: integer
-                  example: 1
+              $ref: '#/components/schemas/CommentCreateDto'
       responses:
         '201':
           description: Comment created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommentPublicDto'
     get:
-      summary: Get all comments (placeholder)
-      description: "Likely not exposed publicly"
+      summary: Get all comments (admin only)
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: List of comments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CommentPublicDto'
 
   /comments/{id}:
     get:
       summary: Get a comment by ID
-      description: "Placeholder — details TBD"
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           required: true
           schema:
             type: integer
-            example: 1
       responses:
         '200':
           description: Comment details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommentPublicDto'
     put:
       summary: Update a comment by ID (creator only)
-      description: "Placeholder — details TBD"
       security:
-        - basicAuth: []
+        - bearerAuth: []
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           required: true
           schema:
             type: integer
-            example: 1
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                content:
-                  type: string
-                  example: Updated comment content
+              $ref: '#/components/schemas/CommentCreateDto'
       responses:
         '200':
           description: Comment updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommentPublicDto'
     delete:
       summary: Delete a comment by ID (creator only)
-      description: "Placeholder — details TBD"
       security:
-        - basicAuth: []
+        - bearerAuth: []
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           required: true
           schema:
             type: integer
-            example: 1
       responses:
         '204':
           description: Comment deleted
 
-  /services/{id}/comments:
+  /comments/post/{postId}:
     get:
-      summary: Get comments for a service
-      description: "Placeholder — details TBD"
+      summary: Get comments for a service post
       parameters:
-        - name: id
+        - name: postId
           in: path
           required: true
           schema:
             type: integer
-            example: 1
       responses:
         '200':
           description: List of comments for the service
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CommentPublicDto'
+
+  /comments/unique:
+    get:
+      summary: Get unique comments for a service
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+        - in: query
+          name: offset
+          schema:
+            type: integer
+        - in: query
+          name: post_id
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Unique comments list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CommentPublicDto'
 
 components:
   securitySchemes:
-    basicAuth:
+    bearerAuth:
       type: http
-      scheme: basic
-      description: |
-        Use HTTP Basic authentication.
-        Example credentials:
-          Username: johndoe
-          Password: password123
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    UserPublicDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        username:
+          type: string
+          example: johndoe
+        email:
+          type: string
+          format: email
+          example: john@example.com
+
+    UserCreateDto:
+      type: object
+      required: [username, email, password]
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+
+    ServicePostPublicDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 42
+        title:
+          type: string
+          example: Website Design
+        content:
+          type: string
+          example: I need a website designed for my business.
+        userId:
+          type: integer
+          example: 1
+
+    ServicePostCreateDto:
+      type: object
+      required: [title, content]
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+
+    CommentPublicDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 99
+        content:
+          type: string
+          example: I can help with this service
+        serviceId:
+          type: integer
+          example: 42
+        userId:
+          type: integer
+          example: 1
+
+    CommentCreateDto:
+      type: object
+      required: [content, serviceId]
+      properties:
+        content:
+          type: string
+        serviceId:
+          type: integer
