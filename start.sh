@@ -10,27 +10,23 @@ echo "Started script"
 # Config
 # -------------------------------
 BASE_DIR="$(cd "$(dirname "$0")/SmartServiceHub" && pwd)"
-TEMP_DIR="$(cd "$(dirname "$0")/.temp" && pwd)"
+TEMP_DIR="$(cd "$(dirname "$0")/../.temp" && pwd)"
 MVN_URL="http://localhost:8080/status"
-NGINX_CONF="$BASE_DIR/srv/nginx.conf"
+NGINX_CONF="$BASE_DIR/../srv/nginx.conf"
 LOG_DIR="$BASE_DIR/logs"
 
-# Make sure log directory exists
 mkdir -p "$LOG_DIR"
 
-# PID files in project directory
 BACKEND_PID="$TEMP_DIR/backend.pid"
 FRONTEND_PID="$TEMP_DIR/frontend.pid"
 NGINX_PID="$TEMP_DIR/nginx.pid"
 
-# Remove old PID files
 rm -f "$BACKEND_PID" "$FRONTEND_PID" "$NGINX_PID"
 
-# Colors
 GREEN="\e[32m"
 YELLOW="\e[33m"
 RED="\e[31m"
-NC="\e[0m" # Reset color
+NC="\e[0m"
 
 # -------------------------------
 # Start Backend
@@ -57,7 +53,6 @@ echo $! > "$FRONTEND_PID"
 # Start NGINX (non-root)
 # -------------------------------
 echo -e "${YELLOW}Starting NGINX...${NC}"
-# Make sure nginx.conf uses a non-privileged port like 8081
 nginx -c "$NGINX_CONF" > "$LOG_DIR/nginx.log" 2>&1 &
 echo $! > "$NGINX_PID"
 
@@ -79,7 +74,7 @@ while true; do
     else
         sleep 1
         ((timer++))
-        i=$(( (i+1) % 4 ))  # rotate spinner
+        i=$(( (i+1) % 4 ))
         printf "\rTimer: %d %s" "$timer" "${spinner[i]}"
     fi
 done
