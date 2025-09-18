@@ -64,7 +64,9 @@ You can create a service post to request a service and other users can comment a
 - checker.sh runs all checks
 
 ## Authentication
-This app uses basic autentication / autorization were Username is the username and password is the passoword altough this is likelly to change in the future.
+This app uses JWT autentication. 
+You can get an auth token at /log-in
+The required parameters are username and password for user loggin
 Some endpoints will require authentication, these can be seen at "/config/SecurityConfig.java" or in their respective controllers from the notations.
 Accounts may be USER or ADMIN.
 When the program is ran, it will automatically create an ADMIN user with the name "admin" and password "admin123", this can be changed in "/config/DataInitialization.java".
