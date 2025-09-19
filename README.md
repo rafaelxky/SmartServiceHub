@@ -37,9 +37,13 @@ You can create a service post to request a service and other users can comment a
 - npm
 - Postgres
 - Git
+- Docker
+- Nginx
+- Maven
 
 ## Recommended
 - Postman
+- pgAdmin
 
 ## Getting Started
 1. install dependencies
