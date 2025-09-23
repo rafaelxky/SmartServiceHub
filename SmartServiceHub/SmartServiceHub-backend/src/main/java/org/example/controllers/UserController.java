@@ -28,10 +28,12 @@ public class UserController {
 
     private final UserDbService userDbService;
     private final PasswordEncoder passwordEncoder;
+    private final LuaModManager luaManager;
 
-    public UserController(UserDbService userDbService, PasswordEncoder passwordEncoder) {
+    public UserController(UserDbService userDbService, PasswordEncoder passwordEncoder, LuaModManager luaManager) {
         this.userDbService = userDbService;
         this.passwordEncoder = passwordEncoder;
+        this.luaManager = luaManager;
     }
 
     @PostMapping
@@ -43,7 +45,6 @@ public class UserController {
         AppUser newUser = AppUser.fromDto(user);
         AppUser savedUser = userDbService.createUser(newUser);
 
-        LuaModManager luaManager = LuaModManager.getInstance();
         luaManager.triggerEvent("onUserCreate", LuaTableAdaptor.fromAppUser(savedUser));
 
         return user.successResponse(savedUser);
@@ -57,7 +58,6 @@ public class UserController {
 
         if (maybeUser.isPresent()) {
             UserPublicDto savedUser = maybeUser.get();
-            LuaModManager luaManager = LuaModManager.getInstance();
             luaManager.triggerEvent("onGetUserById", LuaTableAdaptor.fromUserPublicDto(savedUser));
             return ResponseEntity.ok(savedUser);
         }
@@ -89,7 +89,6 @@ public class UserController {
             existing.setPassword(passwordEncoder.encode(userUpdate.getPassword()));
         }
 
-        LuaModManager luaManager = LuaModManager.getInstance();
         luaManager.triggerEvent("onUpdateUserById", LuaTableAdaptor.fromAppUser(existing));
 
         return ResponseEntity.ok(userDbService.saveUser(existing));
@@ -111,7 +110,6 @@ public class UserController {
         userDbService.deleteUserById(id);
 
 
-        LuaModManager luaManager = LuaModManager.getInstance();
         luaManager.triggerEvent("onDeleteUserById", null);
 
         return ResponseEntity.status(HttpStatus.OK).body(new GenericSuccessResponse("User %d deleted successfully".formatted(id)));
@@ -124,7 +122,6 @@ public class UserController {
     ){
         List<UserPublicDto> userList = UserPublicDto.fromAppUserList(userDbService.getUserUnique(limit, (offset * limit)));
 
-        LuaModManager luaManager = LuaModManager.getInstance();
         LuaTable safeUser = new LuaTable();
         safeUser.set("userList", CoerceJavaToLua.coerce(userList.stream().map(LuaTableAdaptor::fromUserPublicDto)));
         luaManager.triggerEvent("onGetUniqueUsers", safeUser);

@@ -9,12 +9,14 @@ import org.luaj.vm2.lib.OneArgFunction;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
 
 // Manages Lua event hooks using an observer pattern; supports hot reloading Lua scripts.
+@Component
 public class LuaModManager {
 
     @Autowired

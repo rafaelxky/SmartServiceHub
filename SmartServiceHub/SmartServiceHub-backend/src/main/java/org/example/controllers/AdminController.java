@@ -23,10 +23,12 @@ public class AdminController {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final LuaModManager luaManager;
 
-    public AdminController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public AdminController(UserRepository userRepository, PasswordEncoder passwordEncoder, LuaModManager luaManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.luaManager = luaManager;
     }
 
     @PostMapping("/create")
@@ -39,7 +41,6 @@ public class AdminController {
         newUser.setRole(Roles.ADMIN.getRoleName());
         AppUser savedUser = userRepository.save(newUser);
 
-        LuaModManager luaManager = LuaModManager.getInstance();
         luaManager.triggerEvent("onAdminCreate", LuaTableAdaptor.fromAppUser(savedUser));
 
         return user.successResponse(savedUser);
@@ -55,7 +56,6 @@ public class AdminController {
         }
         userRepository.deleteAll();
 
-        LuaModManager luaManager = LuaModManager.getInstance();
         luaManager.triggerEvent("onDeleteAllUsers", null);
 
         return ResponseEntity.status(HttpStatus.OK).body(new GenericSuccessResponse("All user have been successfully deleted!"));
@@ -70,7 +70,6 @@ public class AdminController {
         }
         userRepository.deleteAll();
 
-        LuaModManager luaManager = LuaModManager.getInstance();
         luaManager.triggerEvent("onDeleteAllComments", null);
 
         return ResponseEntity.status(HttpStatus.OK).body(new GenericSuccessResponse("All comments have been successfully deleted!"));
@@ -85,7 +84,6 @@ public class AdminController {
         }
         userRepository.deleteAll();
 
-        LuaModManager luaManager = LuaModManager.getInstance();
         luaManager.triggerEvent("onDeleteAllPosts", null);
 
         return ResponseEntity.status(HttpStatus.OK).body(new GenericSuccessResponse("All posts have been successfully deleted!"));

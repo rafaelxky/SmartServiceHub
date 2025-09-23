@@ -31,9 +31,11 @@ public class CommentController {
     // todo: implement lua events here
 
     private final CommentDbService commentDbService;
+    private final LuaModManager luaManager;
 
-    public CommentController(CommentDbService commentDbService) {
+    public CommentController(CommentDbService commentDbService, LuaModManager luaManager) {
         this.commentDbService = commentDbService;
+        this.luaManager = luaManager;
     }
 
     @PostMapping
@@ -47,7 +49,6 @@ public class CommentController {
 
         Comment savedComment = commentDbService.saveComment(Comment.fromCreateDto(comment, currentUser));
 
-        LuaModManager luaManager = LuaModManager.getInstance();
         luaManager.triggerEvent("onCreateComment", null);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(savedComment);
@@ -62,7 +63,6 @@ public class CommentController {
         }
 
         CommentPublicDto comment = CommentPublicDto.fromComment(comment_from_db.get());
-        LuaModManager luaManager = LuaModManager.getInstance();
         luaManager.triggerEvent("onGetCommentById", null);
 
         return ResponseEntity.ok(comment);
@@ -87,7 +87,6 @@ public class CommentController {
 
         existing.setContent(commentUpdate.getContent());
 
-        LuaModManager luaManager = LuaModManager.getInstance();
         luaManager.triggerEvent("onUpdateComment", null);
 
 
@@ -113,7 +112,6 @@ public class CommentController {
 
         commentDbService.deleteCommentById(id);
 
-        LuaModManager luaManager = LuaModManager.getInstance();
         luaManager.triggerEvent("onDeleteCommentById", null);
 
         return ResponseEntity.status(HttpStatus.OK).body(new GenericSuccessResponse("Comment %d deleted successfully!"));
@@ -129,7 +127,6 @@ public class CommentController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new NotFoundResponse("Post %d not found".formatted(post_id)));
         }
 
-        LuaModManager luaManager = LuaModManager.getInstance();
         luaManager.triggerEvent("onGetCommentsFromPost", null);
 
         return ResponseEntity.status(HttpStatus.OK).body(posts);
@@ -146,7 +143,6 @@ public class CommentController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new NotFoundResponse("Post %d not found!".formatted(post_id)));
         }
 
-        LuaModManager luaManager = LuaModManager.getInstance();
         luaManager.triggerEvent("onGetUniqueComments", null);
 
         return ResponseEntity.ok(posts);

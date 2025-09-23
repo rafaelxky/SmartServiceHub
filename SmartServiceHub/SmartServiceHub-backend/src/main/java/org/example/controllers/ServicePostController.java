@@ -9,6 +9,7 @@ import org.example.models.dto.ServicePostPublicDto;
 import org.example.models.responses_requests.GenericErrorResponse;
 import org.example.models.responses_requests.NotFoundResponse;
 import org.example.services.persistance.AppServiceDbService;
+import org.luaj.vm2.Lua;
 import org.luaj.vm2.LuaTable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,9 +27,11 @@ public class ServicePostController {
     // todo: pass the proper tables to lua
 
     private final AppServiceDbService serviceDbService;
+    private final LuaModManager luaManager;
 
-    public ServicePostController(AppServiceDbService serviceDbService) {
+    public ServicePostController(AppServiceDbService serviceDbService, LuaModManager luaManager) {
         this.serviceDbService = serviceDbService;
+        this.luaManager = luaManager;
     }
 
     @PostMapping
@@ -42,7 +45,6 @@ public class ServicePostController {
         }
         ServicePost savedService = serviceDbService.saveService(ServicePost.fromCreateDto(service, currentUser));
 
-        LuaModManager luaManager = LuaModManager.getInstance();
         luaManager.triggerEvent("onAppServiceCreate", LuaTableAdaptor.fromAppServiceCreateDto(savedService));
 
         return ResponseEntity.status(HttpStatus.CREATED).body(savedService);
@@ -55,7 +57,6 @@ public class ServicePostController {
         if (maybeAppService.isPresent()){
             ServicePost servicePost = maybeAppService.get();
 
-            LuaModManager luaManager = LuaModManager.getInstance();
             LuaTable safeAppService = new LuaTable();
             luaManager.triggerEvent("onGetServiceById", safeAppService);
 
@@ -87,7 +88,6 @@ public class ServicePostController {
 
         ServicePost updatedPost = serviceDbService.saveService(existing);
 
-        LuaModManager luaManager = LuaModManager.getInstance();
         luaManager.triggerEvent("onUpdateService", LuaTableAdaptor.fromServicePost(updatedPost));
 
         return ResponseEntity.ok(updatedPost);
@@ -111,7 +111,6 @@ public class ServicePostController {
 
         serviceDbService.deleteServiceById(id);
 
-        LuaModManager luaManager = LuaModManager.getInstance();
         luaManager.triggerEvent("onDeleteServicePostById", null);
 
         return ResponseEntity.status(HttpStatus.OK).body(new GenericErrorResponse("Service %d successfully deleted!"));
@@ -123,7 +122,6 @@ public class ServicePostController {
             @RequestParam int offset
     ){
 
-        LuaModManager luaManager = LuaModManager.getInstance();
         luaManager.triggerEvent("onGetUniqueServicePost", null);
 
         return ResponseEntity.ok(ServicePostPublicDto.fromAppServiceList(serviceDbService.getServicePostUnique(limit, (offset * limit))));

@@ -22,6 +22,11 @@ public class HomeController {
 
     @Autowired
     private RequestMappingHandlerMapping handlerMapping;
+    private final LuaModManager luaManager;
+
+    public HomeController(LuaModManager luaManager) {
+        this.luaManager = luaManager;
+    }
 
     @GetMapping("/home")
     @ResponseBody
@@ -52,7 +57,6 @@ public class HomeController {
             luaTable.set(i + 1, endpointsArr[i]);
         }
 
-        LuaModManager luaManager = LuaModManager.getInstance();
         luaManager.triggerEvent("onHomeAccessed", luaTable);
 
         return endpoints;

@@ -1,5 +1,6 @@
 package org.example.controllers;
 
+import org.example.lua.LuaModManager;
 import org.example.models.responses_requests.AuthRequest;
 import org.example.models.responses_requests.AuthResponse;
 import org.example.models.responses_requests.GenericErrorResponse;
@@ -19,13 +20,16 @@ public class LoginController{
     private final AuthenticationManager authenticationManager;
     private final MyUserDetailsService userDetailsService;
     private final JwtUtil jwtUtil;
+    private final LuaModManager luaManager;
 
     public LoginController(AuthenticationManager authenticationManager,
-                          MyUserDetailsService userDetailsService,
-                          JwtUtil jwtUtil) {
+                           MyUserDetailsService userDetailsService,
+                           JwtUtil jwtUtil,
+                           LuaModManager luaManager) {
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
         this.jwtUtil = jwtUtil;
+        this.luaManager = luaManager;
     }
 
     @PostMapping
