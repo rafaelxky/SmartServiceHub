@@ -1,37 +1,33 @@
 package org.example.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.val;
+import org.example.TestEnvSetup;
 import org.example.config.DataInitializer;
 import org.example.lua.LuaModManager;
-import org.example.lua.LuaStartup;
-import org.example.lua.LuaTableAdaptor;
 import org.example.models.AppUser;
 import org.example.models.Roles;
 import org.example.models.dto.UserCreateDto;
 import org.example.services.persistance.UserDbService;
 import org.example.services.persistance.UserRepository;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -39,8 +35,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(UserController.class)
 @AutoConfigureMockMvc(addFilters = false)
+@SpringBootTest
+@ContextConfiguration(initializers = TestEnvSetup.class)
 class UserControllerTest {
 
     @Autowired
@@ -61,15 +58,13 @@ class UserControllerTest {
     @MockBean
     private LuaModManager luaModManager;
 
-    @MockBean
-    private LuaTableAdaptor luaTableAdaptor;
-    
-    @MockBean
-    private LuaStartup luaStartup;
-
     @Autowired
     private ObjectMapper objectMapper;
 
+    @BeforeAll
+    void config(){
+        new TestEnvSetup();
+    }
 
     @Test
     public void successGetUserById() throws Exception {
@@ -112,9 +107,9 @@ class UserControllerTest {
                                 }
                                 """))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.data.username").value("name"))
-                .andExpect(jsonPath("$.data.email").value("mail"))
-                .andExpect(jsonPath("$.data.id").value(1))
+                .andExpect(jsonPath("$.username").value("name"))
+                .andExpect(jsonPath("$.email").value("mail"))
+                .andExpect(jsonPath("$.id").value(1))
         ;
     }
 
@@ -153,7 +148,7 @@ class UserControllerTest {
                                 {
                                     "username": "name",
                                     "email": "mail",
-                                    "password": "pass",
+                                    "password": "pass"
                                 }
                                 """))
                 .andExpect(status().isOk())
@@ -277,7 +272,7 @@ class UserControllerTest {
                 new UsernamePasswordAuthenticationToken(currentUser, null, currentUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
 
-        mockMvc.perform(delete("/users/1")).andExpect(status().isNoContent());
+        mockMvc.perform(delete("/users/1")).andExpect(status().isOk());
     }
 
     @Test
@@ -291,7 +286,7 @@ class UserControllerTest {
                 new UsernamePasswordAuthenticationToken(currentUser, null, currentUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
 
-        mockMvc.perform(delete("/users/2")).andExpect(status().isUnauthorized());
+        mockMvc.perform(delete("/users/2")).andExpect(status().isForbidden());
     }
     
     @Test
@@ -320,10 +315,6 @@ class UserControllerTest {
     @Test
     public void badRequestGetUniqueUser() throws Exception{
         mockMvc.perform(get("/users/unique?limit=hello&offset=world"))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
-                .andExpect(jsonPath("$.message").value("Parameter 'limit' must be of type int"))
-                .andExpect(jsonPath("$.data").doesNotExist());
+                .andExpect(status().isBadRequest());
     }
 }

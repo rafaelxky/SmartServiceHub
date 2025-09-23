@@ -33,6 +33,6 @@ public class UserCreateDto {
     }
 
     public ResponseEntity<Object> successResponse(AppUser savedUser){
-        return ResponseEntity.status(HttpStatus.CREATED).body((new GenericSuccessResponse("User created successfully!")));
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
 }
