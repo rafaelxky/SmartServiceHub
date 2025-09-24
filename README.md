@@ -67,14 +67,21 @@ You can create a service post to request a service and other users can comment a
 - port_check tells you wich ports are in use and if you can use them
 - checker.sh runs all checks
 
+## Defaults
+When the program is ran, it will automatically create an ADMIN user with the name "admin" and password "admin123", this can be changed in "/config/DataInitialization.java".
+It is verry important that you change this is you intend to deploy this application
+
 ## Authentication
 This app uses JWT autentication. 
 You can get an auth token at /log-in
 The required parameters are username and password for user loggin
 Some endpoints will require authentication, these can be seen at "/config/SecurityConfig.java" or in their respective controllers from the notations.
 Accounts may be USER or ADMIN.
-When the program is ran, it will automatically create an ADMIN user with the name "admin" and password "admin123", this can be changed in "/config/DataInitialization.java".
-It is verry important that you change this is you intend yo deploy this application
+You can loggin at http://127.0.0.1:8081/api/log-in
+You must pass standard JWT loggin body like:
+```JSON
+{"username":"John Doe", "password":"password123"}
+```
 
 # Models
 ## User

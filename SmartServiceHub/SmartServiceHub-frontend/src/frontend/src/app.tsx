@@ -15,7 +15,6 @@ const baseUrl = window.location.hostname.endsWith('.onion')
 let authService = new BasicAuthService("admin", "admin123");
 let userService: UserService = new UserService(baseUrl+ "/users", authService);
 let servicePostService: ServicePostService = new ServicePostService(baseUrl+ "/users", authService);
-console.log(await userService.getUserById(1));
 /*
 let servicePostService: ServicePostService= new ServicePostService("http://localhost:8080/services", authService);
 let commentService: CommentService= new CommentService("http://localhost:8080/comments", authService);
@@ -29,13 +28,13 @@ const posts_static: ServicePost[] = [
 ];
 
 const posts: ServicePost[] = await servicePostService.getUniqueServicePost(5, 0);
+console.log("posts" + posts);
 
 export function App() {
   return (
     <div className="container-fluid d-flex flex-column align-items-center min-vh-100 bg-light py-4 w-100 pt-5">
       {/* Header */}
-      <Header />
-
+      <Header/>
       {/* Posts container */}
       <div className="container d-flex flex-column gap-3">
         <Posts posts={posts} />
