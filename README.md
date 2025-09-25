@@ -62,10 +62,11 @@ You can create a service post to request a service and other users can comment a
 
 ## Scripts
 - Various scripts can be found under /scripts
-- start_backend.sh and start_frontend.sh start the backend and frontend individually
+- **start_backend.sh** and **start_frontend.sh** start the backend and frontend individually
 - env_check tells you wich programs you have or are missing that are needed for the project to work
 - port_check tells you wich ports are in use and if you can use them
-- checker.sh runs all checks
+- **checker.sh** runs all checks
+- **setup.sh** contains all path variables for scripts
 
 ## Server
 This program uses Nginx as a reverse proxy
@@ -77,7 +78,7 @@ Logs can be found under /logs
 Temporary files such as .pid files can be found under /.temp
 
 ## Defaults
-When the program is ran, it will automatically create an ADMIN user with the name "admin" and password "admin123", this can be changed in "/config/DataInitialization.java".
+When the program is ran, it will automatically create an ADMIN user with the name **admin** and password **admin123**, this can be changed in **/config/DataInitialization.java**.
 It is verry important that you change this is you intend to deploy this application
 
 ## Authentication
@@ -233,3 +234,9 @@ register_event {
 - Implement caching
 - Implement OAuth2
 - Profile
+- Finish the openapi.yaml
+
+# Other documents
+- You can find some personal toughts and troubles I had with this project under PROJECT_JOUNEY.md
+- PROJECT_GUIDE.md provides a more direct and easy way to help you to treverse and contribute to the project as well as its standards
+- If you have any issues try going to KNOWN_ISSUES.md 

@@ -33,7 +33,7 @@ This document facilitates project navigation and contributing
 - Titles use [title case](https://en.wikipedia.org/wiki/Title_case) 
 
 ### Environmental Variables
-- All variables that must not be public must be on a file ending with .local such as .env.local
+- All variables that must not be public / commited must be on a file ending with .local such as .env.local
 - These are already present on the .gitignore file
 
 ### Controllers
@@ -64,4 +64,5 @@ This document facilitates project navigation and contributing
 - VsCode for frontend
 - Postman for testing the api
 - Firefox or Brave browser, Tor browser if you want to deploy for it
+- pgAdmin for managing the DB
 
