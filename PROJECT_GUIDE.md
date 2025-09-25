@@ -8,6 +8,8 @@ This document facilitates project navigation and contributing
 - Shell scripts can be found under [Scripts Folder](./scripts/)
 - The [etc](./etc/) folder contains misc files and stuffs
 - The [.tor](./.tor/) folder contains scripts and notes related to seting up the project on tor
+- [logs](./logs) contains frontend, backend and nginx logs
+- [temp](./.temp) contains temporary files such as .pid
 
 ## Conventions
 
@@ -40,6 +42,9 @@ This document facilitates project navigation and contributing
 - Controllers that use GET must return a public DTO of the class
 - Controllers for POST and PUT must use the create DTO of the class
 - Exceptions for admin controller
+
+### Scripts
+- Any path used in a script must be sources from [**/scripts/config.sh**](./scripts/config.sh)
 
 ## Technology
 
