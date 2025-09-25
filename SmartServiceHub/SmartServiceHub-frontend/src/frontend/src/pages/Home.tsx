@@ -5,6 +5,7 @@ import '../styles/debug.css'
 import '../styles/styles.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { UserService } from '../tsx/api/services/UserService';
+import { BasicAuthService } from '../tsx/api/services/auth/BasicAuthService';
 import { ServicePostService } from '../tsx/api/services/ServicePostService';
 import { JwtAuthService } from '../tsx/api/services/auth/JWTAuth';
 

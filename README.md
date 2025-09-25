@@ -50,7 +50,7 @@ You can create a service post to request a service and other users can comment a
 2. clone the repo
 3. create a db in postgres with the name "servicehub_dev". You can also change the name of the db in "/SmartServiceHub-backend/src/main/resource/db.env"
 4. run the start.sh script
-5. if it works ignore 6 trough 9 included
+5. if it works ignore 6 through 9 included
 6. go to ./SmartServiceHub/SmartServiceHub-backend
 7. run "mvn spring-boot:run"
 8. go to ./SmartServiceHub/SmartServiceHub-frontend/src/frontend
@@ -66,7 +66,7 @@ You can create a service post to request a service and other users can comment a
 - env_check tells you wich programs you have or are missing that are needed for the project to work
 - port_check tells you wich ports are in use and if you can use them
 - **checker.sh** runs all checks
-- **setup.sh** contains all path variables for scripts
+- **config.sh** contains all path variables for scripts
 
 ## Server
 This program uses Nginx as a reverse proxy
@@ -79,16 +79,16 @@ Temporary files such as .pid files can be found under /.temp
 
 ## Defaults
 When the program is ran, it will automatically create an ADMIN user with the name **admin** and password **admin123**, this can be changed in **/config/DataInitialization.java**.
-It is verry important that you change this is you intend to deploy this application
+It is very important that you change this is you intend to deploy this application
 
 ## Authentication
-This app uses JWT autentication. 
+This app uses JWT authentication. 
 You can get an auth token at /log-in
-The required parameters are username and password for user loggin
+The required parameters are username and password for user login
 Some endpoints will require authentication, these can be seen at "/config/SecurityConfig.java" or in their respective controllers from the notations.
 Accounts may be USER or ADMIN.
-You can loggin at http://127.0.0.1:8081/api/log-in
-You must pass standard JWT loggin body like:
+You can login at http://localhost:8081/api/log-in
+You must pass standard JWT login body like:
 ```JSON
 {"username":"John Doe", "password":"password123"}
 ```
@@ -110,10 +110,12 @@ You must pass standard JWT loggin body like:
 - Roles <- Enum for roles "ADMIN, USER, MODERATOR"1
 
 ## CORS Policy
-Currently this app allows CORS from all sources tough this can be changed at "/config/WebConfig.java"
+Currently this app allows CORS from all sources altough this can be changed at "/config/WebConfig.java"
+This will be changed later
+If you run from nginx, CORS won't be an issue
 
 # Endpoints
-The frontend and backend communicate trough REST api using json
+The frontend and backend communicate through REST api using json
 A list of all endpoints can be found under the folder "controllers" or listed at "http://localhost:8080/home"
 
 ## User Endpoints
@@ -122,37 +124,37 @@ A list of all endpoints can be found under the folder "controllers" or listed at
 {"username": "name", "email": "mail@mail.com", "password": "password123"} 
 ```
 - /users/{id} GET <- gets a public user by id 
-- /users GET <- requires admin loggin, gets a list of all users
-- /users/{id} PUT <- updates a user by id, requires you to be logged in as the user you are trying to update, syntax is similar to POST
-- /users DELETE <- deletes a user by id, requires you to be logged in as the user you are trying to delete
+- /users GET <- requires admin login, gets a list of all users
+- /users/{id} PUT <- updates a user by id, requires you to be loged in as the user you are trying to update, syntax is similar to POST
+- /users DELETE <- deletes a user by id, requires you to be loged in as the user you are trying to delete
 - /users/unique?limit=int&offset=int GET <- gets unique public users based on a limit and offset 
 
 ## App Services Endpoints
-- /services POST <- creates a post, must be logged in. Post are created like 
+- /services POST <- creates a post, must be loged in. Post are created like 
 ```JSON
 {"title": "title", "content": "Stuffs"}
 ```
 - /services GET <- gets a list of all services 
 - /services/{id} GET <- gets a service by id
 - /services/limit/{limit} GET <- gets a list of services of size {limit}
-- /services/{id} PUT <- updates a service by id, must be logged in as the user who created the post
-- /services/{id} DELETE <- deletes a service by id, must be logged in as the user who created the service
+- /services/{id} PUT <- updates a service by id, must be loged in as the user who created the post
+- /services/{id} DELETE <- deletes a service by id, must be loged in as the user who created the service
 - /services/unique?limiy=int&offset=int GET <- gets a unique public list of services based on limit and offset
 
 ## Comments Endpoints
-- /comments POST <- creates a comment for a post, must be logged in. Comments are creted like
+- /comments POST <- creates a comment for a post, must be loged in. Comments are creted like
 ```JSON
 {"content": "content", "postId": "postId"}
 ```
 - /comments/{id} GET <- gets a comment by id
-- /comments/{put} PUT <- updates a comment by id, must be logged in as the user who created it
-- /comments/{id} DELETE <- deletes a comment by id, must be logged in as the user who created it
+- /comments/{put} PUT <- updates a comment by id, must be loged in as the user who created it
+- /comments/{id} DELETE <- deletes a comment by id, must be loged in as the user who created it
 - /comments/post/{post_id} GET <- gets all comments from a post with the specific id
 - /comments/unique?limit=int&offset=int&post_id=int GET <- gets unique comments from a post based on a limit and offset
 
 ## Nginx
-- Nginx will route backend request from /api endpoint (ex: http://8081/api/home -> http://8080/home)
-- The frontend uses the base url (ex: http://8081/index.html -> http://8082/index.html)
+- Nginx will route backend request from /api endpoint (ex: http://localhost:8081/api/home -> http://localhost:8080/home)
+- The frontend uses the base url (ex: http://localhost:8081/index.html -> http://localhost:8082/index.html)
 
 # Roles
 - Users can have 3 roles currently, USER, ADMIN, MODERATOR wich can be found at the roles enum in the backend
@@ -164,7 +166,7 @@ A list of all endpoints can be found under the folder "controllers" or listed at
 - this app provides extensability via Lua scripts
 - you can write you own scripts at SmartServiceHub/scripts
 ## Hooks / Events
-- your scripts can react to program events trough provided hooks
+- your scripts can react to program events through provided hooks
 - you can subscribe a function to an event like 
 ```Lua
 register_event {
@@ -217,7 +219,7 @@ register_event {
 - User creation
 - Post creation
 - Comment creation
-- User autentication (JWT)
+- User authentication (JWT)
 - Roles
 - Lua script events
 - Nginx integration
@@ -237,6 +239,6 @@ register_event {
 - Finish the openapi.yaml
 
 # Other documents
-- You can find some personal toughts and troubles I had with this project under PROJECT_JOUNEY.md
-- PROJECT_GUIDE.md provides a more direct and easy way to help you to treverse and contribute to the project as well as its standards
+- You can find some personal toughts and throubles I had with this project under PROJECT_JOUNEY.md
+- PROJECT_GUIDE.md provides a more direct and easy way to help you to traverse and contribute to the project as well as its standards
 - If you have any issues try going to KNOWN_ISSUES.md 
