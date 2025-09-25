@@ -1,0 +1,10 @@
+SCRIPTS_DIR="$(cd "$(dirname "$0")" && pwd)"
+BASE_DIR="$SCRIPTS_DIR/.."
+TEMP_DIR="$BASE_DIR/.temp"
+SRV_DIR="$BASE_DIR/srv"
+LOG_DIR="$BASE_DIR/logs"
+MVN_URL="http://localhost/status"
+
+BACKEND_PID="$TEMP_DIR/backend.pid"
+FRONTEND_PID="$TEMP_DIR/frontend-pid"
+NGINX_PID="$TEMP_DIR/nginx.pid"

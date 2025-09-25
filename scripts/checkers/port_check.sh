@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 echo "==== Port Check ===="
 PORTS=(8080 8081 8082)

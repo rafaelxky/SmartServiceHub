@@ -67,6 +67,15 @@ You can create a service post to request a service and other users can comment a
 - port_check tells you wich ports are in use and if you can use them
 - checker.sh runs all checks
 
+## Server
+This program uses Nginx as a reverse proxy
+Scripts and config for it are located under /srv
+Note: you must run the start_nginx.sh script instead of running nginx manually becauses it uses a template as not to hardcode any paths
+
+## Other folders
+Logs can be found under /logs
+Temporary files such as .pid files can be found under /.temp
+
 ## Defaults
 When the program is ran, it will automatically create an ADMIN user with the name "admin" and password "admin123", this can be changed in "/config/DataInitialization.java".
 It is verry important that you change this is you intend to deploy this application

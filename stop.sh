@@ -1,5 +1,4 @@
-
-#!/bin/bash
+#!/usr/bin/env bash
 TEMP_DIR="$(cd "$(dirname "$0")/.temp" && pwd)"
 BACKEND_PID="$TEMP_DIR/backend.pid"
 FRONTEND_PID="$TEMP_DIR/frontend.pid"

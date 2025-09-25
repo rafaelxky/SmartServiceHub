@@ -1,5 +1,5 @@
+#!/usr/bin/env bash
 
-#!/bin/bash
 # ================================================
 # SmartServiceHub: Start Backend, Frontend & NGINX
 # ================================================
@@ -13,7 +13,7 @@ CURRENT_DIR="$(cd "$(dirname "$0")" && pwd)"
 BASE_DIR="$CURRENT_DIR/SmartServiceHub"
 TEMP_DIR="$CURRENT_DIR/.temp"
 NGINX_CONF="$CURRENT_DIR/srv/nginx.conf"
-LOG_DIR="$BASE_DIR/logs"
+LOG_DIR="$CURRENT_DIR/logs"
 MVN_URL="http://localhost:8080/status"
 
 echo Base dir
@@ -65,7 +65,7 @@ npm run dev > "$LOG_DIR/frontend.log" 2>&1 &
 echo $! > "$FRONTEND_PID"
 
 # -------------------------------
-# Start NGINX (non-root)
+# Start NGINX 
 # -------------------------------
 sed "
 s|{{ACCESS_LOG}}|$LOG_DIR/nginx_access.log|g; 
