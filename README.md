@@ -220,3 +220,7 @@ register_event {
 - Chat
 - Job acceptance
 - Skill matching
+- Implement redis
+- Implement caching
+- Implement OAuth2
+- Profile
