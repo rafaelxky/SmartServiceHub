@@ -85,7 +85,7 @@ It is very important that you change this is you intend to deploy this applicati
 This app uses JWT authentication. 
 You can get an auth token at /log-in
 The required parameters are username and password for user login
-Some endpoints will require authentication, these can be seen at [/config/SecurityConfig.java](./SmartServiceHub/SmartServiceHub-backend/main/java/org/example/config/SecurityConfig.java) or in their respective controllers from the notations.
+Some endpoints will require authentication, these can be seen at [/config/SecurityConfig.java](./SmartServiceHub/SmartServiceHub-backend/src/main/java/org/example/config/SecurityConfig.java) or in their respective controllers from the notations.
 Accounts may be USER or ADMIN.
 You can login at "http://localhost:8081/api/log-in"
 You must pass standard JWT login body like:
