@@ -7,14 +7,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { UserService } from '../tsx/api/services/UserService';
 import { BasicAuthService } from '../tsx/api/services/auth/BasicAuthService';
 import { ServicePostService } from '../tsx/api/services/ServicePostService';
+import { JwtAuthService } from '../tsx/api/services/auth/JWTAuth';
 
 const baseUrl = window.location.hostname.endsWith('.onion')
   ? "http://" + import.meta.env.VITE_ONION_URL + ":81/api"
   : "http://localhost:8081/api";
 
-let authService = new BasicAuthService("admin", "admin123");
+let authService = new JwtAuthService();
 let userService: UserService = new UserService(baseUrl+ "/users", authService);
-let servicePostService: ServicePostService = new ServicePostService(baseUrl+ "/users", authService);
+let servicePostService: ServicePostService = new ServicePostService(baseUrl+ "/services", authService);
 
 const posts: ServicePost[] = await servicePostService.getUniqueServicePost(5, 0);
 console.log("posts" + posts);
