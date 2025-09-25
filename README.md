@@ -48,7 +48,7 @@ You can create a service post to request a service and other users can comment a
 ## Getting Started
 1. install dependencies
 2. clone the repo
-3. create a db in postgres with the name "servicehub_dev". You can also change the name of the db in [/SmartServiceHub-backend/src/main/resource/db.env](./SmartServiceHub/SmartServiceHub-backend/src/main/resouces/db.env)
+3. create a db in postgres with the name "servicehub_dev". You can also change the name of the db in [/SmartServiceHub-backend/src/main/resource/db.env](./SmartServiceHub/SmartServiceHub-backend/src/main/resources/db.env)
 4. run the [start.sh](./start.sh) script
 5. if it works ignore 6 through 9 included
 6. go to [./SmartServiceHub/SmartServiceHub-backend](./SmartServiceHub/SmartServiceHub-backend)
@@ -85,7 +85,7 @@ It is very important that you change this is you intend to deploy this applicati
 This app uses JWT authentication. 
 You can get an auth token at /log-in
 The required parameters are username and password for user login
-Some endpoints will require authentication, these can be seen at [/config/SecurityConfig.java](./SmartServiceHub/SmartServiceHub-backend/srv/main/java/org/example/config/SecurityConfig.java) or in their respective controllers from the notations.
+Some endpoints will require authentication, these can be seen at [/config/SecurityConfig.java](./SmartServiceHub/SmartServiceHub-backend/main/java/org/example/config/SecurityConfig.java) or in their respective controllers from the notations.
 Accounts may be USER or ADMIN.
 You can login at "http://localhost:8081/api/log-in"
 You must pass standard JWT login body like:
