@@ -21,7 +21,7 @@ export function App() {
       <Route path="/" component={Home}/>
       <Route path="/login" component={Login}/>
       <Route path="/create_post" component={NewPost}></Route>
-      <Route path="/posts/:postId/comments" component={PostComments}></Route>
+      <Route path="/post/:postId/comments" component={PostComments}></Route>
     </Router>
     </AuthContext.Provider>
   </div>

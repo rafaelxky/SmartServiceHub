@@ -2,6 +2,7 @@ import type { ServicePost } from "../models/ServicePost";
 import type { ServicePostCreateDto } from "../models/dto/ServicePostCreateDto";
 import type { AuthProvider } from "./auth/AuthInterface";
 import { get, post, put, del } from "./ApiService";
+import type { ServicePostPublicDto } from "../models/dto/ServicePostPublicDto";
 
 export class ServicePostService{
     baseUrl: string;
@@ -30,6 +31,6 @@ export class ServicePostService{
    }
 
    async getUniqueServicePost(limit: number, offset: number){
-      return await get<ServicePost[]>(this.baseUrl + "/unique?limit=" + limit + "&offset=" + offset)
+      return await get<ServicePostPublicDto[]>(this.baseUrl + "/unique?limit=" + limit + "&offset=" + offset)
    }
 }

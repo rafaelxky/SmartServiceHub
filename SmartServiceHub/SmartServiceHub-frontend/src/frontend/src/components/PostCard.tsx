@@ -4,9 +4,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { userService } from '../pages/Context';
 import { useState, useEffect } from 'preact/hooks';
 import { route } from 'preact-router';
+import type { ServicePostPublicDto } from '../ts/api/models/dto/ServicePostPublicDto';
 
 interface Props {
-  post: ServicePost;
+  post: ServicePostPublicDto;
 }
 
 const handleCommentClick = (postId: number) => {
@@ -28,7 +29,7 @@ const PostCard = ({ post }: Props) => {
         <Card.Title>{post.title ?? "title"}</Card.Title>
         <Card.Text>{post.content ?? "content"}</Card.Text>
         <Card.Subtitle className="text-muted">
-          By {username} on {new Date(post.timestamp).toLocaleDateString("de-DE") ?? "date"}
+          By {username} on {new Date(post.timestamp.valueOf()).toLocaleDateString("de-DE") ?? "date"}
         </Card.Subtitle>
       </Card.Body>
       <Card.Footer className="d-flex align-items-center">

@@ -5,6 +5,7 @@ import { UserService } from '../ts/api/services/UserService';
 import { ServicePostService } from '../ts/api/services/ServicePostService';
 import { JwtAuthService } from '../ts/api/services/auth/JWTAuth';
 import { JWTLoginService } from '../ts/api/services/JWTLoginService';
+import { CommentService } from '../ts/api/services/CommentService';
 
 const baseUrl = window.location.hostname.endsWith('.onion')
   ? import.meta.env.VITE_PROTOCOL + "://" + import.meta.env.VITE_ONION_URL + ":" + import.meta.env.VITE_ONION_PORT + "/api"
@@ -14,10 +15,12 @@ let authService = new JwtAuthService();
 let userService: UserService = new UserService(baseUrl+ "/users", authService);
 let servicePostService: ServicePostService = new ServicePostService(baseUrl+ "/services", authService);
 let loginService: JWTLoginService = new JWTLoginService(baseUrl + "/log-in", authService)
+let commentService: CommentService = new CommentService(baseUrl + "/comments", authService)
 
 export {
     authService,
     userService,
     servicePostService,
     loginService,
+    commentService,
 }

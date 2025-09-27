@@ -1,5 +1,6 @@
 import type { AuthProvider } from "./auth/AuthInterface";
 import { get, post, put, del } from "./ApiService";
+import type { CommentPublicDto } from "../models/dto/CommentPublicDto";
 
 
 export class CommentService{
@@ -17,7 +18,7 @@ export class CommentService{
     }
 
     async getComment(id: number){
-        return await get<Comment>(this.baseUrl + "/" + id, this.authService)
+        return await get<CommentPublicDto>(this.baseUrl + "/" + id, this.authService)
     }
     
     async updateComment(id: number, comment: Comment){
@@ -29,7 +30,7 @@ export class CommentService{
     }
 
     async getPostComments(id:number){
-        return await get<Comment>(this.baseUrl + "/posts/" + id, this.authService)
+        return await get<CommentPublicDto[]>(this.baseUrl + "/posts/" + id, this.authService)
     }
 
     async getPostUniqueComments(limit: number, offset: number, post_id: number){

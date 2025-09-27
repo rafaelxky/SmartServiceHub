@@ -5,8 +5,9 @@ import '../styles/styles.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {servicePostService} from './Context';
 import NoPosts from '../components/NoPosts';
+import type { ServicePostPublicDto } from '../ts/api/models/dto/ServicePostPublicDto';
 
-const posts: ServicePost[] = await servicePostService.getUniqueServicePost(5, 0);
+const posts: ServicePostPublicDto[] = await servicePostService.getUniqueServicePost(5, 0);
 
 const Home = () => (
     <div>
