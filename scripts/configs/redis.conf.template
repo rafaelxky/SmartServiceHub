@@ -1,0 +1,14 @@
+port 6379
+
+daemonize yes
+
+pidfile {{PID}}
+
+logfile {{LOGS}}
+
+dir {{REDIS_DIR}}
+
+save 900 1
+
+maxmemory 256mb
+maxmemory-policy allkeys-lru
