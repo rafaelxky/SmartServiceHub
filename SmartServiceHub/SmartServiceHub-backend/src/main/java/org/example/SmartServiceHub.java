@@ -16,6 +16,5 @@ public class SmartServiceHub {
         EnvSetup.setupDbEnv();
         SpringApplication.run(SmartServiceHub.class, args);
     }
-
 }
 

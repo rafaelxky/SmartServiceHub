@@ -19,15 +19,15 @@ public class DataInitializer {
             if (userRepository.count() == 0) {
                 AppUser admin = new AppUser(
                         null,
-                        System.getenv("ADMIN_NAME"),
-                        System.getenv("ADMIN_MAIL"),
-                        passwordEncoder.encode(System.getenv("ADMIN_PASSWORD")),
+                        System.getProperty("ADMIN_NAME"),
+                        System.getProperty("ADMIN_MAIL"),
+                        passwordEncoder.encode(System.getProperty("ADMIN_PASSWORD")),
                         Roles.ADMIN.getRoleName(),
                         null
                 );
 
                 userRepository.save(admin);
-                System.out.println("Initial admin user created: " + System.getenv("ADMIN_NAME") + "/" + System.getenv("ADMIN_PASSWORD"));
+                System.out.println("Initial admin user created: " + System.getProperty("ADMIN_NAME") + "/" + System.getProperty("ADMIN_PASSWORD"));
             }
         };
     }
