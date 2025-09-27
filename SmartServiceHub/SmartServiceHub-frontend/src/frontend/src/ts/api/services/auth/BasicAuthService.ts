@@ -12,4 +12,7 @@ export class BasicAuthService implements AuthProvider{
         const encoded = btoa(this.username + ":" + this.password);
         return "Basic " + encoded;
     }
+    isLoged(): boolean {
+        return false;
+    }
 }

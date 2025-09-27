@@ -21,4 +21,8 @@ export class JwtAuthService implements AuthProvider {
   getToken(): string | null {
     return this.token || localStorage.getItem('token');
   }
+
+  isLoged(): boolean {
+    return localStorage.getItem("token") != null
+  }
 }

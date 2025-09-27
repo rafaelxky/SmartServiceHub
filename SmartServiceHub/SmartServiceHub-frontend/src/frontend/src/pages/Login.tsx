@@ -1,12 +1,15 @@
 import { useState } from 'preact/hooks';
 import { route } from 'preact-router';
 import { loginService } from './Context';
+import { useContext } from 'preact/hooks';
+import { AuthContext } from './AuthContext';
 
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const { setToken } = useContext(AuthContext);
 
   const handleSubmit = async (e: Event) => {
     e.preventDefault();
@@ -20,11 +23,14 @@ const Login = () => {
         throw new Error("Login failed: token missing in response");
       }
 
+      setToken(res.token);
       console.log('Login success!');
+
 
       if (res.token) localStorage.setItem('token', res.token);
 
-      route('/');
+      const params = new URLSearchParams(window.location.search);
+      route(params.get("route") ?? "/");
     } catch (err) {
       console.error(err);
       setError('Wrong username or password!');

@@ -1,12 +1,13 @@
 
-import { useState, useEffect } from 'preact/hooks';
+import { useState, useEffect, useContext } from 'preact/hooks';
 import { route } from 'preact-router';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-
+import { AuthContext } from '../pages/AuthContext';
 
 const Header = () => {
   const [search, setSearch] = useState('');
-  const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
+  // reactive variable
+  const {token, setToken} = useContext(AuthContext);
 
   // Listen for token changes
   useEffect(() => {
@@ -25,6 +26,14 @@ const Header = () => {
       route('/login');
     }
   };
+
+  const createPostClick = (e: Event) => {
+    if (token){
+        route("/create_post");
+    } else {
+      route("/login?route=create_post");
+    }
+  }
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm w-100 mb-4">
@@ -57,7 +66,7 @@ const Header = () => {
               <a
                 className="nav-link d-flex align-items-center"
                 href="#"
-                onClick={(e) => { e.preventDefault(); route('/create_post'); }}
+                onClick={createPostClick}
                 title="Create Post"
               >
                 <i className="bi bi-plus-circle me-1 fs-4"></i>
