@@ -1,5 +1,7 @@
 import { useState } from 'preact/hooks';
 import { route } from 'preact-router';
+import { loginService } from './Context';
+
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -7,32 +9,25 @@ const Login = () => {
   const [error, setError] = useState('');
 
   const handleSubmit = async (e: Event) => {
-    e.preventDefault(); // prevent page reload
+    e.preventDefault();
     setError('');
 
     try {
-      const res = await fetch('http://localhost:8081/api/log-in', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
-      });
 
-      if (!res.ok) {
-        const data = await res.json();
-        setError(data.message || 'Login failed');
-        return;
+      const res = await loginService.log_in(username, password)
+
+      if (!res.token) {
+        throw new Error("Login failed: token missing in response");
       }
 
-      const data = await res.json();
-      console.log('Login success:', data);
+      console.log('Login success!');
 
-      if (data.token) localStorage.setItem('token', data.token);
+      if (res.token) localStorage.setItem('token', res.token);
 
-      // Navigate to home page
       route('/');
     } catch (err) {
       console.error(err);
-      setError('Network error');
+      setError('Wrong username or password!');
     }
   };
 

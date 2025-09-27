@@ -1,5 +1,5 @@
 import { Card } from 'react-bootstrap';
-import type { ServicePost } from '../tsx/api/models/ServicePost';
+import type { ServicePost } from '../ts/api/models/ServicePost';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 interface Props {
