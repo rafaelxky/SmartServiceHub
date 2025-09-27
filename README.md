@@ -117,6 +117,7 @@ If you run from nginx, CORS won't be an issue
 # Endpoints
 The frontend and backend communicate through REST api using json
 A list of all endpoints can be found under the folder "controllers" or listed at "http://localhost:8080/home"
+You can check if the server is up under "http://localhost:8080/status" wich will return "up" if up 
 Controllers can be found under [/controllers](SmartServiceHub/SmartServiceHub-backend/src/main/java/org/example/controllers)
 
 ## User Endpoints
@@ -156,6 +157,7 @@ Controllers can be found under [/controllers](SmartServiceHub/SmartServiceHub-ba
 ## Nginx
 - Nginx will route backend request from /api endpoint (ex: http://localhost:8081/api/home -> http://localhost:8080/home)
 - The frontend uses the base url (ex: http://localhost:8081/index.html -> http://localhost:8082/index.html)
+- You can check if nginx is up at "http://localhost:8081/nginx/status" wich will return "up" if up
 
 # Roles
 - Users can have 3 roles currently, USER, ADMIN, MODERATOR wich can be found at the roles enum in the backend
