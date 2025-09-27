@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
 
-source ../scripts/config.sh
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+CONFIG_FILE="$SCRIPT_DIR/../scripts/config.sh"
+source "$CONFIG_FILE"
 
 mkdir -p "$LOG_DIR" "$TEMP_DIR"
+
+echo "starting nginx"
 
 sed "
 s|{{ACCESS_LOG}}|$NGINX_ACCESS_LOG|g; 

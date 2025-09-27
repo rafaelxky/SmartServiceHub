@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-source ./config.sh
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+CONFIG_FILE="$SCRIPT_DIR/config.sh"
+source "$CONFIG_FILE"
 
 if [ -f $REDIS_PID ]; then
     kill "$(cat $REDIS_PID)" && echo -e "${GRENN} Stopped redis! ${NC}"
