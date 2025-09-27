@@ -30,7 +30,7 @@ export class CommentService{
     }
 
     async getPostComments(id:number){
-        return await get<CommentPublicDto[]>(this.baseUrl + "/posts/" + id, this.authService)
+        return await get<CommentPublicDto[]>(this.baseUrl + "/post/" + id, this.authService)
     }
 
     async getPostUniqueComments(limit: number, offset: number, post_id: number){
