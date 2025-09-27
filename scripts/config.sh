@@ -1,5 +1,4 @@
 
-
 #--------------------
 # BASE DIRECTORIES 
 #--------------------
@@ -44,8 +43,8 @@ NGINX_CONF_TEMPLATE="$SRV_DIR/nginx.conf.template"
 # URLS
 #--------------------
 MVN_URL="http://localhost:8080/status"
-NGINX_URL="http://localhost:8081"
-REDIS_URL="http://localhost:6379"
+NGINX_URL="http://localhost:8081/"
+REDIS_URL="http://localhost:6379/"
 
 #--------------------
 # REDIS

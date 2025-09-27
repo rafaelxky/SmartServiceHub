@@ -13,5 +13,23 @@ s|{{PID}}|$NGINX_PID|g;" \
     "$NGINX_CONF_TEMPLATE" > "$NGINX_CONF"
 
 echo -e "${YELLOW}Starting NGINX...${NC}"
-nginx -c "$NGINX_CONF" > "$NGINX_LOG" 2>&1
-echo -e "${GREEN}Started NGINX, visit ${NC} $NGINX_URL ${GREEN} to get started${NC}"
+
+nginx -c "$NGINX_CONF" > "$NGINX_LOG" 2>&1 &
+
+echo $! > "$NGINX_PID"
+
+timer=0
+spinner=('\' '|' '/' '-')
+i=0
+echo "Waiting for NGINX to be ready..."
+while true; do
+    if curl -s "$NGINX_URL/nginx/status" | grep -q "up"; then
+        printf "\r${GREEN}NGINX is ready! (in %ds)${NC}\n" "$timer"
+        break
+    else
+        sleep 1
+        ((timer++))
+        i=$(( (i+1) % 4 ))
+        printf "\rTimer: %d %s" "$timer" "${spinner[i]}"
+    fi
+done
