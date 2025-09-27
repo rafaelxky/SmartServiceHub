@@ -9,7 +9,6 @@ import org.example.models.dto.ServicePostPublicDto;
 import org.example.models.responses_requests.GenericErrorResponse;
 import org.example.models.responses_requests.NotFoundResponse;
 import org.example.services.persistance.AppServiceDbService;
-import org.luaj.vm2.Lua;
 import org.luaj.vm2.LuaTable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

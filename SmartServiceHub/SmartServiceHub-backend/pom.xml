@@ -187,7 +187,7 @@
                         <configuration>
                             <jvmTarget>21</jvmTarget>
                             <sourceDirs>
-                                <sourceDir>src/main/java</sourceDir>
+                                <sourceDir>src/main/kotlin</sourceDir>
                             </sourceDirs>
                         </configuration>
                     </execution>

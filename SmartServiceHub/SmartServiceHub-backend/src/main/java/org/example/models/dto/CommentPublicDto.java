@@ -7,7 +7,6 @@ import lombok.Setter;
 import org.example.models.Comment;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Setter
 @Getter
