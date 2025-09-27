@@ -2,6 +2,9 @@
 
 source ./config.sh
 
+echo -e "${YELLOW}Started frontend${NC}"
+
 cd $FRONTEND_DIR || exit
-npm run dev 2>&1 | tee $FRONTEND_LOG
+npm run dev > "$FRONTEND_LOG" 2>&1 &
+echo $! > "$FRONTEND_PID"
 

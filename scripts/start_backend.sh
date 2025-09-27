@@ -2,5 +2,31 @@
 
 source ./config.sh
 
-cd "$BACKEND_DIR" || exit
-mvn spring-boot:run 2>&1 | tee $BACKEND_LOG
+if curl -s "$MVN_URL" | grep -q "up"; then
+    echo -e "${GREEN}Backend is already running${NC}"
+else
+    echo -e "${YELLOW}Starting backend...${NC}"
+    cd "$BACKEND_DIR" || exit
+    mvn spring-boot:run > "$BACKEND_LOG" 2>&1 &
+    echo $! > "$BACKEND_PID"
+fi
+
+timer=0
+spinner=('\' '|' '/' '-')
+i=0
+
+echo "Waiting for backend to be ready..."
+while true; do
+    if curl -s "$MVN_URL" | grep -q "up"; then
+        printf "\r${GREEN}The app is ready! (in %ds)${NC}\n" "$timer"
+        printf "${GREEN}Backend endpoints: ${NC}http://localhost:8080/home\n"
+        printf "${GREEN}Frontend URL: ${NC}http://localhost:8082/\n"
+        printf "${GREEN}NGINX URL: ${NC}http://localhost:8081/\n"
+        break
+    else
+        sleep 1
+        ((timer++))
+        i=$(( (i+1) % 4 ))
+        printf "\rTimer: %d %s" "$timer" "${spinner[i]}"
+    fi
+done
