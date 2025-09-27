@@ -8,6 +8,7 @@ import Login from './pages/Login';
 import NewPost from './pages/NewPost';
 import { useState } from 'preact/hooks';
 import { AuthContext } from './pages/AuthContext';
+import PostComments from './pages/PostComments';
 
 export function App() {
   const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
@@ -20,6 +21,7 @@ export function App() {
       <Route path="/" component={Home}/>
       <Route path="/login" component={Login}/>
       <Route path="/create_post" component={NewPost}></Route>
+      <Route path="/posts/:postId/comments" component={PostComments}></Route>
     </Router>
     </AuthContext.Provider>
   </div>

@@ -3,10 +3,15 @@ import type { ServicePost } from '../ts/api/models/ServicePost';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { userService } from '../pages/Context';
 import { useState, useEffect } from 'preact/hooks';
+import { route } from 'preact-router';
 
 interface Props {
   post: ServicePost;
 }
+
+const handleCommentClick = (postId: number) => {
+  route(`/post/${postId}/comments`); 
+};
 
 const PostCard = ({ post }: Props) => {
   const [username, setUsername] = useState<string>('author'); // default
@@ -26,6 +31,16 @@ const PostCard = ({ post }: Props) => {
           By {username} on {new Date(post.timestamp).toLocaleDateString("de-DE") ?? "date"}
         </Card.Subtitle>
       </Card.Body>
+      <Card.Footer className="d-flex align-items-center">
+        <button
+          className="btn btn-link p-0 d-flex align-items-center"
+          onClick={() => handleCommentClick(post.id)}
+          style={{ textDecoration: 'none' }}
+        >
+          <i className="bi bi-chat me-2 fs-5"></i>
+          {0} Comments
+        </button>
+      </Card.Footer> 
     </Card>
   );
 };
