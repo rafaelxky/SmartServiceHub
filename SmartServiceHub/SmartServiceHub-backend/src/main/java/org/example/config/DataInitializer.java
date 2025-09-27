@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 
 @Configuration
 public class DataInitializer {
-
     @Bean
     public CommandLineRunner initAdmin(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         EnvSetup.setupAdminUser();
@@ -28,7 +27,7 @@ public class DataInitializer {
                 );
 
                 userRepository.save(admin);
-                System.out.println("Initial admin user created: admin/admin123");
+                System.out.println("Initial admin user created: " + System.getenv("ADMIN_NAME") + "/" + System.getenv("ADMIN_PASSWORD"));
             }
         };
     }
