@@ -15,13 +15,14 @@ public class DataInitializer {
 
     @Bean
     public CommandLineRunner initAdmin(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        EnvSetup.setupAdminUser();
         return args -> {
             if (userRepository.count() == 0) {
                 AppUser admin = new AppUser(
                         null,
-                        "admin",
-                        "admin@gmail.com",
-                        passwordEncoder.encode("admin123"),
+                        System.getenv("ADMIN_NAME"),
+                        System.getenv("ADMIN_MAIL"),
+                        passwordEncoder.encode(System.getenv("ADMIN_PASSWORD")),
                         Roles.ADMIN.getRoleName(),
                         null
                 );
