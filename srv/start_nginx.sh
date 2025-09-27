@@ -6,8 +6,6 @@ source "$CONFIG_FILE"
 
 mkdir -p "$LOG_DIR" "$TEMP_DIR"
 
-echo "starting nginx"
-
 sed "
 s|{{ACCESS_LOG}}|$NGINX_ACCESS_LOG|g; 
 s|{{ERROR_LOG}}|$NGINX_ERROR_LOG|g; 
@@ -16,4 +14,4 @@ s|{{PID}}|$NGINX_PID|g;" \
 
 echo -e "${YELLOW}Starting NGINX...${NC}"
 nginx -c "$NGINX_CONF" > "$NGINX_LOG" 2>&1
-echo -e "${GREEN}Started NGINX, visit $NGINX_URL to get started${NC}"
+echo -e "${GREEN}Started NGINX, visit ${NC} $NGINX_URL ${GREEN} to get started${NC}"
