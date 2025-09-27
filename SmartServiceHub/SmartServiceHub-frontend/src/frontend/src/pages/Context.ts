@@ -7,8 +7,8 @@ import { JwtAuthService } from '../ts/api/services/auth/JWTAuth';
 import { JWTLoginService } from '../ts/api/services/JWTLoginService';
 
 const baseUrl = window.location.hostname.endsWith('.onion')
-  ? import.meta.env.PROTOCOL + "://" + import.meta.env.VITE_ONION_URL + ":" + import.meta.env.VITE_ONION_PORT + "/api"
-  : import.meta.env.PROTOCOL + "://" + import.meta.env.VITE_IP + ":" + import.meta.env.VITE_PORT +"/api";
+  ? import.meta.env.VITE_PROTOCOL + "://" + import.meta.env.VITE_ONION_URL + ":" + import.meta.env.VITE_ONION_PORT + "/api"
+  : import.meta.env.VITE_PROTOCOL + "://" + import.meta.env.VITE_IP + ":" + import.meta.env.VITE_PORT +"/api";
 
 let authService = new JwtAuthService();
 let userService: UserService = new UserService(baseUrl+ "/users", authService);
