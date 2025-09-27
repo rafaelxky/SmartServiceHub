@@ -19,5 +19,6 @@ check_command node "Node.js"
 check_command npm "NPM"
 check_command psql "Postgres"
 check_command nginx "Nginx"
+check_command redis-server "Redis"
 
 echo "==== Environment Check Complete ===="
